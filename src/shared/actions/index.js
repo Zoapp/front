@@ -1,0 +1,30 @@
+/**
+ * Copyright (c) 2015-present, CWB SAS
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+export const AUTH_INIT_SETTINGS = "AUTH_INIT_SETTINGS";
+
+// un/subscribing actions suffix
+export const SUBSCRIBE = "_SUBSCRIBE";
+export const UNSUBSCRIBE = "_UNSUBSCRIBE";
+
+// Fetching actions suffix
+export const FETCH_REQUEST = "_REQUEST";
+export const FETCH_SUCCESS = "_SUCCESS";
+export const FETCH_FAILURE = "_FAILURE";
+
+// Sign In constants
+export const AUTH_SIGNIN = "AUTH_SIGNIN";
+
+// Sign Out constants
+export const AUTH_SIGNOUT = "AUTH_SIGNOUT";
+
+// API User constants
+export const API_USERPROFILE = "API_USERPROFILE";
+export const API_SAVEUSERPROFILE = "API_SAVEUSERPROFILE";
+
+// API admin constants
+export const API_ADMIN = "API_ADMIN";
+export const API_SETADMINPARAMETERS = "API_SETADMINPARAMETERS";

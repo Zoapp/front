@@ -1,0 +1,32 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "IE >= 11"]
+      },
+      "start": {
+        "presets": [
+        ]
+      }
+    }],
+    ["es2015", {"modules": false}],
+    "react",
+    "stage-0"
+  ],
+  "plugins": ["syntax-dynamic-import", "transform-object-rest-spread"],
+  "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": 8
+          },
+          "modules": false
+        }],
+        "es2017",
+        "react",
+        "stage-0"
+      ]
+    }
+  }
+}
