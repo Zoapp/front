@@ -5,19 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { put, take, race, call } from "redux-saga/effects";
-import { AuthService } from "zoapp-common";
 import {
   AUTH_INIT_SETTINGS, AUTH_SIGNIN, AUTH_SIGNOUT, FETCH_REQUEST, FETCH_SUCCESS, FETCH_FAILURE,
 } from "../actions";
-import { authService } from "./services";
-
-function getAuthService(provider) {
-  let service = authService;
-  if (provider) {
-    service = new AuthService({ provider });
-  }
-  return service;
-}
+import { getAuthService } from "../services";
 
 function* authenticate({ username, password, provider }) {
   try {

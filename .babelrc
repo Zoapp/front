@@ -13,7 +13,21 @@
     "react",
     "stage-0"
   ],
-  "plugins": ["syntax-dynamic-import", "transform-object-rest-spread"],
+  "plugins": [
+    "syntax-dynamic-import", 
+    "transform-object-rest-spread", 
+    "transform-decorators-legacy",
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "zoapp-front": "./shared"
+      }
+    }],
+    ["transform-runtime", {
+      "polyfill": false,
+      "regenerator": true
+    }]
+  ],
   "env": {
     "test": {
       "presets": [

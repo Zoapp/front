@@ -38,9 +38,7 @@
     },
     "settings": {
         "import/resolver": {
-            "webpack": {
-                "config": "webpack.common.js"
-            }
+            "babel-module": {}
         }
     }
 }

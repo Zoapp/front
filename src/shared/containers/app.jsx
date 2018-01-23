@@ -86,11 +86,6 @@ class App extends React.Component {
         id: "1", to: "/", icon: "dashboard", name: "Dashboard", className,
       });
       className = "mdl_closedrawer";
-      className += this.props.titleName === "Builder" ? " mdl-navigation__selectedlink" : "";
-      items.push({
-        id: "2", to: "/builder", icon: "build", name: "Builder", className,
-      });
-      className = "mdl_closedrawer";
       className += this.props.titleName === "Admin" ? " mdl-navigation__selectedlink" : "";
       items.push({
         id: "3", to: "/admin", icon: "settings", name: "Admin", className,
@@ -107,24 +102,51 @@ class App extends React.Component {
     return (
       <div>
         <Layout fixedHeader>
-          <Header title={<span><span style={{ fontWeight: "900" }}>{appName}</span><span style={{ color: "#ddd" }}>{titleName}</span></span>}>
+          <Header
+            title={
+              <span>
+                <span style={{ fontWeight: "900" }}>{appName}</span>
+                <span style={{ color: "#ddd" }}>{titleName}</span>
+              </span>}
+          >
             <Navigation>
               {navbox}
               {toolbox}
               <UserBox store={this.props.store} style={style} />
             </Navigation>
           </Header>
-          <Drawer title={<span>{appName}<IconButton name="" colored style={{ marginLeft: "124px" }} id="bot-menu" className={avatarClass} /></span>}>
+          <Drawer
+            title={
+              <span>{appName}
+                <IconButton
+                  name=""
+                  colored
+                  style={{ marginLeft: "124px" }}
+                  id="bot-menu"
+                  className={avatarClass}
+                />
+              </span>}
+          >
             <Menu target="bot-menu" align="right">
               <MenuItem disabled>Properties</MenuItem>
               <MenuItem className="mdl_closedrawer">Change</MenuItem>
             </Menu>
             <Navigation>
-              {items.map(item => (<Link key={item.id} href={`#${item.name}`} to={item.to} className={item.className}><i className="material-icons">{item.icon}</i>{item.name}</Link>))}
+              {items.map(item => (
+                <Link
+                  key={item.id}
+                  href={`#${item.name}`}
+                  to={item.to}
+                  className={item.className}
+                ><i className="material-icons">{item.icon}</i>{item.name}
+                </Link>))}
             </Navigation>
           </Drawer>
           <Switch>
-            <Route path="/admin" render={props => <AdminManager {...props} activeTab={this.state.activeTab} />} />
+            <Route
+              path="/admin"
+              render={props => <AdminManager {...props} activeTab={this.state.activeTab} />}
+            />
             <Route path="*" component={Home} />
           </Switch>
         </Layout>

@@ -1,8 +1,14 @@
 {
     "compilerOptions": {
-        "target": "ES6"
+        "target": "ES6",
+        "baseUrl": ".",
+        "paths": {
+            "*": ["src/*"],
+            "zoapp-front/*": ["src/shared/*"],
+            "underscore": ["lodash"]
+        }
     },
     "files": [
         "src"
-    ]
+    ],
 }

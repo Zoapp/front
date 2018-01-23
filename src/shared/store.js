@@ -10,8 +10,10 @@ import reducers from "./reducers";
 import rootSaga from "./sagas";
 
 /* global window */
-export default function configureStore(initialState = {}) {
+export default function configureStore(extReducers, extSaga, initialState = {}) {
   const sagaMiddleware = createSagaMiddleware();
+  // TODO combine reducers / extReducers
+  // TODO combine rootSaga / extSaga
   /* eslint-disable no-underscore-dangle */
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const store = createStore(
@@ -27,6 +29,7 @@ export default function configureStore(initialState = {}) {
   if (module.hot) {
     module.hot.accept("./reducers", () => {
       // console.log("HMR reducers");
+      // TODO add extReducers too
       store.replaceReducer(require("./reducers").default);
     });
     module.hot.accept("./sagas", () => {
