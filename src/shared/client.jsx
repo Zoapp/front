@@ -21,13 +21,12 @@ export default class Client {
     this.appProperties = appProperties;
     this.reducers = reducers;
     this.sagas = sagas;
-    this.store = configureStore(reducers, sagas);
+    this.store = configureStore(reducers, sagas, { app: appProperties });
     DialogManager.init(this.store);
     initServices(appConfig);
     this.mountNode = document.getElementById(tagId);
   }
 
-  
   renderApp = (Root) => {
     render(
       <AppContainer warnings={false}>

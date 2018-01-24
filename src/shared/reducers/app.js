@@ -15,8 +15,6 @@ import {
 const initialState = {
   loading: false,
   admin: null,
-  sandbox: null,
-  loadingMessages: false,
   titleName: "",
   error: null,
 };

@@ -71,32 +71,28 @@ class App extends React.Component {
     if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
       isLoading = true;
     }
-    const appName = "Zoapp";
-    let titleName = " Zoapp";
-    const avatarClass = "app-icon";
+    const appIcon = "app-icon";
     const style = {};
     const items = [];
+    const routes = [];
     const toolbox = "";
     const navbox = "";
-    if (this.props.isSignedIn) {
-      ({ titleName } = this.props);
-      let className = "mdl_closedrawer";
-      className += this.props.titleName === "Dashboard" ? " mdl-navigation__selectedlink" : "";
-      items.push({
-        id: "1", to: "/", icon: "dashboard", name: "Dashboard", className,
-      });
-      className = "mdl_closedrawer";
-      className += this.props.titleName === "Admin" ? " mdl-navigation__selectedlink" : "";
-      items.push({
-        id: "3", to: "/admin", icon: "settings", name: "Admin", className,
-      });
-    } else {
-      items.push({
-        id: "4", to: "/", name: "Home", icon: "home", className: "mdl_closedrawer",
-      });
-    }
-    items.push({
-      id: "5", to: "/", name: "Help", icon: "help", className: "mdl_closedrawer",
+    const { screens, titleName, appName } = this.props;
+    screens.forEach((screen) => {
+      if (screen.access === "all" ||
+      (this.props.isSignedIn && screen.access === "auth") ||
+      ((!this.props.isSignedIn) && screen.access === "public")) {
+        let className = "mdl_closedrawer";
+        if (titleName === screen.name) {
+          className += " mdl-navigation__selectedlink";
+        }
+        items.push({
+          className, ...screen,
+        });
+      }
+      if (screen.path) {
+        routes.push({ ...screen });
+      }
     });
 
     return (
@@ -123,7 +119,7 @@ class App extends React.Component {
                   colored
                   style={{ marginLeft: "124px" }}
                   id="bot-menu"
-                  className={avatarClass}
+                  className={appIcon}
                 />
               </span>}
           >
@@ -143,11 +139,20 @@ class App extends React.Component {
             </Navigation>
           </Drawer>
           <Switch>
-            <Route
-              path="/admin"
-              render={props => <AdminManager {...props} activeTab={this.state.activeTab} />}
-            />
-            <Route path="*" component={Home} />
+            {routes.map((screen) => {
+              if (screen.name === "Home") {
+                return (<Route key={screen.id} path="*" component={Home} />);
+              } else if (screen.name === "Admin") {
+                return (
+                  <Route
+                    key={screen.id}
+                    path={screen.path}
+                    render={props => <AdminManager {...props} activeTab={this.state.activeTab} />}
+                  />);
+              }
+              const component = screen.render(screen.name);
+              return (<Route key={screen.id} path={screen.path} component={component} />);
+            })}
           </Switch>
         </Layout>
       </div>
@@ -158,6 +163,8 @@ class App extends React.Component {
 App.defaultProps = {
   error: null,
   admin: null,
+  appName: "",
+  screens: [],
 };
 
 App.propTypes = {
@@ -167,16 +174,18 @@ App.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.shape({}),
   admin: PropTypes.shape({}),
+  appName: PropTypes.string,
+  screens: PropTypes.arrayOf(PropTypes.shape({})),
   initAuthSettings: PropTypes.func.isRequired,
   apiAdminRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { admin } = state.app;
+  const { admin, screens, name } = state.app;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading = (state.app && state.app.loading) ||
     (state.auth && state.auth.loading) || (state.user && state.user.loading);
-  const titleName = state.app ? state.app.titleName : "";
+  const titleName = state.app.titleName ? state.app.titleName : "";
   let error = null;
   if (state.app && state.app.error) {
     ({ error } = state.app);
@@ -186,7 +195,7 @@ const mapStateToProps = (state) => {
     ({ error } = state.user);
   }
   return {
-    admin, isLoading, isSignedIn, titleName, error,
+    admin, isLoading, isSignedIn, titleName, error, screens, appName: name,
   };
 };
 
