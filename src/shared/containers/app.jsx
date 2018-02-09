@@ -5,49 +5,64 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-import { Layout, Header, Drawer, Navigation, IconButton, Menu, MenuItem } from "react-mdl";
+// import { Layout, Header, Drawer, Navigation, IconButton, Menu, MenuItem } from "react-mdl";
+import Rmdc, {
+  Content, Fab, Snackbar, Tabbar, Tab,
+  Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon,
+  Drawer, DrawerContent,
+  ListItem,
+  Dialog,
+} from "react-material-cw";
 import PropTypes from "prop-types";
-import { Link, Route, Switch, withRouter } from "react-router-dom";
+import { /* Link, Route, Switch, */ withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import Home from "./home";
+/* import Home from "./home";
 import AdminManager from "./adminManager";
-import UserBox from "./userBox";
+import UserBox from "./userBox"; */
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest } from "../actions/api";
 
 class App extends React.Component {
   static closeDrawer() {
-    const d = document.querySelector(".mdl-layout");
-    d.MaterialLayout.toggleDrawer();
+    /* const d = document.querySelector(".mdl-layout");
+    d.MaterialLayout.toggleDrawer(); */
   }
 
   constructor(props) {
     super(props);
-    this.state = { needUpdate: true, activeTab: 0 };
+    this.state = {
+      needUpdate: true,
+      activeTab: 0,
+      drawer: "permanent",
+      drawerOpen: false,
+      aboveToolbar: false,
+    };
   }
 
   componentDidMount() {
     this.props.initAuthSettings();
     this.updateAdmin();
+    Rmdc.init(this, { typography: true });
   }
 
   componentWillUpdate() {
-    const items = document.getElementsByClassName("mdl_closedrawer");
+    /* const items = document.getElementsByClassName("mdl_closedrawer");
     for (let i = 0; i < items.length; i += 1) {
       items[i].removeEventListener("click", App.closeDrawer);
-    }
+    } */
   }
 
   componentDidUpdate() {
     this.updateAdmin();
-    const items = document.getElementsByClassName("mdl_closedrawer");
+    /* const items = document.getElementsByClassName("mdl_closedrawer");
     for (let i = 0; i < items.length; i += 1) {
       items[i].addEventListener("click", App.closeDrawer);
-    }
+    } */
   }
 
-  handleTimeoutError() {
-    this.todo = {};
+  onMenuClick = (event) => {
+    event.preventDefault();
+    this.toggleDrawer();
   }
 
   updateAdmin() {
@@ -63,10 +78,87 @@ class App extends React.Component {
     }
   }
 
+  handleDialog = () => {
+    const dialog = (
+      <Dialog header="Are you happy?" actions={[{ name: "Cancel" }, { name: "Continue" }]}>
+        <div>Please check the left and right side of this element for fun.</div>
+      </Dialog>);
+    Rmdc.showDialog(dialog);
+  }
+
+  handleTimeoutError() {
+    this.todo = {};
+  }
+
+  handleDrawerChange = (name, index) => {
+    let drawer = name;
+    let aboveToolbar = false;
+    const drawerOpen = false;
+    if (index < 2) {
+      drawer = "permanent";
+      if (index === 1) {
+        aboveToolbar = true;
+      }
+    }
+    this.setState({
+      drawer, activeTab: index, aboveToolbar, drawerOpen,
+    });
+  }
+
+  toggleDrawer = () => {
+    const open = !this.state.drawerOpen;
+    this.setState({ drawerOpen: open });
+  }
+
+  render() {
+    let icon;
+    if (this.state.drawer !== "permanent") {
+      icon = <ToolbarIcon name="menu" onClick={this.onMenuClick} />;
+    }
+    return (
+      <Content>
+        <Toolbar fixed>
+          <ToolbarRow>
+            <ToolbarSection align="start" >
+              {icon}
+              <ToolbarTitle>Title</ToolbarTitle>
+            </ToolbarSection>
+          </ToolbarRow>
+        </Toolbar>
+        <Drawer
+          type={this.state.drawer}
+          open={this.state.drawerOpen}
+          above={this.state.aboveToolbar}
+          onClose={this.toggleDrawer}
+        >
+          <DrawerContent list>
+            <ListItem type="a" icon="inbox" activated>Inbox</ListItem>
+            <ListItem type="a" icon="star">Star</ListItem>
+          </DrawerContent>
+        </Drawer>
+        <Content>
+          <div>
+            <section>
+              <h1>TODO</h1>
+              <Tabbar onChange={this.handleDrawerChange} activeTab={this.state.activeTab} >
+                <Tab text="permanent below" />
+                <Tab text="permanent above" />
+                <Tab text="persistent" />
+                <Tab text="temporary" />
+              </Tabbar>
+            </section>
+          </div>
+        </Content>
+        <Fab icon="favorite" onClick={this.handleDialog} />
+        <Snackbar message="Hello from snackbar" />
+      </Content>
+    );
+  }
+
   /**
    * WIP : toggleDrawer : https://codepen.io/surma/pen/EKjNON?editors=1010
    */
-  render() {
+  /* render() {
     let { isLoading } = this.props;
     if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
       isLoading = true;
@@ -157,7 +249,7 @@ class App extends React.Component {
         </Layout>
       </div>
     );
-  }
+  } */
 }
 
 App.defaultProps = {

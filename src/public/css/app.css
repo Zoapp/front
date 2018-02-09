@@ -1,0 +1,113 @@
+/**
+ * Copyright (c) 2015-present, CWB SAS
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+ html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+body > div {
+  position: absolute;
+  height: 100%;
+}
+
+.rmdc-content-fixed-adjust {
+  height: calc(100% - 64px);
+}
+
+.rmdc-content-height {
+  height: 100%;
+}
+
+.rmdc-content {
+  display: flex;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+.rmdc-drawer {
+  position: fixed;
+  top: 0;
+  left: 0; /* TODO rtl */
+  height: 100%;
+}
+
+.rmdc-drawer--toolbar {
+  top: 64px;
+}
+
+.rmdc-content-drawer {
+  margin-left: 240px;
+}
+
+.rmdc-content-drawer-rtl {
+  margin-left: 0px;
+  margin-right: 240px;  
+}
+
+.rmdc-fab--absolute {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+@media(min-width: 1024px) {
+   .rmdc-fab--absolute {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+.rmdc-switch-wrapper > label {
+  margin-left: 16px;
+}
+
+.rmdc-dialog {
+  background: transparent;
+  border: transparent;
+}
+
+.rmdc-scroll-lock {
+  overflow: hidden;
+}
+
+main {
+  padding: 24px;
+}
+
+/* Theses style are missing from https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css  ??? */
+
+.mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__label,
+.mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__input::-webkit-input-placeholder {
+  /* @alternate */
+  color: #6200ee;
+  color: var(--mdc-theme-primary, #6200ee); }
+
+.mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__label,
+.mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__input::-moz-placeholder {
+  /* @alternate */
+  color: #6200ee;
+  color: var(--mdc-theme-primary, #6200ee); }
+
+.mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__label,
+.mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__input:-ms-input-placeholder {
+  /* @alternate */
+  color: #6200ee;
+  color: var(--mdc-theme-primary, #6200ee); }
+
+.mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__label,
+.mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__input::placeholder {
+  /* @alternate */
+  color: #6200ee;
+  color: var(--mdc-theme-primary, #6200ee); }
