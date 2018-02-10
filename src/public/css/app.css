@@ -49,6 +49,7 @@ body > div {
 
 .rmdc-content-drawer {
   margin-left: 240px;
+  width: calc(100% - 240px);
 }
 
 .rmdc-content-drawer-rtl {

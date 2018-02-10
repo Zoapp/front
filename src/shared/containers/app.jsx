@@ -17,8 +17,8 @@ import PropTypes from "prop-types";
 import { /* Link, Route, Switch, */ withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 /* import Home from "./home";
-import AdminManager from "./adminManager";
-import UserBox from "./userBox"; */
+import AdminManager from "./adminManager"; */
+import UserBox from "./userBox";
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest } from "../actions/api";
 
@@ -30,12 +30,14 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+    const { type: drawer, above: aboveToolbar, themeDark: drawerThemeDark } = props.design.drawer;
     this.state = {
       needUpdate: true,
       activeTab: 0,
-      drawer: "permanent",
+      drawer,
       drawerOpen: false,
-      aboveToolbar: false,
+      drawerThemeDark,
+      aboveToolbar,
     };
   }
 
@@ -121,8 +123,9 @@ class App extends React.Component {
           <ToolbarRow>
             <ToolbarSection align="start" >
               {icon}
-              <ToolbarTitle>Title</ToolbarTitle>
+              <ToolbarTitle>Zoapp</ToolbarTitle>
             </ToolbarSection>
+            <UserBox store={this.props.store} />
           </ToolbarRow>
         </Toolbar>
         <Drawer
@@ -130,6 +133,7 @@ class App extends React.Component {
           open={this.state.drawerOpen}
           above={this.state.aboveToolbar}
           onClose={this.toggleDrawer}
+          themeDark={this.state.drawerThemeDark}
         >
           <DrawerContent list>
             <ListItem type="a" icon="inbox" activated>Inbox</ListItem>
@@ -257,6 +261,7 @@ App.defaultProps = {
   admin: null,
   appName: "",
   screens: [],
+  design: { toolbar: { type: "permanent" } },
 };
 
 App.propTypes = {
@@ -268,12 +273,17 @@ App.propTypes = {
   admin: PropTypes.shape({}),
   appName: PropTypes.string,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
+  design: PropTypes.shape({
+    drawer: PropTypes.shape({ type: PropTypes.string }),
+  }),
   initAuthSettings: PropTypes.func.isRequired,
   apiAdminRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { admin, screens, name } = state.app;
+  const {
+    admin, screens, name, design,
+  } = state.app;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading = (state.app && state.app.loading) ||
     (state.auth && state.auth.loading) || (state.user && state.user.loading);
@@ -287,7 +297,7 @@ const mapStateToProps = (state) => {
     ({ error } = state.user);
   }
   return {
-    admin, isLoading, isSignedIn, titleName, error, screens, appName: name,
+    admin, isLoading, isSignedIn, titleName, error, screens, appName: name, design,
   };
 };
 

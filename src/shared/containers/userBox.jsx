@@ -6,7 +6,8 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, IconButton, Menu, MenuItem } from "react-mdl";
+// import { Button, IconButton, Menu, MenuItem } from "react-mdl";
+import { Button, ToolbarSection, ToolbarIcon } from "react-material-cw";
 import { connect } from "react-redux";
 import { DialogManager } from "zoapp-ui";
 import { apiUserProfileRequest } from "../actions/user";
@@ -41,12 +42,18 @@ class UserBox extends Component {
   render() {
     if (this.props.isSignedIn) {
       const username = this.props.profile ? this.props.profile.username : "";
-      const avatarClass = this.props.profile ? `${this.props.profile.avatar}-icon` : "";
+      // const avatarClass = this.props.profile ? `${this.props.profile.avatar}-icon` : "";
       let avatar = this.props.profile ? this.props.profile.avatar : null;
       if ((!avatar) || avatar === "default") {
         avatar = "account_circle";
       }
       return (
+        <ToolbarSection align="end" shrinkToFit >
+          {username}
+          <ToolbarIcon name={avatar} />
+        </ToolbarSection>
+      );
+      /* return (
         <div style={this.props.style} >{username}
           <IconButton name={avatar} id="profile-menu" className={avatarClass} />
           <Menu target="profile-menu" align="right">
@@ -56,9 +63,23 @@ class UserBox extends Component {
               Sign out
             </MenuItem>
           </Menu>
-        </div>);
+        </div>); */
     }
     return (
+      <ToolbarSection align="end" shrinkToFit >
+        <Button
+          onClick={(e) => { e.preventDefault(); this.handleOpenSignInDialog(); }}
+          raised
+          dense
+          compact
+          icon="account_circle"
+          style={{ margin: "auto 24px auto 12px" }}
+        >
+          SignIn
+        </Button>
+      </ToolbarSection>
+    );
+    /* return (
       <div>
         <Button onClick={(e) => { e.preventDefault(); this.handleOpenSignInDialog(); }}>
           SignIn
@@ -69,7 +90,7 @@ class UserBox extends Component {
           <MenuItem disabled>Sign up</MenuItem>
           <MenuItem disabled>Help</MenuItem>
         </Menu>
-      </div>);
+      </div>); */
   }
 }
 

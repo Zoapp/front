@@ -10,6 +10,12 @@ import config from "../../config/default.json";
 const app = {
   name: "Zoapp",
   version: "0.1.0",
+  design: {
+    drawer: {
+      type: "persistent",
+      themeDark: true,
+    },
+  },
   screens: [
     {
       id: "1", to: "/", icon: "dashboard", name: "Dashboard", access: "auth",
