@@ -6,34 +6,20 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, DialogTitle, DialogContent, DialogActions, Textfield } from "react-mdl";
 import { connect } from "react-redux";
-import { DialogBox } from "zoapp-ui";
+import Rmdc, {
+  Dialog,
+  DialogFooter,
+  DialogBody,
+  FormField,
+  TextField,
+  Button,
+} from "react-material-cw";
 import { signIn } from "../actions/authenticate";
 
 class SignInDialog extends Component {
-  constructor(props) {
-    super(props);
-    const { open } = props;
-    this.state = { openDialog: open, id: props.id };
-  }
-
-  componentWillReceiveProps(props) {
-    if (this.props.open !== props.open) {
-      this.setState({ openDialog: props.open });
-    }
-  }
-
-  handleOpenDialog = () => {
-    this.setState({
-      openDialog: true,
-    });
-  }
-
   handleCloseDialog = () => {
-    this.setState({
-      openDialog: false,
-    });
+    Rmdc.closeDialog();
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }
@@ -51,51 +37,51 @@ class SignInDialog extends Component {
 
   render() {
     return (
-      <DialogBox
-        open={this.state.openDialog}
-        id={this.state.id}
+      <Dialog
+        id={this.props.id}
         onClose={this.handleCloseDialog}
+        header="Your credentials"
+        width="320px"
       >
-        <DialogTitle>Your credentials</DialogTitle>
-        <DialogContent>
+        <DialogBody>
           <form>
-            <Textfield
-              onChange={this.handleUsernameChange}
-              label="Username | Email"
-              floatingLabel
-              style={{ width: "200px" }}
-              autoComplete="username email"
-              ref={(input) => { this.usernameField = input; }}
-            />
-            <Textfield
-              onChange={this.handlePasswordChange}
-              label="Password"
-              floatingLabel
-              type="password"
-              style={{ width: "200px" }}
-              autoComplete="password"
-              ref={(input) => { this.passwordField = input; }}
-            />
+            <FormField style={{ display: "block" }}>
+              <TextField
+                onChange={this.handleUsernameChange}
+                label="Username | Email"
+                style={{ width: "200px" }}
+                autoComplete="username email"
+                ref={(input) => { this.usernameField = input; }}
+              />
+            </FormField>
+            <FormField style={{ display: "block" }}>
+              <TextField
+                onChange={this.handlePasswordChange}
+                label="Password"
+                type="password"
+                style={{ width: "200px" }}
+                autoComplete="password"
+                ref={(input) => { this.passwordField = input; }}
+              />
+            </FormField>
           </form>
-        </DialogContent>
-        <DialogActions>
-          <Button type="button" onClick={(e) => { e.preventDefault(); this.handleSignIn(); }}>Sign in</Button>
-          <Button type="button" onClick={(e) => { e.preventDefault(); this.handleCloseDialog(); }}>Cancel</Button>
-        </DialogActions>
-      </DialogBox>
+        </DialogBody>
+        <DialogFooter>
+          <Button type="cancel" onClick={(e) => { e.preventDefault(); this.handleCloseDialog(); }}>Cancel</Button>
+          <Button type="accept" onClick={(e) => { e.preventDefault(); this.handleSignIn(); }}>Sign in</Button>
+        </DialogFooter>
+      </Dialog>
     );
   }
 }
 
 SignInDialog.defaultProps = {
-  open: true,
   id: null,
   onClosed: null,
   provider: null,
 };
 
 SignInDialog.propTypes = {
-  open: PropTypes.bool,
   id: PropTypes.string,
   onClosed: PropTypes.func,
   provider: PropTypes.string,

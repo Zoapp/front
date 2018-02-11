@@ -6,8 +6,14 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Grid, Cell, Button, Content, Textfield, IconButton, Tooltip } from "react-mdl";
-import { DialogManager } from "zoapp-ui";
+import Rmdc, {
+  Grid,
+  Inner,
+  Cell,
+  Button,
+  Content,
+  TextField,
+} from "react-material-cw";
 import { connect } from "react-redux";
 import TableComponent from "../components/tableComponent";
 import { appSetTitle } from "../actions/app";
@@ -29,7 +35,7 @@ const infoStyleD = {
 class AdminManager extends Component {
   static onActionTunnel() {
     // console.log("onActionTunnel", dialog, action);
-    DialogManager.close();
+    Rmdc.closeDialog();
   }
 
   constructor(props) {
@@ -73,10 +79,13 @@ class AdminManager extends Component {
     // const { params } = this.props.admin;
     // const backend = this.state.backendParams || params.backend || { };
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || { };
-    const content = <div>Tunnel</div>;
-    DialogManager.open({
-      title: "Tunnel settings", content, width: "520px", onAction: AdminManager.onActionTunnel,
-    });
+    /* const content = <div>Tunnel</div>;
+    Rmdc.showDialog({
+      title: "Tunnel settings",
+      content,
+      width: "520px",
+      onAction: AdminManager.onActionTunnel,
+    }); */
   }
 
   render() {
@@ -132,24 +141,26 @@ class AdminManager extends Component {
         </div>);
       content = (
         <Grid>
-          <Cell className="mdl-color--white" col={12}>
-            <div>
-              <TableComponent
-                title={title}
-                headers={headers}
-                items={items}
-                selectedItem={-1}
-                onSelect={() => { }}
-              />
-            </div>
-          </Cell>
+          <Inner>
+            <Cell className="mdl-color--white" span={12}>
+              <div>
+                <TableComponent
+                  title={title}
+                  headers={headers}
+                  items={items}
+                  selectedItem={-1}
+                  onSelect={() => { }}
+                />
+              </div>
+            </Cell>
+          </Inner>
         </Grid>);
     } else if (active === 3) {
       const { params } = this.props.admin;
       const emailServer = this.state.emailParams || params.emailServer || { };
       const backend = this.state.backendParams || params.backend || { };
       // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
-      const hasTunnelParams = !!this.state.tunnelParams;
+      // const hasTunnelParams = !!this.state.tunnelParams;
       const saveBackendDisabled = !(this.state.backendParams || this.state.tunnelParams);
       const saveEmailDisabled = !this.state.emailServerParams;
       content = (
@@ -161,48 +172,40 @@ class AdminManager extends Component {
             </div>
             <form style={infoStyleD}>
               <div style={{ width: "520px" }}>
-                <Textfield
+                <TextField
                   onChange={() => {}}
                   label="Public Api url"
-                  floatingLabel
                   style={{ width: "400px" }}
                   value={backend.publicUrl}
                 />
-                <Tooltip label="Setup tunnel">
-                  <IconButton colored={hasTunnelParams} style={{ float: "right", marginTop: "8px" }} name="link" onClick={(e) => { e.preventDefault(); this.displayTunnelDialog(); }} />
-                </Tooltip>
               </div>
-              <div><Textfield
+              <div><TextField
                 onChange={() => {}}
                 label="Api url"
-                floatingLabel
                 disabled
                 style={{ width: "400px" }}
                 value={backend.apiUrl}
               />
               </div>
-              <div><Textfield
+              <div><TextField
                 onChange={() => {}}
                 label="Auth url"
-                floatingLabel
                 disabled
                 style={{ width: "400px" }}
                 value={backend.authUrl}
               />
               </div>
-              <div><Textfield
+              <div><TextField
                 onChange={() => {}}
                 label="AppId"
-                floatingLabel
                 disabled
                 style={{ width: "400px" }}
                 value={backend.clientId}
               />
               </div>
-              <div><Textfield
+              <div><TextField
                 onChange={() => {}}
                 label="Secret"
-                floatingLabel
                 disabled
                 style={{ width: "400px" }}
                 value={backend.clientSecret}
@@ -214,29 +217,26 @@ class AdminManager extends Component {
           <Cell className="mdl-color--white" col={12}>
             <div style={infoStyleD}>Email server configuration<Button raised colored disabled={saveEmailDisabled} style={{ float: "right" }}>SAVE</Button></div>
             <form style={infoStyleD} autoComplete="nope">
-              <div><Textfield
+              <div><TextField
                 onChange={() => {}}
                 label="Server address"
-                floatingLabel
                 style={{ width: "400px" }}
                 value={emailServer.url}
               />
               </div>
               <div>
-                <Textfield
+                <TextField
                   onChange={() => {}}
                   label="Username"
-                  floatingLabel
                   autoComplete="new-password"
                   style={{ width: "400px" }}
                   value={emailServer.username}
                 />
               </div>
               <div>
-                <Textfield
+                <TextField
                   onChange={() => {}}
                   label="Password"
-                  floatingLabel
                   autoComplete="new-password"
                   type="password"
                   style={{ width: "400px" }}

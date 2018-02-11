@@ -116,5 +116,5 @@ export default createReducer(initialState, {
   [APP_SETTITLE]: (state, { titleName }) => ({ ...state, titleName }),
 
   /* Auth section */
-  [AUTH_SIGNOUT + FETCH_SUCCESS]: () => ({ ...initialState }),
+  [AUTH_SIGNOUT + FETCH_SUCCESS]: state => ({ ...state, ...initialState }),
 });

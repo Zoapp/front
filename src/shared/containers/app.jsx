@@ -5,7 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-import { Layout, Header, Drawer, Navigation, IconButton, Menu, MenuItem } from "react-mdl";
+// import { Layout, Header, Drawer, Navigation, IconButton, Menu, MenuItem } from "react-mdl";
+import Rmdc, {
+  Content, Fab, Snackbar, Tabbar, Tab,
+  Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon,
+  Drawer, DrawerContent,
+  ListItem,
+  Dialog,
+} from "react-material-cw";
 import PropTypes from "prop-types";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -17,37 +24,47 @@ import { apiAdminRequest } from "../actions/api";
 
 class App extends React.Component {
   static closeDrawer() {
-    const d = document.querySelector(".mdl-layout");
-    d.MaterialLayout.toggleDrawer();
+    /* const d = document.querySelector(".mdl-layout");
+    d.MaterialLayout.toggleDrawer(); */
   }
 
   constructor(props) {
     super(props);
-    this.state = { needUpdate: true, activeTab: 0 };
+    const { type: drawer, above: aboveToolbar, themeDark: drawerThemeDark } = props.design.drawer;
+    this.state = {
+      needUpdate: true,
+      activeTab: 0,
+      drawer,
+      drawerOpen: false,
+      drawerThemeDark,
+      aboveToolbar,
+    };
   }
 
   componentDidMount() {
     this.props.initAuthSettings();
     this.updateAdmin();
+    Rmdc.init(this, { typography: true });
   }
 
   componentWillUpdate() {
-    const items = document.getElementsByClassName("mdl_closedrawer");
+    /* const items = document.getElementsByClassName("mdl_closedrawer");
     for (let i = 0; i < items.length; i += 1) {
       items[i].removeEventListener("click", App.closeDrawer);
-    }
+    } */
   }
 
   componentDidUpdate() {
     this.updateAdmin();
-    const items = document.getElementsByClassName("mdl_closedrawer");
+    /* const items = document.getElementsByClassName("mdl_closedrawer");
     for (let i = 0; i < items.length; i += 1) {
       items[i].addEventListener("click", App.closeDrawer);
-    }
+    } */
   }
 
-  handleTimeoutError() {
-    this.todo = {};
+  onMenuClick = (event) => {
+    event.preventDefault();
+    this.toggleDrawer();
   }
 
   updateAdmin() {
@@ -63,10 +80,133 @@ class App extends React.Component {
     }
   }
 
+  handleDialog = () => {
+    const dialog = (
+      <Dialog header="Are you happy?" actions={[{ name: "Cancel" }, { name: "Continue" }]}>
+        <div>Please check the left and right side of this element for fun.</div>
+      </Dialog>);
+    Rmdc.showDialog(dialog);
+  }
+
+  handleTimeoutError() {
+    this.todo = {};
+  }
+
+  handleDrawerChange = (name, index) => {
+    let drawer = name;
+    let aboveToolbar = false;
+    const drawerOpen = false;
+    if (index < 2) {
+      drawer = "permanent";
+      if (index === 1) {
+        aboveToolbar = true;
+      }
+    }
+    this.setState({
+      drawer, activeTab: index, aboveToolbar, drawerOpen,
+    });
+  }
+
+  toggleDrawer = () => {
+    const open = !this.state.drawerOpen;
+    this.setState({ drawerOpen: open });
+  }
+
+  render() {
+    let icon;
+    if (this.state.drawer !== "permanent") {
+      icon = <ToolbarIcon name="menu" onClick={this.onMenuClick} />;
+    }
+    let { isLoading } = this.props;
+    if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
+      isLoading = true;
+    }
+    const appIcon = "app-icon";
+    const items = [];
+    const routes = [];
+    const toolbox = "";
+    const navbox = "";
+    const { screens, titleName, appName } = this.props;
+    screens.forEach((screen) => {
+      if (screen.access === "all" ||
+      (this.props.isSignedIn && screen.access === "auth") ||
+      ((!this.props.isSignedIn) && screen.access === "public")) {
+        let className = "mdl_closedrawer";
+        let activated = false;
+        if (titleName === screen.name) {
+          className += " mdl-navigation__selectedlink";
+          activated = true;
+        }
+        items.push({
+          className, activated, ...screen,
+        });
+      }
+      if (screen.path) {
+        routes.push({ ...screen });
+      }
+    });
+
+    return (
+      <Content>
+        <Toolbar fixed>
+          <ToolbarRow>
+            <ToolbarSection align="start" >
+              {icon}
+              <ToolbarTitle>
+                <span style={{ fontWeight: "900" }}>{appName}</span>
+                <span style={{ color: "#ddd" }}>{titleName}</span>
+              </ToolbarTitle>
+            </ToolbarSection>
+            <UserBox store={this.props.store} />
+          </ToolbarRow>
+        </Toolbar>
+        <Drawer
+          type={this.state.drawer}
+          open={this.state.drawerOpen}
+          above={this.state.aboveToolbar}
+          onClose={this.toggleDrawer}
+          themeDark={this.state.drawerThemeDark}
+        >
+          <DrawerContent list>
+            {items.map(item => (
+              <Link
+                key={item.id}
+                href={`#${item.name}`}
+                to={item.to}
+                activated={item.activated}
+                icon={item.icon}
+              >{item.name}
+              </Link>))}
+          </DrawerContent>
+        </Drawer>
+        <Content>
+          <Switch>
+            {routes.map((screen) => {
+              if (screen.name === "Home") {
+                return (<Route key={screen.id} path="*" component={Home} />);
+              } else if (screen.name === "Admin") {
+                return (
+                  <Route
+                    key={screen.id}
+                    path={screen.path}
+                    render={props => <AdminManager {...props} activeTab={this.state.activeTab} />}
+                  />);
+              }
+              const component = screen.render(screen.name);
+              return (<Route key={screen.id} path={screen.path} component={component} />);
+            })}
+          </Switch>
+        </Content>
+        <Fab icon="favorite" onClick={this.handleDialog} />
+        <Snackbar message="Welcome in Zoapp" />
+      </Content>
+    );
+  }
+
   /**
    * WIP : toggleDrawer : https://codepen.io/surma/pen/EKjNON?editors=1010
    */
-  render() {
+  /* render() {
     let { isLoading } = this.props;
     if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
       isLoading = true;
@@ -157,7 +297,7 @@ class App extends React.Component {
         </Layout>
       </div>
     );
-  }
+  } */
 }
 
 App.defaultProps = {
@@ -165,6 +305,7 @@ App.defaultProps = {
   admin: null,
   appName: "",
   screens: [],
+  design: { toolbar: { type: "permanent" } },
 };
 
 App.propTypes = {
@@ -176,12 +317,17 @@ App.propTypes = {
   admin: PropTypes.shape({}),
   appName: PropTypes.string,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
+  design: PropTypes.shape({
+    drawer: PropTypes.shape({ type: PropTypes.string }),
+  }),
   initAuthSettings: PropTypes.func.isRequired,
   apiAdminRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  const { admin, screens, name } = state.app;
+  const {
+    admin, screens, name, design,
+  } = state.app;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading = (state.app && state.app.loading) ||
     (state.auth && state.auth.loading) || (state.user && state.user.loading);
@@ -195,7 +341,7 @@ const mapStateToProps = (state) => {
     ({ error } = state.user);
   }
   return {
-    admin, isLoading, isSignedIn, titleName, error, screens, appName: name,
+    admin, isLoading, isSignedIn, titleName, error, screens, appName: name, design,
   };
 };
 

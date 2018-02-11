@@ -6,8 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { DialogTitle, DialogContent, DialogActions } from "react-mdl";
-import { DialogBox } from "zoapp-ui";
+import { Dialog, DialogBody, DialogFooter } from "react-material-cw";
 
 export default class ProcessingDialog extends Component {
   constructor(props) {
@@ -39,17 +38,18 @@ export default class ProcessingDialog extends Component {
 
   render() {
     return (
-      <DialogBox
+      <Dialog
         open={this.state.openDialog}
         id={this.state.id}
         onClose={this.handleCloseDialog}
+        header="Processing"
+        width="320px"
       >
-        <DialogTitle>Processing</DialogTitle>
-        <DialogContent>
+        <DialogBody>
                   Please wait ...
-        </DialogContent>
-        <DialogActions />
-      </DialogBox>
+        </DialogBody>
+        <DialogFooter />
+      </Dialog>
     );
   }
 }

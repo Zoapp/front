@@ -6,12 +6,13 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Card, CardTitle, CardText, CardActions, Textfield } from "react-mdl";
+import Rmdc, { Button, Card, CardText, CardActions, FormField, TextField } from "react-material-cw";
 import { connect } from "react-redux";
 import { signIn } from "../actions/authenticate";
 
 class SignInForm extends Component {
   handleCloseDialog = () => {
+    Rmdc.closeDialog();
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }
@@ -29,27 +30,32 @@ class SignInForm extends Component {
 
   render() {
     return (
-      <Card shadow={0} style={{ width: "512px", margin: "auto" }}>
-        <CardTitle>Your credentials</CardTitle>
+      <Card
+        shadow={0}
+        style={{ width: "512px", margin: "auto" }}
+        title="Your credentials"
+      >
         <CardText>
           <form>
-            <Textfield
-              autoComplete="username email"
-              onChange={this.handleUsernameChange}
-              label="Username | Email"
-              floatingLabel
-              style={{ width: "100%" }}
-              ref={(input) => { this.usernameField = input; }}
-            /><br />
-            <Textfield
-              autoComplete="password"
-              onChange={this.handlePasswordChange}
-              label="Password"
-              type="password"
-              floatingLabel
-              style={{ width: "100%" }}
-              ref={(input) => { this.passwordField = input; }}
-            />
+            <FormField style={{ display: "block" }}>
+              <TextField
+                onChange={this.handleUsernameChange}
+                label="Username | Email"
+                style={{ width: "100%" }}
+                autoComplete="username email"
+                ref={(input) => { this.usernameField = input; }}
+              />
+            </FormField>
+            <FormField style={{ display: "block" }}>
+              <TextField
+                onChange={this.handlePasswordChange}
+                label="Password"
+                type="password"
+                style={{ width: "100%" }}
+                autoComplete="password"
+                ref={(input) => { this.passwordField = input; }}
+              />
+            </FormField>
           </form>
         </CardText>
         <CardActions>
