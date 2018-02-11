@@ -14,10 +14,10 @@ import Rmdc, {
   Dialog,
 } from "react-material-cw";
 import PropTypes from "prop-types";
-import { /* Link, Route, Switch, */ withRouter } from "react-router-dom";
+import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-/* import Home from "./home";
-import AdminManager from "./adminManager"; */
+import Home from "./home";
+import AdminManager from "./adminManager";
 import UserBox from "./userBox";
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest } from "../actions/api";
@@ -117,13 +117,45 @@ class App extends React.Component {
     if (this.state.drawer !== "permanent") {
       icon = <ToolbarIcon name="menu" onClick={this.onMenuClick} />;
     }
+    let { isLoading } = this.props;
+    if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
+      isLoading = true;
+    }
+    const appIcon = "app-icon";
+    const items = [];
+    const routes = [];
+    const toolbox = "";
+    const navbox = "";
+    const { screens, titleName, appName } = this.props;
+    screens.forEach((screen) => {
+      if (screen.access === "all" ||
+      (this.props.isSignedIn && screen.access === "auth") ||
+      ((!this.props.isSignedIn) && screen.access === "public")) {
+        let className = "mdl_closedrawer";
+        let activated = false;
+        if (titleName === screen.name) {
+          className += " mdl-navigation__selectedlink";
+          activated = true;
+        }
+        items.push({
+          className, activated, ...screen,
+        });
+      }
+      if (screen.path) {
+        routes.push({ ...screen });
+      }
+    });
+
     return (
       <Content>
         <Toolbar fixed>
           <ToolbarRow>
             <ToolbarSection align="start" >
               {icon}
-              <ToolbarTitle>Zoapp</ToolbarTitle>
+              <ToolbarTitle>
+                <span style={{ fontWeight: "900" }}>{appName}</span>
+                <span style={{ color: "#ddd" }}>{titleName}</span>
+              </ToolbarTitle>
             </ToolbarSection>
             <UserBox store={this.props.store} />
           </ToolbarRow>
@@ -136,25 +168,37 @@ class App extends React.Component {
           themeDark={this.state.drawerThemeDark}
         >
           <DrawerContent list>
-            <ListItem type="a" icon="inbox" activated>Inbox</ListItem>
-            <ListItem type="a" icon="star">Star</ListItem>
+            {items.map(item => (
+              <Link
+                key={item.id}
+                href={`#${item.name}`}
+                to={item.to}
+                activated={item.activated}
+                icon={item.icon}
+              >{item.name}
+              </Link>))}
           </DrawerContent>
         </Drawer>
         <Content>
-          <div>
-            <section>
-              <h1>TODO</h1>
-              <Tabbar onChange={this.handleDrawerChange} activeTab={this.state.activeTab} >
-                <Tab text="permanent below" />
-                <Tab text="permanent above" />
-                <Tab text="persistent" />
-                <Tab text="temporary" />
-              </Tabbar>
-            </section>
-          </div>
+          <Switch>
+            {routes.map((screen) => {
+              if (screen.name === "Home") {
+                return (<Route key={screen.id} path="*" component={Home} />);
+              } else if (screen.name === "Admin") {
+                return (
+                  <Route
+                    key={screen.id}
+                    path={screen.path}
+                    render={props => <AdminManager {...props} activeTab={this.state.activeTab} />}
+                  />);
+              }
+              const component = screen.render(screen.name);
+              return (<Route key={screen.id} path={screen.path} component={component} />);
+            })}
+          </Switch>
         </Content>
         <Fab icon="favorite" onClick={this.handleDialog} />
-        <Snackbar message="Hello from snackbar" />
+        <Snackbar message="Welcome in Zoapp" />
       </Content>
     );
   }

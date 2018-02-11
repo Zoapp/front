@@ -6,34 +6,13 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, DialogTitle, DialogContent, DialogActions } from "react-mdl";
+import Rmdc, { Dialog, DialogFooter, DialogBody, Button } from "react-material-cw";
 import { connect } from "react-redux";
-import { DialogBox } from "zoapp-ui";
 import { signOut } from "../actions/authenticate";
 
 class SignOutDialog extends Component {
-  constructor(props) {
-    super(props);
-    const { open } = props;
-    this.state = { openDialog: open, id: props.id };
-  }
-
-  componentWillReceiveProps(props) {
-    if (this.props.open !== props.open) {
-      this.setState({ openDialog: props.open });
-    }
-  }
-
-  handleOpenDialog = () => {
-    this.setState({
-      openDialog: true,
-    });
-  }
-
   handleCloseDialog = () => {
-    this.setState({
-      openDialog: false,
-    });
+    Rmdc.closeDialog();
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }
@@ -47,33 +26,31 @@ class SignOutDialog extends Component {
 
   render() {
     return (
-      <DialogBox
-        open={this.state.openDialog}
-        id={this.state.id}
+      <Dialog
+        id={this.props.id}
         onClose={this.handleCloseDialog}
+        header="Sign out"
+        width="320px"
       >
-        <DialogTitle>Sign out</DialogTitle>
-        <DialogContent>
+        <DialogBody>
           <div>Are you ok ? </div>
-        </DialogContent>
-        <DialogActions>
-          <Button type="button" onClick={(e) => { e.preventDefault(); this.handleSignOut(); }}>Yes</Button>
-          <Button type="button" onClick={(e) => { e.preventDefault(); this.handleCloseDialog(); }}>Cancel</Button>
-        </DialogActions>
-      </DialogBox>
+        </DialogBody>
+        <DialogFooter>
+          <Button type="cancel" onClick={(e) => { e.preventDefault(); this.handleCloseDialog(); }}>Cancel</Button>
+          <Button type="accept" onClick={(e) => { e.preventDefault(); this.handleSignOut(); }}>Yes</Button>
+        </DialogFooter>
+      </Dialog>
     );
   }
 }
 
 SignOutDialog.defaultProps = {
-  open: true,
   id: null,
   onClosed: null,
   provider: null,
 };
 
 SignOutDialog.propTypes = {
-  open: PropTypes.bool,
   id: PropTypes.string,
   onClosed: PropTypes.func,
   provider: PropTypes.string,

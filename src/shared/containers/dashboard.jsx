@@ -7,7 +7,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Content, Grid, Cell } from "react-mdl";
+import { Grid, Inner, Cell } from "react-material-cw";
 import Loading from "../components/loading";
 import { appSetTitle } from "../actions/app";
 
@@ -17,37 +17,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    /* const infoStyle = {
-      textAlign: "center",
-      fontSize: "28px",
-      fontWeight: "400",
-      color: "#888",
-      padding: "16px 0",
-      lineHeight: "1.1",
-    };
-    const infoStyleB = {
-      textAlign: "center",
-      fontSize: "16px",
-      fontWeight: "400",
-      color: "#666",
-      padding: "60px 0",
-      lineHeight: "1.1",
-    };
-    const infoStyleC = {
-      fontSize: "16px",
-      fontWeight: "400",
-      color: "green",
-      padding: "60px 0",
-      lineHeight: "1.1",
-    };
-    const infoStyleD = {
-      fontSize: "16px",
-      fontWeight: "400",
-      color: "#666",
-      padding: "16px",
-      lineHeight: "1.1",
-    }; */
-
     const { isLoading } = this.props;
     if (!this.props.isSignedIn) {
       return (<div>You need to sign in...</div>);
@@ -56,13 +25,15 @@ class Dashboard extends Component {
     }
     // const { admin } = this.props;
     return (
-      <Content className="mdl-color--grey-100">
+      <div className="mdl-color--grey-100">
         <Grid>
-          <Cell className="mdl-color--white" col={12}>
-            Dashboard
-          </Cell>
+          <Inner>
+            <Cell className="mdl-color--white" span={12}>
+              Dashboard
+            </Cell>
+          </Inner>
         </Grid>
-      </Content>
+      </div>
     );
   }
 }

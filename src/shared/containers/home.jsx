@@ -6,7 +6,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, CardTitle, CardText, Content } from "react-mdl";
+import { Card, CardText, Content } from "react-material-cw";
 import { connect } from "react-redux";
 import Dashboard from "./dashboard";
 
@@ -15,27 +15,15 @@ const Home = ({ isSignedIn }) => {
     return (<Dashboard />);
   }
   return (
-    <Content className="mdl-color--grey-100">
+    <div className="mdl-color--grey-100">
       <section className="text-section" style={{ margin: "40px" }}>
-        <Card shadow={0} style={{ width: "512px", margin: "auto" }}>
-          <CardTitle style={{
-            color: "#fff", height: "376px", background: "url(images/bg.jpg) top / cover", padding: "0px",
-          }}
-          >
-            <h2
-              className="mdl-card__title-text"
-              style={{
-                background: "rgba(0, 0, 0, 0.4)", width: "100%", padding: "16px",
-              }}
-            >Zoapp FrontEnd
-            </h2>
-          </CardTitle>
+        <Card shadow={0} style={{ width: "512px", margin: "auto" }} title="Zoapp frontend">
           <CardText>
           A simple example
           </CardText>
         </Card>
       </section>
-    </Content>
+    </div>
   );
 };
 

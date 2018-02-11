@@ -7,9 +7,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 // import { Button, IconButton, Menu, MenuItem } from "react-mdl";
-import { Button, ToolbarSection, ToolbarIcon } from "react-material-cw";
+import Rmdc, {
+  Button,
+  ToolbarSection,
+  ToolbarIcon,
+  Menu, MenuItem,
+} from "react-material-cw";
 import { connect } from "react-redux";
-import { DialogManager } from "zoapp-ui";
 import { apiUserProfileRequest } from "../actions/user";
 import SignInDialog from "./signInDialog";
 import SignOutDialog from "./signOutDialog";
@@ -22,21 +26,13 @@ class UserBox extends Component {
   }
 
   handleOpenSignInDialog = () => {
-    const dialog = <SignInDialog open onClosed={this.handleCloseDialog} store={this.props.store} />;
-    setTimeout(() => { DialogManager.open({ dialog }); }, 100);
+    const dialog = <SignInDialog store={this.props.store} />;
+    Rmdc.showDialog(dialog);
   }
 
   handleOpenSignOutDialog = () => {
-    const dialog = (<SignOutDialog
-      open
-      onClosed={this.handleCloseDialog}
-      store={this.props.store}
-    />);
-    setTimeout(() => { DialogManager.open({ dialog }); }, 100);
-  }
-
-  handleCloseDialog = () => {
-    setTimeout(() => { DialogManager.close(); }, 100);
+    const dialog = (<SignOutDialog store={this.props.store} />);
+    Rmdc.showDialog(dialog);
   }
 
   render() {
@@ -46,11 +42,28 @@ class UserBox extends Component {
       let avatar = this.props.profile ? this.props.profile.avatar : null;
       if ((!avatar) || avatar === "default") {
         avatar = "account_circle";
+      } else {
+        avatar = "account_circle";
       }
       return (
         <ToolbarSection align="end" shrinkToFit >
-          {username}
-          <ToolbarIcon name={avatar} />
+          <div style={{ margin: "auto 24px auto 12px" }}>
+            {username}
+          </div>
+          <ToolbarIcon
+            name={avatar}
+            menu={
+              <Menu anchorMargin={{ bottom: "4px0" }} role="menu" >
+                <MenuItem disabled>Profile</MenuItem>
+                <MenuItem disabled>Settings</MenuItem>
+                <MenuItem
+                  onSelected={this.handleOpenSignOutDialog}
+                >
+                  Sign out
+                </MenuItem>
+              </Menu>}
+          />
+
         </ToolbarSection>
       );
       /* return (
@@ -94,15 +107,14 @@ class UserBox extends Component {
   }
 }
 
+UserBox.defaultProps = { profile: null, isSignedIn: false };
+
 UserBox.propTypes = {
   store: PropTypes.shape({}).isRequired,
   profile: PropTypes.shape({ username: PropTypes.string, avatar: PropTypes.string }),
   isSignedIn: PropTypes.bool,
   apiUserProfileRequest: PropTypes.func.isRequired,
-  style: PropTypes.objectOf(PropTypes.string),
 };
-
-UserBox.defaultProps = { profile: null, isSignedIn: false, style: null };
 
 const mapStateToProps = (state) => {
   const profile = state.user ? state.user.profile : null;
