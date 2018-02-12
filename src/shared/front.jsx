@@ -16,7 +16,7 @@ import configureStore from "./store";
 import App from "./containers/app";
 import { initServices } from "./services";
 
-export default class Client {
+export default class Front {
   constructor(tagId, appProperties, appConfig, reducers = {}, sagas = {}) {
     this.appProperties = appProperties;
     this.reducers = reducers;

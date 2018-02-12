@@ -87,6 +87,14 @@ main {
   padding: 24px;
 }
 
+.mdc-toolbar .mdc-tab-bar .mdc-tab-bar__indicator {
+  margin-bottom: -8px;
+}
+
+.mdc-toolbar .mdc-tab-bar .mdc-tab {
+  min-width: 100px;
+}
+
 /* Theses style are missing from https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css  ??? */
 
 .mdc-text-field--focused:not(.mdc-text-field--invalid):not(.mdc-text-field--disabled) .mdc-text-field__label,
