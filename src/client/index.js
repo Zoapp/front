@@ -28,7 +28,7 @@ const app = {
       path: "/",
       panels: ["Panel 1", "Panel 2"],
       toolbox: ["todo"],
-      render: (props) => { return React.createElement(Screen, props, "Dashboard"); },
+      render: props => React.createElement(Screen, props, "Dashboard"),
     },
     {
       id: "2",
@@ -38,7 +38,7 @@ const app = {
       path: "/admin",
       access: "auth",
       panels: ["General", "Extensions", "Users", "Advanced"],
-      render: (props) => { return React.createElement(Screen, props, "Admin"); },
+      render: props => React.createElement(Screen, props, "Admin"),
     },
     {
       id: "3",
@@ -47,7 +47,7 @@ const app = {
       name: "Home",
       path: "*",
       access: "public",
-      render: (props) => { return React.createElement(Screen, props, "Home"); },
+      render: props => React.createElement(Screen, props, "Home"),
     },
     {
       id: "4",
@@ -56,7 +56,7 @@ const app = {
       icon: "help",
       path: "/help",
       access: "all",
-      render: (props) => { return React.createElement(Screen, props, "Help"); },
+      render: props => React.createElement(Screen, props, "Help"),
     },
   ],
 };
