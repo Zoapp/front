@@ -5,29 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-// import { Layout, Header, Drawer, Navigation, IconButton, Menu, MenuItem } from "react-mdl";
 import Rmdc, {
-  Content, Fab, Snackbar, Tabbar, Tab,
+  Button, Content, Fab, Snackbar, Tabbar, Tab,
   Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon,
   Drawer, DrawerContent,
-  ListItem,
   Dialog,
 } from "react-material-cw";
 import PropTypes from "prop-types";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import Home from "./home";
-import AdminManager from "./adminManager";
+import Screen from "./screen";
 import UserBox from "./userBox";
+import { appSetTitle } from "../actions/app";
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest } from "../actions/api";
 
 class App extends React.Component {
-  static closeDrawer() {
-    /* const d = document.querySelector(".mdl-layout");
-    d.MaterialLayout.toggleDrawer(); */
-  }
-
   constructor(props) {
     super(props);
     const { type: drawer, above: aboveToolbar, themeDark: drawerThemeDark } = props.design.drawer;
@@ -47,19 +40,8 @@ class App extends React.Component {
     Rmdc.init(this, { typography: true });
   }
 
-  componentWillUpdate() {
-    /* const items = document.getElementsByClassName("mdl_closedrawer");
-    for (let i = 0; i < items.length; i += 1) {
-      items[i].removeEventListener("click", App.closeDrawer);
-    } */
-  }
-
   componentDidUpdate() {
     this.updateAdmin();
-    /* const items = document.getElementsByClassName("mdl_closedrawer");
-    for (let i = 0; i < items.length; i += 1) {
-      items[i].addEventListener("click", App.closeDrawer);
-    } */
   }
 
   onMenuClick = (event) => {
@@ -103,8 +85,10 @@ class App extends React.Component {
       }
     }
     this.setState({
-      drawer, activeTab: index, aboveToolbar, drawerOpen,
+      drawer, activeTab: 0, aboveToolbar, drawerOpen,
     });
+    const screen = this.props.screens[index];
+    this.props.appSetTitle(screen.name);
   }
 
   toggleDrawer = () => {
@@ -121,31 +105,59 @@ class App extends React.Component {
     if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
       isLoading = true;
     }
-    const appIcon = "app-icon";
+    let message = "Welcome";
+    if (this.props.error) {
+      message = this.props.error;
+    }
     const items = [];
     const routes = [];
-    const toolbox = "";
-    const navbox = "";
     const { screens, titleName, appName } = this.props;
+    let currentScreen = null;
     screens.forEach((screen) => {
       if (screen.access === "all" ||
       (this.props.isSignedIn && screen.access === "auth") ||
       ((!this.props.isSignedIn) && screen.access === "public")) {
-        let className = "mdl_closedrawer";
         let activated = false;
         if (titleName === screen.name) {
-          className += " mdl-navigation__selectedlink";
           activated = true;
+          currentScreen = screen;
         }
         items.push({
-          className, activated, ...screen,
+          activated, ...screen,
         });
       }
       if (screen.path) {
-        routes.push({ ...screen });
+        if (screen.path === "*" || screen.path === "/") {
+          routes.push({ ...screen });
+        } else {
+          routes.splice(0, 0, { ...screen });
+        }
       }
     });
-
+    let tabbar;
+    let toolbox;
+    if (currentScreen) {
+      if (currentScreen.panels) {
+        tabbar = (
+          <ToolbarSection>
+            <Tabbar>
+              {currentScreen.panels.map((p, index) => {
+                const k = `t_${index}`;
+                return (<Tab key={k}>{p}</Tab>);
+              })}
+            </Tabbar>
+          </ToolbarSection>);
+      }
+      if (currentScreen.toolbox) {
+        toolbox = (
+          <ToolbarSection align="end" >
+            {currentScreen.toolbox.map((p, index) => {
+              const k = `tb_${index}`;
+              return (<Button key={k} raised style={{ marginRight: "48px" }}>{p}</Button>);
+            })}
+          </ToolbarSection>);
+      }
+    }
     return (
       <Content>
         <Toolbar fixed>
@@ -153,10 +165,12 @@ class App extends React.Component {
             <ToolbarSection align="start" >
               {icon}
               <ToolbarTitle>
-                <span style={{ fontWeight: "900" }}>{appName}</span>
+                <span style={{ fontWeight: "900" }}>{appName} / </span>
                 <span style={{ color: "#ddd" }}>{titleName}</span>
               </ToolbarTitle>
             </ToolbarSection>
+            {tabbar}
+            {toolbox}
             <UserBox store={this.props.store} />
           </ToolbarRow>
         </Toolbar>
@@ -181,123 +195,25 @@ class App extends React.Component {
         </Drawer>
         <Content>
           <Switch>
-            {routes.map((screen) => {
-              if (screen.name === "Home") {
-                return (<Route key={screen.id} path="*" component={Home} />);
-              } else if (screen.name === "Admin") {
-                return (
-                  <Route
-                    key={screen.id}
-                    path={screen.path}
-                    render={props => <AdminManager {...props} activeTab={this.state.activeTab} />}
-                  />);
-              }
-              const component = screen.render(screen.name);
-              return (<Route key={screen.id} path={screen.path} component={component} />);
-            })}
+            {routes.map(screen => (
+              <Route
+                key={screen.id}
+                path={screen.path}
+                render={(props) => {
+                  if (screen.render) {
+                    return screen.render({ screen, activeTab: this.state.activeTab, ...props });
+                  }
+                  return <Screen screen={screen}>{screen.name}</Screen>;
+                }}
+              />
+            ))}
           </Switch>
         </Content>
         <Fab icon="favorite" onClick={this.handleDialog} />
-        <Snackbar message="Welcome in Zoapp" />
+        <Snackbar message={message} />
       </Content>
     );
   }
-
-  /**
-   * WIP : toggleDrawer : https://codepen.io/surma/pen/EKjNON?editors=1010
-   */
-  /* render() {
-    let { isLoading } = this.props;
-    if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
-      isLoading = true;
-    }
-    const appIcon = "app-icon";
-    const style = {};
-    const items = [];
-    const routes = [];
-    const toolbox = "";
-    const navbox = "";
-    const { screens, titleName, appName } = this.props;
-    screens.forEach((screen) => {
-      if (screen.access === "all" ||
-      (this.props.isSignedIn && screen.access === "auth") ||
-      ((!this.props.isSignedIn) && screen.access === "public")) {
-        let className = "mdl_closedrawer";
-        if (titleName === screen.name) {
-          className += " mdl-navigation__selectedlink";
-        }
-        items.push({
-          className, ...screen,
-        });
-      }
-      if (screen.path) {
-        routes.push({ ...screen });
-      }
-    });
-
-    return (
-      <div>
-        <Layout fixedHeader>
-          <Header
-            title={
-              <span>
-                <span style={{ fontWeight: "900" }}>{appName}</span>
-                <span style={{ color: "#ddd" }}>{titleName}</span>
-              </span>}
-          >
-            <Navigation>
-              {navbox}
-              {toolbox}
-              <UserBox store={this.props.store} style={style} />
-            </Navigation>
-          </Header>
-          <Drawer
-            title={
-              <span>{appName}
-                <IconButton
-                  name=""
-                  colored
-                  style={{ marginLeft: "124px" }}
-                  id="bot-menu"
-                  className={appIcon}
-                />
-              </span>}
-          >
-            <Menu target="bot-menu" align="right">
-              <MenuItem disabled>Properties</MenuItem>
-              <MenuItem className="mdl_closedrawer">Change</MenuItem>
-            </Menu>
-            <Navigation>
-              {items.map(item => (
-                <Link
-                  key={item.id}
-                  href={`#${item.name}`}
-                  to={item.to}
-                  className={item.className}
-                ><i className="material-icons">{item.icon}</i>{item.name}
-                </Link>))}
-            </Navigation>
-          </Drawer>
-          <Switch>
-            {routes.map((screen) => {
-              if (screen.name === "Home") {
-                return (<Route key={screen.id} path="*" component={Home} />);
-              } else if (screen.name === "Admin") {
-                return (
-                  <Route
-                    key={screen.id}
-                    path={screen.path}
-                    render={props => <AdminManager {...props} activeTab={this.state.activeTab} />}
-                  />);
-              }
-              const component = screen.render(screen.name);
-              return (<Route key={screen.id} path={screen.path} component={component} />);
-            })}
-          </Switch>
-        </Layout>
-      </div>
-    );
-  } */
 }
 
 App.defaultProps = {
@@ -322,6 +238,7 @@ App.propTypes = {
   }),
   initAuthSettings: PropTypes.func.isRequired,
   apiAdminRequest: PropTypes.func.isRequired,
+  appSetTitle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -346,6 +263,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
+  appSetTitle: (titleName) => {
+    dispatch(appSetTitle(titleName));
+  },
   initAuthSettings: () => {
     dispatch(initAuthSettings());
   },
