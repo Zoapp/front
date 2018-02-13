@@ -52,7 +52,7 @@ class UserBox extends Component {
           <ToolbarIcon
             name={avatar}
             menu={
-              <Menu anchorMargin={{ bottom: "4px0" }} role="menu" >
+              <Menu anchorMargin={{ bottom: "4px" }} role="menu" >
                 <MenuItem disabled>Profile</MenuItem>
                 <MenuItem disabled>Settings</MenuItem>
                 <MenuItem
