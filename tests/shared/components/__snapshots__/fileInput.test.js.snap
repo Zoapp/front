@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileInput can take an accept prop 1`] = `
+<div
+  className="fileInput"
+>
+  <i
+    className="material-icons"
+  >
+    cloud_upload
+  </i>
+  <input
+    accept="image/*"
+    onChange={[Function]}
+    type="file"
+  />
+</div>
+`;
+
+exports[`FileInput renders correctly 1`] = `
+<div
+  className="fileInput"
+>
+  <i
+    className="material-icons"
+  >
+    cloud_upload
+  </i>
+  <input
+    accept={null}
+    onChange={[Function]}
+    type="file"
+  />
+</div>
+`;
