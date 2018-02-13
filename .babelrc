@@ -1,29 +1,40 @@
 {
-  "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions", "IE >= 11"]
-      },
-        "start": {
-          "presets": [
-          ]
-        }
-    }],
-    "react"
-  ],
-  "plugins": [
-    "syntax-dynamic-import",
-  "transform-object-rest-spread",
-  "transform-decorators-legacy",
-  ["module-resolver", {
-    "root": ["./src"],
-    "alias": {
-      "zoapp-front": "./shared"
-    }
-  }],
-  ["transform-runtime", {
-    "polyfill": false,
-    "regenerator": true
-  }]
-  ]
+    "plugins": [
+        "syntax-dynamic-import",
+        "transform-class-properties",
+        "transform-object-rest-spread",
+        "transform-decorators-legacy",
+        [
+            "module-resolver",
+            {
+                "alias": {
+                    "zoapp-front": "./shared"
+                },
+                "root": [
+                    "./src"
+                ]
+            }
+        ],
+        [
+            "transform-runtime",
+            {
+                "polyfill": false,
+                "regenerator": true
+            }
+        ]
+    ],
+    "presets": [
+        [
+            "env",
+            {
+                "targets": {
+                    "browsers": [
+                        "last 2 versions",
+                        "IE >= 11"
+                    ]
+                }
+            }
+        ],
+        "react"
+    ]
 }
