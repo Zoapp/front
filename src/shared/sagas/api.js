@@ -4,26 +4,27 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-// import { delay, eventChannel } from "redux-saga";
-import { put /* , race, call, take, fork */ } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 import {
-  API_USERPROFILE, API_ADMIN,
+  API_ADMIN,
   API_SETADMINPARAMETERS,
-  /* API_GETMIDDLEWARES, API_SETMIDDLEWARE, API_DELETEMIDDLEWARE,
-  SUBSCRIBE, UNSUBSCRIBE, */
-  FETCH_REQUEST, FETCH_SUCCESS, FETCH_FAILURE,
+  API_USERPROFILE,
+  FETCH_FAILURE,
+  FETCH_REQUEST,
+  FETCH_SUCCESS,
 } from "../actions";
-import { getWebService /* , createSocketService */ } from "../services";
+import { apiUserProfileSuccess, apiUserProfileError } from "../actions/user";
+import { getWebService } from "../services";
 
 const api = [
-/* User */
+  /* User */
   [API_USERPROFILE + FETCH_REQUEST,
     function* f() {
       try {
         const response = yield getWebService().get("me");
-        yield put({ type: `${API_USERPROFILE}${FETCH_SUCCESS}`, loading: false, profile: response });
+        yield put(apiUserProfileSuccess({ profile: response }));
       } catch (error) {
-        yield put({ type: `${API_USERPROFILE}${FETCH_FAILURE}`, error });
+        yield put(apiUserProfileError({ error }));
       }
     },
   ],

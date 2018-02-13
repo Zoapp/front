@@ -24,9 +24,9 @@ export const initialState = {
 export default createReducer(initialState, {
   [AUTH_SIGNIN + FETCH_SUCCESS]: (state, { attributes }) => ({
     attributes,
+    error: null,
     isSignedIn: true,
     loading: false,
-    error: null,
   }),
   [AUTH_SIGNOUT + FETCH_SUCCESS]: () => ({
     ...initialState,
@@ -38,9 +38,9 @@ export default createReducer(initialState, {
   }),
   [API_USERPROFILE + FETCH_SUCCESS]: (state, { profile }) => ({
     ...state,
-    loading: false,
     error: null,
-    profile: { ...profile },
+    loading: false,
+    profile,
   }),
   [API_USERPROFILE + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
