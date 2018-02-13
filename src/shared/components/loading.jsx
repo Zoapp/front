@@ -1,20 +1,18 @@
-/**
- * Copyright (c) 2015-present, CWB SAS
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 import React from "react";
-import { Card, CardTitle, CardText, CardActions } from "react-mdl";
+import { Card, CardText, CardActions } from "zoapp-materialcomponents";
 
 const Loading = () => (
-  <Card shadow={0} style={{ width: "512px", margin: "auto" }}>
-    <CardTitle>Processing</CardTitle>
+  <Card
+    style={{ width: "512px", margin: "auto" }}
+    title="Processing"
+  >
     <CardText>
-              Please wait ...
+      Please wait ...
     </CardText>
+
     <CardActions />
-  </Card>);
+  </Card>
+);
 
 Loading.propTypes = {
 };

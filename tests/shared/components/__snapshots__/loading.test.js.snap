@@ -2,7 +2,7 @@
 
 exports[`Loading renders correctly 1`] = `
 <div
-  className="mdl-card mdl-shadow--2dp"
+  className="mdc-card"
   style={
     Object {
       "margin": "auto",
@@ -10,22 +10,24 @@ exports[`Loading renders correctly 1`] = `
     }
   }
 >
-  <div
-    className="mdl-card__title"
+  <section
+    className="mdc-card__primary"
   >
-    <h2
-      className="mdl-card__title-text"
+    
+    <h1
+      className="mdc-card__title"
     >
       Processing
-    </h2>
-  </div>
-  <div
-    className="mdl-card__supporting-text"
+    </h1>
+    
+  </section>
+  <section
+    className="mdc-card__supporting-text"
   >
     Please wait ...
-  </div>
-  <div
-    className="mdl-card__actions"
+  </section>
+  <section
+    className="mdc-card__actions"
   />
 </div>
 `;
