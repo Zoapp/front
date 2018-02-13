@@ -41,4 +41,21 @@ describe("reducers/user", () => {
       loading: false,
     });
   });
+
+  it("resets the state when user signs out", () => {
+    const attributes = {
+      accessToken: "xyz",
+      expiresIn: "3600",
+      scope: "admin",
+    };
+    const provider = "auth provider";
+
+    const prevState = reducer(undefined, authActions.signInComplete({
+      attributes,
+      provider,
+    }));
+
+    const state = reducer(prevState, authActions.signOutComplete({ provider }));
+    expect(state).toEqual(initialState);
+  });
 });
