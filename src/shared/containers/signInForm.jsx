@@ -6,7 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Rmdc, { Button, Card, CardText, CardActions, FormField, TextField } from "react-material-cw";
+import Rmdc, { Button, Card, CardText, CardActions, FormField, TextField } from "zoapp-materialcomponents";
 import { connect } from "react-redux";
 import { signIn } from "../actions/authenticate";
 

@@ -6,7 +6,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, CardText, Content } from "react-material-cw";
+import { Card, CardText, Content } from "zoapp-materialcomponents";
 import { connect } from "react-redux";
 import Dashboard from "./dashboard";
 

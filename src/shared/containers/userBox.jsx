@@ -6,13 +6,12 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import { Button, IconButton, Menu, MenuItem } from "react-mdl";
 import Rmdc, {
   Button,
   ToolbarSection,
   ToolbarIcon,
   Menu, MenuItem,
-} from "react-material-cw";
+} from "zoapp-materialcomponents";
 import { connect } from "react-redux";
 import { apiUserProfileRequest } from "../actions/user";
 import SignInDialog from "./signInDialog";
@@ -53,7 +52,7 @@ class UserBox extends Component {
           <ToolbarIcon
             name={avatar}
             menu={
-              <Menu anchorMargin={{ bottom: "4px0" }} role="menu" >
+              <Menu anchorMargin={{ bottom: "4px" }} role="menu" >
                 <MenuItem disabled>Profile</MenuItem>
                 <MenuItem disabled>Settings</MenuItem>
                 <MenuItem

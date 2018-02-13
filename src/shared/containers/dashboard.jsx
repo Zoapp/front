@@ -7,7 +7,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Grid, Inner, Cell } from "react-material-cw";
+import { Grid, Inner, Cell } from "zoapp-materialcomponents";
 import Loading from "../components/loading";
 import { appSetTitle } from "../actions/app";
 

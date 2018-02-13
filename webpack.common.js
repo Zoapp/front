@@ -31,29 +31,12 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
-          options: {
-            presets: ["es2015", "react", "stage-1"],
-            plugins: [
-              ["transform-runtime", { "polyfill": false }],
-              "transform-regenerator",
-              "react-hot-loader/babel",
-              "transform-decorators-legacy"
-            ],
-            env: {
-              start: {
-                presets: ["react-hmre"]
-              }
-            }
-          }
         }
       }
     ]
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({
-      '__REACT_DEVTOOLS_GLOBAL_HOOK__': '({ isDisabled: true })'
-    }),
     new CopyWebpackPlugin([
       {
         from: "./public",
