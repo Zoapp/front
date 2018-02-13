@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading renders correctly 1`] = `
+<div
+  className="mdl-card mdl-shadow--2dp"
+  style={
+    Object {
+      "margin": "auto",
+      "width": "512px",
+    }
+  }
+>
+  <div
+    className="mdl-card__title"
+  >
+    <h2
+      className="mdl-card__title-text"
+    >
+      Processing
+    </h2>
+  </div>
+  <div
+    className="mdl-card__supporting-text"
+  >
+    Please wait ...
+  </div>
+  <div
+    className="mdl-card__actions"
+  />
+</div>
+`;
