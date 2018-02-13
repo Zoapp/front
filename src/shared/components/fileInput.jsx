@@ -8,7 +8,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class FileInput extends Component {
-
   handleFileChange = (selectorFiles) => {
     const file = selectorFiles[0];
     // console.log("handleFileChange file=", file);
