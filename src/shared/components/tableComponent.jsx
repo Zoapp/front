@@ -6,7 +6,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { Icon } from "react-mdl";
+import { Icon } from "zoapp-materialcomponents";
 
 const TableComponent = ({
   title, headers, items, selectedItem, onSelect, className, style,
@@ -111,11 +111,14 @@ TableComponent.defaultProps = {
 
 TableComponent.propTypes = {
   title: PropTypes.oneOfType([
-    PropTypes.string, PropTypes.element]).isRequired,
+    PropTypes.string,
+    PropTypes.element,
+  ]).isRequired,
   className: PropTypes.string,
   style: PropTypes.objectOf(PropTypes.string),
   headers: PropTypes.arrayOf(PropTypes.string).isRequired,
-  items: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape({
+  })).isRequired,
   selectedItem: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
 };
