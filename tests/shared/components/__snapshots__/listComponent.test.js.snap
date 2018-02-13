@@ -1,0 +1,216 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListComponent marks an item as selected 1`] = `
+<ul
+  className="mdl-list some-class"
+  style={Object {}}
+>
+  <li
+    className="mdl-list__item selectableListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <span>
+        item 1
+      </span>
+    </span>
+  </li>
+  <li
+    className="mdl-list__item selectedListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <span>
+        item 2
+      </span>
+    </span>
+  </li>
+  <li
+    className="mdl-list__item selectableListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <span>
+        item 3
+      </span>
+    </span>
+  </li>
+</ul>
+`;
+
+exports[`ListComponent renders PNG icon 1`] = `
+<ul
+  className="mdl-list some-class"
+  style={Object {}}
+>
+  <li
+    className="mdl-list__item selectedListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <div
+        className="mdl-list__item-avatar"
+        style={
+          Object {
+            "backgroundColor": "gray",
+            "padding": "8px",
+          }
+        }
+      >
+        <img
+          alt="item 1"
+          src="some-icon.png"
+          style={
+            Object {
+              "margin": "-7px",
+              "verticalAlign": "top",
+              "width": "38px",
+            }
+          }
+        />
+      </div>
+      <span>
+        item 1
+      </span>
+    </span>
+  </li>
+</ul>
+`;
+
+exports[`ListComponent renders SVG icon 1`] = `
+<ul
+  className="mdl-list some-class"
+  style={Object {}}
+>
+  <li
+    className="mdl-list__item selectedListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <div
+        className="mdl-list__item-avatar"
+        style={
+          Object {
+            "backgroundColor": "gray",
+            "padding": "8px",
+          }
+        }
+      >
+        <img
+          alt="item 1"
+          src="some-icon.svg"
+          style={
+            Object {
+              "verticalAlign": "top",
+            }
+          }
+        />
+      </div>
+      <span>
+        item 1
+      </span>
+    </span>
+  </li>
+</ul>
+`;
+
+exports[`ListComponent renders correctly 1`] = `
+<ul
+  className="mdl-list some-class"
+  style={Object {}}
+/>
+`;
+
+exports[`ListComponent renders items 1`] = `
+<ul
+  className="mdl-list some-class"
+  style={Object {}}
+>
+  <li
+    className="mdl-list__item selectedListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <span>
+        item 1
+      </span>
+    </span>
+  </li>
+  <li
+    className="mdl-list__item selectableListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <span>
+        item 2
+      </span>
+    </span>
+  </li>
+  <li
+    className="mdl-list__item selectableListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <span>
+        item 3
+      </span>
+    </span>
+  </li>
+</ul>
+`;
+
+exports[`ListComponent renders items with icons 1`] = `
+<ul
+  className="mdl-list some-class"
+  style={Object {}}
+>
+  <li
+    className="mdl-list__item selectedListItem"
+    onClick={[Function]}
+  >
+    <span
+      className="mdl-list__item-primary-content"
+    >
+      <div
+        className="mdl-list__item-avatar"
+        style={
+          Object {
+            "backgroundColor": "gray",
+            "padding": "8px",
+          }
+        }
+      >
+        <i
+          className="material-icons"
+          style={
+            Object {
+              "verticalAlign": "top",
+            }
+          }
+        >
+          some-icon
+        </i>
+      </div>
+      <span>
+        item 1
+      </span>
+    </span>
+  </li>
+</ul>
+`;

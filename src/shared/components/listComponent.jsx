@@ -55,7 +55,11 @@ const ListComponent = ({
 );
 
 ListComponent.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    icon: PropTypes.string,
+  })).isRequired,
   selectedItem: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
   className: PropTypes.string.isRequired,
