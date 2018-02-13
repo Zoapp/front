@@ -6,8 +6,14 @@
  */
 import { put, take, race, call } from "redux-saga/effects";
 import {
-  AUTH_INIT_SETTINGS, AUTH_SIGNIN, AUTH_SIGNOUT, FETCH_REQUEST, FETCH_SUCCESS, FETCH_FAILURE,
+  AUTH_INIT_SETTINGS,
+  AUTH_SIGNIN,
+  AUTH_SIGNOUT,
+  FETCH_FAILURE,
+  FETCH_REQUEST,
+  FETCH_SUCCESS,
 } from "../actions";
+import { signInComplete } from "../actions/auth";
 import { getAuthService } from "../services";
 
 function* authenticate({ username, password, provider }) {
@@ -15,7 +21,7 @@ function* authenticate({ username, password, provider }) {
     const service = getAuthService(provider);
 
     const response = yield service.authenticateUser({ username, password });
-    yield put({ type: `${AUTH_SIGNIN}${FETCH_SUCCESS}`, attributes: response, provider });
+    yield put(signInComplete({ attributes: response, provider }));
   } catch (error) {
     yield put({ type: `${AUTH_SIGNIN}${FETCH_FAILURE}`, provider, error });
   }

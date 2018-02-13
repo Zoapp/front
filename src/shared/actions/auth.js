@@ -12,8 +12,8 @@ export function signIn({ provider, username, password }) {
   };
 }
 
-export function signInComplete({ user, provider }) {
-  return { type: AUTH_SIGNIN + FETCH_SUCCESS, user, provider };
+export function signInComplete({ attributes, provider }) {
+  return { type: AUTH_SIGNIN + FETCH_SUCCESS, attributes, provider };
 }
 
 export function signInError({ provider, error }) {

@@ -15,7 +15,7 @@ import Rmdc, {
   TextField,
   Button,
 } from "zoapp-materialcomponents";
-import { signIn } from "../actions/authenticate";
+import { signIn } from "../actions/auth";
 
 class SignInDialog extends Component {
   handleCloseDialog = () => {
