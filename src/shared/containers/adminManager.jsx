@@ -13,7 +13,7 @@ import Rmdc, {
   Button,
   Content,
   TextField,
-} from "react-material-cw";
+} from "zoapp-materialcomponents";
 import { connect } from "react-redux";
 import TableComponent from "../components/tableComponent";
 import { appSetTitle } from "../actions/app";

@@ -14,7 +14,7 @@ import Rmdc, {
   FormField,
   TextField,
   Button,
-} from "react-material-cw";
+} from "zoapp-materialcomponents";
 import { signIn } from "../actions/authenticate";
 
 class SignInDialog extends Component {

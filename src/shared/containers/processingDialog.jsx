@@ -6,7 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Dialog, DialogBody, DialogFooter } from "react-material-cw";
+import { Dialog, DialogBody, DialogFooter } from "zoapp-materialcomponents";
 
 export default class ProcessingDialog extends Component {
   constructor(props) {

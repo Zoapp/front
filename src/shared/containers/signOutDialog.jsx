@@ -6,7 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Rmdc, { Dialog, DialogFooter, DialogBody, Button } from "react-material-cw";
+import Rmdc, { Dialog, DialogFooter, DialogBody, Button } from "zoapp-materialcomponents";
 import { connect } from "react-redux";
 import { signOut } from "../actions/authenticate";
 

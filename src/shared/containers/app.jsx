@@ -10,7 +10,7 @@ import Rmdc, {
   Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon,
   Drawer, DrawerContent,
   Dialog,
-} from "react-material-cw";
+} from "zoapp-materialcomponents";
 import PropTypes from "prop-types";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
