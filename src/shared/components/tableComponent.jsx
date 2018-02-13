@@ -118,6 +118,10 @@ TableComponent.propTypes = {
   style: PropTypes.objectOf(PropTypes.string),
   headers: PropTypes.arrayOf(PropTypes.string).isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    icon: PropTypes.string,
+    name: PropTypes.string,
+    values: PropTypes.array,
   })).isRequired,
   selectedItem: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
