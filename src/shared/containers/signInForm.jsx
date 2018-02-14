@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Rmdc, { Button, Card, CardText, CardActions, FormField, TextField } from "zoapp-materialcomponents";
 import { connect } from "react-redux";
-import { signIn } from "../actions/authenticate";
+import { signIn } from "../actions/auth";
 
 class SignInForm extends Component {
   handleCloseDialog = () => {

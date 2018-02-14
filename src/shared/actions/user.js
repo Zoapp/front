@@ -6,11 +6,27 @@
  */
 import {
   API_USERPROFILE,
+  FETCH_FAILURE,
   FETCH_REQUEST,
+  FETCH_SUCCESS,
 } from "./";
 
 export function apiUserProfileRequest() {
   return { type: API_USERPROFILE + FETCH_REQUEST };
+}
+
+export function apiUserProfileSuccess({ profile }) {
+  return {
+    type: API_USERPROFILE + FETCH_SUCCESS,
+    profile,
+  };
+}
+
+export function apiUserProfileError({ error }) {
+  return {
+    type: API_USERPROFILE + FETCH_FAILURE,
+    error,
+  };
 }
 
 export function apiSaveUserProfileRequest() {

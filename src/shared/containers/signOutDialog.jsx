@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Rmdc, { Dialog, DialogFooter, DialogBody, Button } from "zoapp-materialcomponents";
 import { connect } from "react-redux";
-import { signOut } from "../actions/authenticate";
+import { signOut } from "../actions/auth";
 
 class SignOutDialog extends Component {
   handleCloseDialog = () => {
