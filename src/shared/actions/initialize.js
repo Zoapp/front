@@ -1,3 +1,4 @@
+/* eslint import/prefer-default-export:0 */
 /**
  * Copyright (c) 2015-present, CWB SAS
  *
@@ -7,10 +8,8 @@
 import { AUTH_INIT_SETTINGS } from "./";
 
 export function initAuthSettings(config) {
-  return { type: AUTH_INIT_SETTINGS, config };
-}
-
-export function resetSettings(config) {
-  // TODO
-  return { type: AUTH_INIT_SETTINGS, config };
+  return {
+    type: AUTH_INIT_SETTINGS,
+    config,
+  };
 }
