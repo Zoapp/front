@@ -12,10 +12,3 @@ export function appSetTitle(titleName) {
     titleName,
   };
 }
-
-export function appSetName(appName) {
-  return {
-    type: APP_SETNAME,
-    appName,
-  };
-}
