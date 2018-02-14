@@ -10,7 +10,7 @@ import {
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
   FETCH_REQUEST,
-} from "../actions";
+} from "../actions/constants";
 import {
   apiAdminError,
   apiAdminSuccess,

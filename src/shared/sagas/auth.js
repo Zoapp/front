@@ -10,7 +10,7 @@ import {
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   FETCH_REQUEST,
-} from "../actions";
+} from "../actions/constants";
 import {
   signInComplete,
   signOutError,

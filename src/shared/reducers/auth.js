@@ -11,7 +11,7 @@ import {
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
-} from "../actions";
+} from "../actions/constants";
 
 export const initialState = {
   loading: false,
