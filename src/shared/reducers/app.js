@@ -6,22 +6,32 @@
  */
 import createReducer from "./createReducer";
 import {
-  APP_SETTITLE, API_ADMIN, API_SETADMINPARAMETERS,
-  API_GETMIDDLEWARES, API_SETMIDDLEWARE, API_DELETEMIDDLEWARE,
+  API_ADMIN,
+  API_DELETEMIDDLEWARE,
+  API_GETMIDDLEWARES,
+  API_SETADMINPARAMETERS,
+  API_SETMIDDLEWARE,
+  APP_SETTITLE,
   AUTH_SIGNOUT,
-  FETCH_REQUEST, FETCH_SUCCESS, FETCH_FAILURE,
+  FETCH_FAILURE,
+  FETCH_REQUEST,
+  FETCH_SUCCESS,
 } from "../actions";
 
-const initialState = {
-  loading: false,
+export const initialState = {
   admin: null,
-  titleName: "",
   error: null,
+  loading: false,
+  titleName: "",
 };
 
 export default createReducer(initialState, {
   /* API section */
-  [API_ADMIN + FETCH_REQUEST]: state => ({ ...state, loading: true, error: null }),
+  [API_ADMIN + FETCH_REQUEST]: state => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
   [API_ADMIN + FETCH_SUCCESS]: (state, { admin }) => ({
     ...state, loading: false, error: null, admin: { ...admin },
   }),

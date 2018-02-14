@@ -5,8 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import {
-  API_ADMIN, API_SETADMINPARAMETERS,
-  API_GETMIDDLEWARES, API_SETMIDDLEWARE, API_DELETEMIDDLEWARE,
+  API_ADMIN,
+  API_DELETEMIDDLEWARE,
+  API_GETMIDDLEWARES,
+  API_SETADMINPARAMETERS,
+  API_SETMIDDLEWARE,
   FETCH_REQUEST,
 } from "./";
 
@@ -15,17 +18,32 @@ export function apiAdminRequest() {
 }
 
 export function apiSetAdminParametersRequest(params) {
-  return { type: API_SETADMINPARAMETERS + FETCH_REQUEST, params };
+  return {
+    type: API_SETADMINPARAMETERS + FETCH_REQUEST,
+    params,
+  };
 }
 
 export function apiGetMiddlewaresRequest(botId, middlewareType = null) {
-  return { type: API_GETMIDDLEWARES + FETCH_REQUEST, botId, middlewareType };
+  return {
+    type: API_GETMIDDLEWARES + FETCH_REQUEST,
+    botId,
+    middlewareType,
+  };
 }
 
 export function apiSetMiddlewareRequest(botId, middleware) {
-  return { type: API_SETMIDDLEWARE + FETCH_REQUEST, botId, middleware };
+  return {
+    type: API_SETMIDDLEWARE + FETCH_REQUEST,
+    botId,
+    middleware,
+  };
 }
 
 export function apiDeleteMiddlewareRequest(botId, middlewareId) {
-  return { type: API_DELETEMIDDLEWARE + FETCH_REQUEST, botId, middlewareId };
+  return {
+    type: API_DELETEMIDDLEWARE + FETCH_REQUEST,
+    botId,
+    middlewareId,
+  };
 }

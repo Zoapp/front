@@ -7,9 +7,15 @@
 import { APP_SETTITLE, APP_SETNAME } from "./";
 
 export function appSetTitle(titleName) {
-  return { type: APP_SETTITLE, titleName };
+  return {
+    type: APP_SETTITLE,
+    titleName,
+  };
 }
 
 export function appSetName(appName) {
-  return { type: APP_SETNAME, appName };
+  return {
+    type: APP_SETNAME,
+    appName,
+  };
 }
