@@ -10,7 +10,7 @@ import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
-} from "./";
+} from "./constants";
 
 export function signIn({ provider, username, password }) {
   return {

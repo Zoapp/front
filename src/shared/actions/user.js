@@ -9,7 +9,7 @@ import {
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
-} from "./";
+} from "./constants";
 
 export function apiUserProfileRequest() {
   return { type: API_USERPROFILE + FETCH_REQUEST };

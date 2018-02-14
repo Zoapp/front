@@ -12,7 +12,7 @@ import {
   FETCH_REQUEST,
   FETCH_FAILURE,
   AUTH_SIGNOUT,
-} from "../actions";
+} from "../actions/constants";
 
 export const initialState = {
   attributes: null,

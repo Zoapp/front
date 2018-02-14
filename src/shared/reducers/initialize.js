@@ -5,10 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 import createReducer from "./createReducer";
-import { AUTH_INIT_SETTINGS } from "../actions";
+import { AUTH_INIT_SETTINGS } from "../actions/constants";
 
 export const initialState = {};
 
 export default createReducer(initialState, {
-  [AUTH_INIT_SETTINGS]: (state, { config }) => ({ ...config }),
+  [AUTH_INIT_SETTINGS]: (state, { config }) => ({
+    ...config,
+  }),
 });
