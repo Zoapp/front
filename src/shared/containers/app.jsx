@@ -237,8 +237,8 @@ App.propTypes = {
     drawer: PropTypes.shape({ type: PropTypes.string }),
   }),
   initAuthSettings: PropTypes.func.isRequired,
-  apiAdminRequest: PropTypes.func.isRequired,
   appSetTitle: PropTypes.func.isRequired,
+  apiAdminRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
