@@ -9,11 +9,16 @@ import {
   API_ADMIN,
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
-  FETCH_FAILURE,
   FETCH_REQUEST,
-  FETCH_SUCCESS,
 } from "../actions";
-import { apiUserProfileSuccess, apiUserProfileError } from "../actions/user";
+import {
+  apiAdminError,
+  apiAdminSuccess,
+  apiSetAdminParametersError,
+  apiSetAdminParametersSuccess,
+  apiUserProfileError,
+  apiUserProfileSuccess,
+} from "../actions/user";
 import { getWebService } from "../services";
 
 const api = [
@@ -33,9 +38,9 @@ const api = [
     function* f() {
       try {
         const response = yield getWebService().get("admin");
-        yield put({ type: `${API_ADMIN}${FETCH_SUCCESS}`, loading: false, admin: response });
+        yield put(apiAdminSuccess({ admin: response }));
       } catch (error) {
-        yield put({ type: `${API_ADMIN}${FETCH_FAILURE}`, error });
+        yield put(apiAdminError({ error }));
       }
     },
   ],
@@ -44,9 +49,9 @@ const api = [
       try {
         const { params } = action;
         const response = yield getWebService().put("admin", params);
-        yield put({ type: `${API_SETADMINPARAMETERS}${FETCH_SUCCESS}`, loading: false, params: response });
+        yield put(apiSetAdminParametersSuccess({ params: response }));
       } catch (error) {
-        yield put({ type: `${API_SETADMINPARAMETERS}${FETCH_FAILURE}`, error });
+        yield put(apiSetAdminParametersError({ error }));
       }
     },
   ],

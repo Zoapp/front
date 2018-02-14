@@ -33,18 +33,29 @@ export default createReducer(initialState, {
     error: null,
   }),
   [API_ADMIN + FETCH_SUCCESS]: (state, { admin }) => ({
-    ...state, loading: false, error: null, admin: { ...admin },
+    ...state,
+    loading: false,
+    error: null,
+    admin,
   }),
-  [API_ADMIN + FETCH_FAILURE]: (state, { error }) => ({ ...state, loading: false, error }),
+  [API_ADMIN + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }),
 
-  [API_SETADMINPARAMETERS + FETCH_REQUEST]: state => ({ ...state, loading: true, error: null }),
-  [API_SETADMINPARAMETERS + FETCH_SUCCESS]: (state, { params }) => {
-    const admin = { ...state.admin };
-    admin.params = { ...params };
-    return {
-      ...state, loading: false, error: null, admin,
-    };
-  },
+  [API_SETADMINPARAMETERS + FETCH_REQUEST]: state => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [API_SETADMINPARAMETERS + FETCH_SUCCESS]: (state, { params }) => ({
+    ...state,
+    admin: {
+      ...state.admin,
+      params,
+    },
+  }),
   [API_SETADMINPARAMETERS + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
     loading: false,
@@ -61,7 +72,7 @@ export default createReducer(initialState, {
     ...state,
     loading: false,
     error: null,
-    middlewares: [...middlewares],
+    middlewares,
   }),
   [API_GETMIDDLEWARES + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
@@ -77,6 +88,7 @@ export default createReducer(initialState, {
   }),
   [API_SETMIDDLEWARE + FETCH_SUCCESS]: (state, { middleware }) => {
     const middlewares = [];
+
     let v = true;
     state.middlewares.forEach((m) => {
       if (m.id === middleware.id) {
@@ -86,9 +98,11 @@ export default createReducer(initialState, {
         middlewares.push(m);
       }
     });
+
     if (v) {
       middlewares.push({ ...middleware });
     }
+
     return {
       ...state,
       loading: false,
@@ -97,7 +111,11 @@ export default createReducer(initialState, {
       lastMiddleware: { ...middleware },
     };
   },
-  [API_SETMIDDLEWARE + FETCH_FAILURE]: (state, { error }) => ({ ...state, loading: false, error }),
+  [API_SETMIDDLEWARE + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }),
 
   [API_DELETEMIDDLEWARE + FETCH_REQUEST]: state => ({
     ...state,
@@ -112,8 +130,12 @@ export default createReducer(initialState, {
         middlewares.push(m);
       }
     });
+
     return {
-      ...state, loading: false, error: null, middlewares,
+      ...state,
+      loading: false,
+      error: null,
+      middlewares,
     };
   },
   [API_DELETEMIDDLEWARE + FETCH_FAILURE]: (state, { error }) => ({
@@ -123,8 +145,13 @@ export default createReducer(initialState, {
   }),
 
   /* APP section */
-  [APP_SETTITLE]: (state, { titleName }) => ({ ...state, titleName }),
+  [APP_SETTITLE]: (state, { titleName }) => ({
+    ...state,
+    titleName,
+  }),
 
   /* Auth section */
-  [AUTH_SIGNOUT + FETCH_SUCCESS]: state => ({ ...state, ...initialState }),
+  [AUTH_SIGNOUT + FETCH_SUCCESS]: () => ({
+    ...initialState,
+  }),
 });

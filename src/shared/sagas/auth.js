@@ -9,11 +9,13 @@ import {
   AUTH_INIT_SETTINGS,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
-  FETCH_FAILURE,
   FETCH_REQUEST,
-  FETCH_SUCCESS,
 } from "../actions";
-import { signInComplete } from "../actions/auth";
+import {
+  signInComplete,
+  signOutError,
+  signOutComplete,
+} from "../actions/auth";
 import { getAuthService } from "../services";
 
 function* authenticate({ username, password, provider }) {
@@ -21,17 +23,20 @@ function* authenticate({ username, password, provider }) {
     const service = getAuthService(provider);
 
     const response = yield service.authenticateUser({ username, password });
+
     yield put(signInComplete({ attributes: response, provider }));
   } catch (error) {
-    yield put({ type: `${AUTH_SIGNIN}${FETCH_FAILURE}`, provider, error });
+    yield put(signOutError({ provider, error }));
   }
 }
 
 export function* authInit() {
   const service = getAuthService();
+
   if (service.isAccessTokenValid()) {
     const attributes = service.getAttributes();
-    yield put({ type: `${AUTH_SIGNIN}${FETCH_SUCCESS}`, attributes });
+
+    yield put(signInComplete({ attributes }));
   }
 }
 
@@ -40,18 +45,20 @@ export function* signOut(action) {
   try {
     const service = getAuthService(provider);
     yield service.resetAccess();
-    yield put({ type: `${AUTH_SIGNOUT}${FETCH_SUCCESS}`, provider });
+    yield put(signOutComplete({ provider }));
   } catch (error) {
-    yield put({ type: `${AUTH_SIGNOUT}${FETCH_FAILURE}`, provider, error: error.message });
+    yield put(signOutError({ provider, error: error.message }));
   }
 }
 
 export function* signIn(action) {
   const { username, password, provider } = action;
+
   const winner = yield race({
     auth: call(authenticate, { username, password, provider }),
     signOut: take(AUTH_SIGNOUT),
   });
+
   if (winner.auth) {
     // yield put({ type: AUTH_SIGNIN, newAuthState: true });
   } else if (winner.signOut) {
