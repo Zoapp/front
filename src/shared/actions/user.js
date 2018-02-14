@@ -28,7 +28,3 @@ export function apiUserProfileError({ error }) {
     error,
   };
 }
-
-export function apiSaveUserProfileRequest() {
-  return { type: API_USERPROFILE + FETCH_REQUEST };
-}
