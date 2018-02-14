@@ -1,25 +1,14 @@
-/*
-http://redux.js.org/docs/recipes/ReducingBoilerplate.html
-Modified for ESlint and ES6
-*/
+/* eslint arrow-body-style: 0 */
 
-/*
-Why this code isn't working ?
-
-const createReducer = (initialState, handlers) => (state = initialState, action) => {
-  if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
-    return handlers[action.type](state, action);
-  }
-  return state;
-};
-export { createReducer };
-*/
-
-export default function createReducer(initialState, handlers) {
-  return (state = initialState, action) => {
+// Based on: http://redux.js.org/docs/recipes/ReducingBoilerplate.html
+const createReducer = (initialState, handlers) => {
+  return (state = initialState, action = {}) => {
     if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
       return handlers[action.type](state, action);
     }
+
     return state;
   };
-}
+};
+
+export default createReducer;
