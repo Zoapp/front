@@ -21,6 +21,7 @@ const displayWebServiceEditor = (
   const url = parameters.url ? parameters.url : "";
   const classes = parameters.classes ? parameters.classes : "";
   const secret = parameters.secret ? parameters.secret : "";
+
   const content = (
     <div>
       <Textfield
@@ -55,10 +56,16 @@ const displayWebServiceEditor = (
         style={{ width: "100%" }}
         ref={input => setInput(input, "classes")}
       />
-    </div>);
+    </div>
+  );
 
   DialogManager.open({
-    title, content, actions: [action, "Cancel"], actionsDef: [actionDef, "Cancel"], onAction: onEditAction, className,
+    title,
+    content,
+    actions: [action, "Cancel"],
+    actionsDef: [actionDef, "Cancel"],
+    onAction: onEditAction,
+    className,
   });
 };
 
