@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-import { Textfield } from "react-mdl";
+import { TextField } from "zoapp-materialcomponents";
 import { DialogManager } from "zoapp-ui";
 
 const displayWebServiceEditor = (
@@ -21,9 +21,10 @@ const displayWebServiceEditor = (
   const url = parameters.url ? parameters.url : "";
   const classes = parameters.classes ? parameters.classes : "";
   const secret = parameters.secret ? parameters.secret : "";
+
   const content = (
     <div>
-      <Textfield
+      <TextField
         defaultValue={name}
         pattern=".+"
         label="Name"
@@ -31,7 +32,7 @@ const displayWebServiceEditor = (
         style={{ width: "100%" }}
         ref={input => setInput(input, "name")}
       />
-      <Textfield
+      <TextField
         defaultValue={url}
         pattern=".+"
         label="Url"
@@ -39,7 +40,7 @@ const displayWebServiceEditor = (
         style={{ width: "100%" }}
         ref={input => setInput(input, "url")}
       />
-      <Textfield
+      <TextField
         defaultValue={secret}
         pattern=".+"
         label="Secret"
@@ -47,7 +48,7 @@ const displayWebServiceEditor = (
         style={{ width: "100%" }}
         ref={input => setInput(input, "secret")}
       />
-      <Textfield
+      <TextField
         defaultValue={classes}
         pattern=".+"
         label="Classes"
@@ -55,10 +56,16 @@ const displayWebServiceEditor = (
         style={{ width: "100%" }}
         ref={input => setInput(input, "classes")}
       />
-    </div>);
+    </div>
+  );
 
   DialogManager.open({
-    title, content, actions: [action, "Cancel"], actionsDef: [actionDef, "Cancel"], onAction: onEditAction, className,
+    title,
+    content,
+    actions: [action, "Cancel"],
+    actionsDef: [actionDef, "Cancel"],
+    onAction: onEditAction,
+    className,
   });
 };
 
