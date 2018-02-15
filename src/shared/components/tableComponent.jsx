@@ -118,7 +118,10 @@ TableComponent.propTypes = {
   style: PropTypes.objectOf(PropTypes.string),
   headers: PropTypes.arrayOf(PropTypes.string).isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     icon: PropTypes.string,
     name: PropTypes.string,
     values: PropTypes.array,

@@ -130,3 +130,86 @@ exports[`TableComponent renders items 1`] = `
   />
 </div>
 `;
+
+exports[`TableComponent renders items with numerical ids 1`] = `
+<div>
+  <div
+    style={
+      Object {
+        "minHeight": "400px",
+      }
+    }
+  >
+    some title
+    <table
+      className={null}
+      style={
+        Object {
+          "borderSpacing": "0",
+          "width": "100%",
+        }
+      }
+    >
+      <thead>
+        <tr
+          style={
+            Object {
+              "color": "rgba(0, 0, 0, 0.26)",
+              "fontSize": "13px",
+              "height": "56px",
+              "padding": "0 56px 0 0",
+              "textAlign": "left",
+              "verticalAlign": "middle",
+            }
+          }
+        >
+          <th
+            style={
+              Object {
+                "paddingLeft": "24px",
+                "textAlign": "left",
+              }
+            }
+          >
+            header 1
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          className="selectedListItem"
+          onClick={[Function]}
+          style={
+            Object {
+              "color": "rgba(0, 0, 0, 0.87)",
+              "fontSize": "13px",
+            }
+          }
+        >
+          <td
+            style={
+              Object {
+                "borderTop": "1px solid rgba(0, 0, 0, 0.12)",
+                "height": "48px",
+                "verticalAlign": "middle",
+                "width": "48px",
+              }
+            }
+          >
+            
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div
+    style={
+      Object {
+        "borderTop": "1px solid rgba(0, 0, 0, 0.12)",
+        "height": "56px",
+        "width": "100%",
+      }
+    }
+  />
+</div>
+`;
