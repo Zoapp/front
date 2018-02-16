@@ -49,4 +49,24 @@ describe('TableComponent', () => {
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
+
+  it('renders items with numerical ids', () => {
+    const headers = ['header 1'];
+    const items = [
+      newItem({ id: 123, name: 'item 1' }),
+    ];
+
+    const component = renderer.create(
+      <TableComponent
+        headers={headers}
+        items={items}
+        title="some title"
+        onSelect={jest.fn()}
+        selectedItem={0}
+      />
+    );
+
+    let tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 });
