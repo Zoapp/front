@@ -1,10 +1,11 @@
 import { WebService, AuthService, SocketService } from "zoapp-common";
+import defaultConfig from "./config";
 
 let authService;
 
 let webService;
 
-export function initServices(config) {
+export function initServices(config = defaultConfig) {
   const { backend } = config;
 
   let { host, port, path } = backend.auth;
