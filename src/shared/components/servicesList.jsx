@@ -45,7 +45,7 @@ const ServicesList = ({
           >
             <ListItemContent icon={icon} className={color}>{item.name}</ListItemContent>
             <ListItemAction>
-              <IconButton
+              <Icon
                 name="close"
                 onClick={(e) => {
                   e.preventDefault();

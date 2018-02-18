@@ -6,7 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { List } from "react-mdl";
+import { List } from "zoapp-materialcomponents";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import ListDragItem from "./listDragItem";

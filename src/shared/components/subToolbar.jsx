@@ -6,7 +6,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { IconButton, Menu, MenuItem } from "react-mdl";
+import { IconButton, Menu, MenuItem } from "zoapp-materialcomponents";
 import HeaderIcon from "./headerIcon";
 
 const SubToolbar = ({
