@@ -6,7 +6,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { List, ListItem, ListItemContent, ListItemAction, Button, Icon } from "zoapp-materialcomponents";
+import { List, ListItem, ListItemMeta, Button } from "zoapp-materialcomponents";
 
 const ServicesList = ({
   name,
@@ -18,7 +18,6 @@ const ServicesList = ({
     <div className="mrb-subheader">
       <Button
         raised
-        colored
         className="mrb-subheader-right"
         disabled={!!addDisabled}
         onClick={(e) => { e.preventDefault(); if (onSelect) { onSelect({ name, state: "add" }); } }}
@@ -30,11 +29,13 @@ const ServicesList = ({
       items.map((item, index) => {
         const icon = item.status === "start" ? "play_circle_filled" : "play_circle_outline";
         const color = item.status === "start" ? "service_start" : "service_stop";
+        const classes = `selectableListItem ${color}`;
         const key = `sl_${index}`;
         return (
           <ListItem
             key={key}
-            className="selectableListItem"
+            icon={icon}
+            className={classes}
             onClick={(e) => {
               e.preventDefault(); if (onSelect) {
                 onSelect({
@@ -43,18 +44,16 @@ const ServicesList = ({
               }
             }}
           >
-            <ListItemContent icon={icon} className={color}>{item.name}</ListItemContent>
-            <ListItemAction>
-              <Icon
-                name="close"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (onSelect) {
-                    onSelect({ name, state: "delete", index });
-                  }
-                }}
-              />
-            </ListItemAction>
+            {item.name}
+            <ListItemMeta
+              icon="close"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onSelect) {
+                  onSelect({ name, state: "delete", index });
+                }
+              }}
+            />
           </ListItem>
         );
       })
