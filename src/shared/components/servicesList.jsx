@@ -6,7 +6,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { List, ListItem, ListItemContent, ListItemAction, Button, IconButton } from "react-mdl";
+import { List, ListItem, ListItemContent, ListItemAction, Button, Icon } from "zoapp-materialcomponents";
 
 const ServicesList = ({
   name,
@@ -45,7 +45,7 @@ const ServicesList = ({
           >
             <ListItemContent icon={icon} className={color}>{item.name}</ListItemContent>
             <ListItemAction>
-              <IconButton
+              <Icon
                 name="close"
                 onClick={(e) => {
                   e.preventDefault();

@@ -15,7 +15,7 @@ import Rmdc, {
   TextField,
 } from "zoapp-materialcomponents";
 import { connect } from "react-redux";
-import TableComponent from "../components/tableComponent";
+import { TableComponent } from "zoapp-ui";
 import { appSetTitle } from "../actions/app";
 import { apiSetAdminParametersRequest } from "../actions/api";
 
