@@ -58,10 +58,10 @@ const displayWebServiceEditor = (
     </div>
   );
 
-  Rmdc.open({
+  Rmdc.showDialog({
     header: title,
     body: content,
-    actions: [action, "Cancel"],
+    actions: [{ name: action }, { name: "Cancel" }],
     onAction: onEditAction,
     className,
   });
