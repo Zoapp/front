@@ -10,7 +10,6 @@ import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { AppContainer } from "react-hot-loader";
-import { DialogManager } from "zoapp-ui";
 
 import configureStore from "./store";
 import App from "./containers/app";
@@ -22,7 +21,6 @@ export default class Front {
     this.reducers = reducers;
     this.sagas = sagas;
     this.store = configureStore(reducers, sagas, { app: appProperties });
-    DialogManager.init(this.store);
     initServices(appConfig);
     this.mountNode = document.getElementById(tagId);
   }

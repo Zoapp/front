@@ -5,8 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-import { TextField } from "zoapp-materialcomponents";
-import { DialogManager } from "zoapp-ui";
+import Rmdc, { TextField } from "zoapp-materialcomponents";
 
 const displayWebServiceEditor = (
   title,
@@ -59,11 +58,10 @@ const displayWebServiceEditor = (
     </div>
   );
 
-  DialogManager.open({
-    title,
-    content,
-    actions: [action, "Cancel"],
-    actionsDef: [actionDef, "Cancel"],
+  Rmdc.showDialog({
+    header: title,
+    body: content,
+    actions: [{ name: action }, { name: "Cancel" }],
     onAction: onEditAction,
     className,
   });
