@@ -6,7 +6,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { List, ListItem, ListItemContent, Icon } from "react-mdl";
+import { List, ListItem, ListItemContent, Icon } from "zoapp-materialcomponents";
 
 const ListComponent = ({
   items, selectedItem, onSelect, className, style,

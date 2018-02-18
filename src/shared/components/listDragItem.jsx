@@ -7,7 +7,7 @@
 import React, { Component, Children, cloneElement } from "react";
 import PropTypes from "prop-types";
 import { DragSource, DropTarget } from "react-dnd";
-import { ListItemContent } from "react-mdl";
+import { ListItemContent } from "zoapp-materialcomponents";
 
 const itemSource = {
   beginDrag(props) {
