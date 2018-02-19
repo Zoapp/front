@@ -114,9 +114,9 @@ class App extends React.Component {
     const { screens, titleName, appName } = this.props;
     let currentScreen = null;
     screens.forEach((screen) => {
-      if (screen.access === "all" ||
+      if (screen.isDrawerItem && (screen.access === "all" ||
       (this.props.isSignedIn && screen.access === "auth") ||
-      ((!this.props.isSignedIn) && screen.access === "public")) {
+      ((!this.props.isSignedIn) && screen.access === "public"))) {
         let activated = false;
         if (titleName === screen.name) {
           activated = true;
@@ -186,7 +186,7 @@ class App extends React.Component {
               <Link
                 key={item.id}
                 href={`#${item.name}`}
-                to={item.to}
+                to={item.path}
                 activated={item.activated}
                 icon={item.icon}
               >{item.name}

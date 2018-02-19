@@ -21,7 +21,7 @@ const app = {
   screens: [
     {
       id: "1",
-      to: "/",
+      isDrawerItem: true,
       icon: "dashboard",
       name: "Dashboard",
       access: "auth",
@@ -32,7 +32,7 @@ const app = {
     },
     {
       id: "2",
-      to: "/admin",
+      isDrawerItem: true,
       icon: "settings",
       name: "Admin",
       path: "/admin",
@@ -42,7 +42,7 @@ const app = {
     },
     {
       id: "3",
-      to: "/",
+      isDrawerItem: true,
       icon: "home",
       name: "Home",
       path: "*",
@@ -51,7 +51,7 @@ const app = {
     },
     {
       id: "4",
-      to: "/help",
+      isDrawerItem: true,
       name: "Help",
       icon: "help",
       path: "/help",
