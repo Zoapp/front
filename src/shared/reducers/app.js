@@ -66,7 +66,7 @@ export default createReducer(initialState, {
   }),
 
   /* Auth section */
-  [AUTH_SIGNOUT + FETCH_SUCCESS]: () => ({
-    ...initialState,
+  [AUTH_SIGNOUT + FETCH_SUCCESS]: state => ({
+    ...state, ...initialState,
   }),
 });
