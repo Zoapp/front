@@ -1,7 +1,7 @@
-import * as actions from "@shared/actions/app";
-import * as apiActions from "@shared/actions/api";
-import * as authActions from "@shared/actions/auth";
-import reducer, { initialState } from "@shared/reducers/app";
+import * as actions from "shared/actions/app";
+import * as apiActions from "shared/actions/api";
+import * as authActions from "shared/actions/auth";
+import reducer, { initialState } from "shared/reducers/app";
 
 describe("reducers/app", () => {
   it("returns the initial state", () => {
@@ -24,7 +24,7 @@ describe("reducers/app", () => {
   it("stores admin information", () => {
     const admin = {
       conversations: {
-        count: 1
+        count: 1,
       },
     };
 
@@ -61,7 +61,7 @@ describe("reducers/app", () => {
 
     const state = reducer(
       prevState,
-      apiActions.apiSetAdminParametersRequest(params)
+      apiActions.apiSetAdminParametersRequest(params),
     );
     expect(state).toEqual({
       ...prevState,

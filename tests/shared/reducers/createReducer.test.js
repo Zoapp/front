@@ -1,8 +1,8 @@
-import createReducer from "@shared/reducers/createReducer";
+import createReducer from "shared/reducers/createReducer";
 
 describe("reducers/createReducer", () => {
   it("creates a reducer", () => {
-    const initialState = { foo: 'foo' };
+    const initialState = { foo: "foo" };
     const handlers = {};
 
     const reducer = createReducer(initialState, handlers);
@@ -13,17 +13,17 @@ describe("reducers/createReducer", () => {
   });
 
   it("calls a handler if it exists", () => {
-    const initialState = { foo: 'foo' };
+    const initialState = { foo: "foo" };
     const handlers = {
-      'MY_HANDLER': (state) => ({ ...state, foo: 'new-value' }),
+      MY_HANDLER: state => ({ ...state, foo: "new-value" }),
     };
 
     const reducer = createReducer(initialState, handlers);
 
-    const state = reducer(undefined, { type: 'MY_HANDLER' });
+    const state = reducer(undefined, { type: "MY_HANDLER" });
     expect(state).toEqual({
       ...initialState,
-      foo: 'new-value',
+      foo: "new-value",
     });
   });
 });

@@ -1,4 +1,4 @@
-import rootReducer from "@shared/reducers";
+import rootReducer from "shared/reducers";
 
 describe("reducers/index", () => {
   it("combines all the reducers", () => {
