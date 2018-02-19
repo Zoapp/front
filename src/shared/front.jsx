@@ -33,7 +33,7 @@ export default class Front {
       <AppContainer warnings={false}>
         <Provider store={this.store}>
           <BrowserRouter>
-            <Root store={this.store} props={this.appProperties} />
+            <Root store={this.store} />
           </BrowserRouter>
         </Provider>
       </AppContainer>,

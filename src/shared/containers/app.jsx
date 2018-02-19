@@ -221,7 +221,7 @@ App.defaultProps = {
   admin: null,
   appName: "",
   screens: [],
-  design: { toolbar: { type: "permanent" } },
+  design: { drawer: { type: "permanent" } },
 };
 
 App.propTypes = {
