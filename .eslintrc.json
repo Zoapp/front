@@ -5,7 +5,8 @@
         "browser": true,
         "node": false,
         "jquery": false,
-        "mocha": true
+        "mocha": true,
+        "jest": true
     },
     "globals": {
         "logger": true

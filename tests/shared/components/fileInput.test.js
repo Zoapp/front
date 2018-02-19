@@ -1,19 +1,19 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import FileInput from '@shared/components/fileInput';
+import React from "react";
+import renderer from "react-test-renderer";
+import FileInput from "shared/components/fileInput";
 
-describe('FileInput', () => {
-  it('renders correctly', () => {
-    const component = renderer.create(<FileInput />);
+describe("FileInput", () => {
+  it("renders correctly", () => {
+    const component = renderer.create(React.createElement(FileInput));
 
-    let tree = component.toJSON();
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 
-  it('can take an accept prop', () => {
-    const component = renderer.create(<FileInput accept="image/*" />);
+  it("can take an accept prop", () => {
+    const component = renderer.create(React.createElement(FileInput, { accept: "image/*" }));
 
-    let tree = component.toJSON();
+    const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

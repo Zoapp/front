@@ -1,5 +1,5 @@
-import * as actions from "@shared/actions/initialize";
-import reducer, { initialState } from "@shared/reducers/initialize";
+import * as actions from "shared/actions/initialize";
+import reducer, { initialState } from "shared/reducers/initialize";
 
 describe("reducers/initialize", () => {
   it("returns the initial state", () => {

@@ -1,5 +1,5 @@
-import * as actions from "@shared/actions/auth";
-import reducer, { initialState } from "@shared/reducers/auth";
+import * as actions from "shared/actions/auth";
+import reducer, { initialState } from "shared/reducers/auth";
 
 describe("reducers/auth", () => {
   it("returns the initial state", () => {
@@ -9,8 +9,8 @@ describe("reducers/auth", () => {
 
   it("requests sign in with a provider", () => {
     const provider = "some provider";
-    const username = 'johndoe';
-    const password = 'secret';
+    const username = "johndoe";
+    const password = "secret";
 
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
@@ -33,8 +33,8 @@ describe("reducers/auth", () => {
   });
 
   it("requests sign in without a provider", () => {
-    const username = 'johndoe';
-    const password = 'secret';
+    const username = "johndoe";
+    const password = "secret";
 
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
@@ -54,8 +54,8 @@ describe("reducers/auth", () => {
 
   it("signs in a user with a provider", () => {
     const provider = "some provider";
-    const username = 'johndoe';
-    const password = 'secret';
+    const username = "johndoe";
+    const password = "secret";
 
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
@@ -75,8 +75,8 @@ describe("reducers/auth", () => {
   });
 
   it("signs in a user without a provider", () => {
-    const username = 'johndoe';
-    const password = 'secret';
+    const username = "johndoe";
+    const password = "secret";
 
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
@@ -101,7 +101,7 @@ describe("reducers/auth", () => {
 
     const state = reducer(prevState, actions.signInError({
       error,
-      provider
+      provider,
     }));
     expect(state).toEqual({
       ...prevState,

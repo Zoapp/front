@@ -1,5 +1,5 @@
 import { DialogManager } from "zoapp-materialcomponents";
-import displayWebServiceEditor from "@shared/components/displayWebServiceEditor";
+import displayWebServiceEditor from "shared/components/displayWebServiceEditor";
 
 // Mock `zoapp-ui`
 jest.mock("zoapp-ui", () => ({ DialogManager: jest.fn() }));
@@ -25,7 +25,7 @@ describe("displayWebServiceEditor", () => {
       parameters,
       setInput,
       onEditAction,
-      className
+      className,
     );
     expect(DialogManager.open).toHaveBeenCalled();
   });

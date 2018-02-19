@@ -1,6 +1,6 @@
-import * as authActions from "@shared/actions/auth";
-import * as actions from "@shared/actions/user";
-import reducer, { initialState } from "@shared/reducers/user";
+import * as authActions from "shared/actions/auth";
+import * as actions from "shared/actions/user";
+import reducer, { initialState } from "shared/reducers/user";
 
 describe("reducers/user", () => {
   it("returns the initial state", () => {
