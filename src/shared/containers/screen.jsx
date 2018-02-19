@@ -25,14 +25,19 @@ class Screen extends Component {
 
   render() {
     const { children } = this.props;
-    return <div>{children}</div>;
+    return <div style={{ padding: "48px" }}>{children} : activeTab={this.props.activeTab}</div>;
   }
 }
+
+Screen.defaultProps = {
+  activeTab: 0,
+};
 
 Screen.propTypes = {
   children: PropTypes.node.isRequired,
   appSetTitle: PropTypes.func.isRequired,
   screen: PropTypes.shape({}).isRequired,
+  activeTab: PropTypes.number,
 };
 
 const mapStateToProps = (state) => {

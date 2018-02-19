@@ -16,11 +16,14 @@ import App from "./containers/app";
 import { initServices } from "./services";
 
 export default class Front {
-  constructor(tagId, appProperties, appConfig, reducers = {}, sagas = {}) {
+  constructor(tagId, appProperties, appConfig, { store, reducers = {}, sagas = {} } = { }) {
     this.appProperties = appProperties;
-    this.reducers = reducers;
-    this.sagas = sagas;
-    this.store = configureStore(reducers, sagas, { app: appProperties });
+
+    if (store) {
+      this.store = store;
+    } else {
+      this.store = configureStore(reducers, sagas, { app: appProperties });
+    }
     initServices(appConfig);
     this.mountNode = document.getElementById(tagId);
   }
@@ -30,7 +33,7 @@ export default class Front {
       <AppContainer warnings={false}>
         <Provider store={this.store}>
           <BrowserRouter>
-            <Root store={this.store} props={this.appProperties} />
+            <Root store={this.store} />
           </BrowserRouter>
         </Provider>
       </AppContainer>,

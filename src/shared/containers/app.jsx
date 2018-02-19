@@ -26,7 +26,7 @@ class App extends React.Component {
     const { type: drawer, above: aboveToolbar, themeDark: drawerThemeDark } = props.design.drawer;
     this.state = {
       needUpdate: true,
-      activeTab: 0,
+      activeTab: props.activeTab,
       drawer,
       drawerOpen: false,
       drawerThemeDark,
@@ -74,21 +74,12 @@ class App extends React.Component {
     this.todo = {};
   }
 
-  handleDrawerChange = (name, index) => {
-    let drawer = name;
-    let aboveToolbar = false;
-    const drawerOpen = false;
-    if (index < 2) {
-      drawer = "permanent";
-      if (index === 1) {
-        aboveToolbar = true;
-      }
-    }
-    this.setState({
-      drawer, activeTab: 0, aboveToolbar, drawerOpen,
-    });
-    const screen = this.props.screens[index];
-    this.props.appSetTitle(screen.name);
+  handleToolbarTabChange = (name, index) => {
+    this.setState({ activeTab: index });
+  }
+
+  handleDisplayScreen = () => {
+    this.setState({ activeTab: 0 });
   }
 
   toggleDrawer = () => {
@@ -114,9 +105,9 @@ class App extends React.Component {
     const { screens, titleName, appName } = this.props;
     let currentScreen = null;
     screens.forEach((screen) => {
-      if (screen.access === "all" ||
+      if (screen.isDrawerItem && (screen.access === "all" ||
       (this.props.isSignedIn && screen.access === "auth") ||
-      ((!this.props.isSignedIn) && screen.access === "public")) {
+      ((!this.props.isSignedIn) && screen.access === "public"))) {
         let activated = false;
         if (titleName === screen.name) {
           activated = true;
@@ -140,7 +131,10 @@ class App extends React.Component {
       if (currentScreen.panels) {
         tabbar = (
           <ToolbarSection>
-            <Tabbar>
+            <Tabbar
+              onChange={this.handleToolbarTabChange}
+              activeTab={this.state.activeTab}
+            >
               {currentScreen.panels.map((p, index) => {
                 const k = `t_${index}`;
                 return (<Tab key={k}>{p}</Tab>);
@@ -186,7 +180,8 @@ class App extends React.Component {
               <Link
                 key={item.id}
                 href={`#${item.name}`}
-                to={item.to}
+                onClick={this.handleDisplayScreen}
+                to={item.path}
                 activated={item.activated}
                 icon={item.icon}
               >{item.name}
@@ -201,7 +196,7 @@ class App extends React.Component {
                 path={screen.path}
                 render={(props) => {
                   if (screen.render) {
-                    return screen.render({ screen, activeTab: this.state.activeTab, ...props });
+                    return screen.render({ ...props, screen, activeTab: this.state.activeTab });
                   }
                   return <Screen screen={screen}>{screen.name}</Screen>;
                 }}
@@ -221,7 +216,8 @@ App.defaultProps = {
   admin: null,
   appName: "",
   screens: [],
-  design: { toolbar: { type: "permanent" } },
+  design: { drawer: { type: "permanent" } },
+  activeTab: 0,
 };
 
 App.propTypes = {
@@ -237,8 +233,9 @@ App.propTypes = {
     drawer: PropTypes.shape({ type: PropTypes.string }),
   }),
   initAuthSettings: PropTypes.func.isRequired,
-  appSetTitle: PropTypes.func.isRequired,
+  /* appSetTitle: PropTypes.func.isRequired, */
   apiAdminRequest: PropTypes.func.isRequired,
+  activeTab: PropTypes.number,
 };
 
 const mapStateToProps = (state) => {

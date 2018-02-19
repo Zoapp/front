@@ -12,7 +12,7 @@ export default class ProcessingDialog extends Component {
   constructor(props) {
     super(props);
     const { open } = props;
-    this.state = { openDialog: open, id: props.id };
+    this.state = { openDialog: open };
   }
 
   componentWillReceiveProps(props) {
@@ -40,10 +40,9 @@ export default class ProcessingDialog extends Component {
     return (
       <Dialog
         open={this.state.openDialog}
-        id={this.state.id}
         onClose={this.handleCloseDialog}
         header="Processing"
-        width="320px"
+        style={{ width: "320px" }}
       >
         <DialogBody>
                   Please wait ...
@@ -56,12 +55,10 @@ export default class ProcessingDialog extends Component {
 
 ProcessingDialog.defaultProps = {
   open: true,
-  id: null,
   onClosed: null,
 };
 
 ProcessingDialog.propTypes = {
   open: PropTypes.bool,
-  id: PropTypes.string,
   onClosed: PropTypes.func,
 };
