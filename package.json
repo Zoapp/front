@@ -10,8 +10,8 @@
     "compile": "yarn clean-dist && babel src/shared -d dist && cp -f ./package.json ./dist/package.json && cp -f ./LICENSE ./dist/LICENSE && cp -f ./README.md ./dist/README.md",
     "compile:dev": "webpack --env=dev --progress --profile --colors",
     "dev": "yarn compile:dev && yarn start:dev",
-    "lint": "eslint src/shared --ext=js --ext=jsx",
-    "test": "eslint tests/shared --ext=js && jest",
+    "lint": "eslint src/shared --ext=js --ext=jsx && eslint tests/shared --ext=js",
+    "test": "jest",
     "start:dev": "webpack-dev-server --env=dev --inline",
     "willPublish": "yarn run lint && yarn run test && yarn run compile",
     "distribute": "yarn willPublish && npm publish ./dist"
