@@ -1,6 +1,6 @@
 {
   "name": "zoapp-front",
-  "version": "0.2.4",
+  "version": "0.3.1",
   "description": "Javascript ES7 React Frontend",
   "author": "Mik BRY <mik@zoapp.com>",
   "license": "MIT",
@@ -46,8 +46,8 @@
     "redux-saga": "0.16.0",
     "style-loader": "^0.19.1",
     "zoapp-common": "0.1.2",
-    "zoapp-materialcomponents": "0.2.3",
-    "zoapp-ui": "0.3.0"
+    "zoapp-materialcomponents": "0.2.11",
+    "zoapp-ui": "0.4.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

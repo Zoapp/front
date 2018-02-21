@@ -73,4 +73,5 @@ const app = {
 
 const front = new Front("app", app, config);
 
-front.start();
+front.start(true);
+

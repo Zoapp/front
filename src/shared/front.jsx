@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-// TODO
+
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
@@ -47,13 +47,15 @@ export default class Front {
     /* eslint-enable global-require */
     this.renderApp(defaultApp);
   }
-  start() {
+
+  start(hmd = false) {
+    this.renderApp(App);
+
     /* global module */
-    if (module.hot) {
+    if (hmd && module.hot) {
       module.hot.accept("./containers/app", () => {
         this.restart();
       });
     }
-    this.renderApp(App);
   }
 }
