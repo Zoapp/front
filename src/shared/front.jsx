@@ -28,12 +28,12 @@ export default class Front {
     this.mountNode = document.getElementById(tagId);
   }
 
-  renderApp = (Root) => {
+  renderApp = (Main) => {
     render(
       <AppContainer warnings={false}>
         <Provider store={this.store}>
           <BrowserRouter>
-            <Root store={this.store} />
+            <Main store={this.store} />
           </BrowserRouter>
         </Provider>
       </AppContainer>,
@@ -41,18 +41,18 @@ export default class Front {
     );
   };
 
+  restart() {
+    /* eslint-disable global-require */
+    const defaultApp = require("./containers/app").default;
+    /* eslint-enable global-require */
+    this.renderApp(defaultApp);
+  }
   start() {
     /* global module */
     if (module.hot) {
-      /* eslint-disable global-require */
-      /* eslint-disable no-undef */
-      // const rootPath = "./shared/container/app";
       module.hot.accept("./containers/app", () => {
-        const newApp = require("./containers/app").default;
-        this.renderApp(newApp);
+        this.restart();
       });
-      /* eslint-enable no-undef */
-      /* eslint-enable global-require */
     }
     this.renderApp(App);
   }

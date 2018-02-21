@@ -9,7 +9,6 @@ import Rmdc, {
   Button, Content, Fab, Snackbar, Tabbar, Tab,
   Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon,
   Drawer, DrawerContent,
-  Dialog,
 } from "zoapp-materialcomponents";
 import PropTypes from "prop-types";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
@@ -60,14 +59,6 @@ class App extends React.Component {
       this.setState({ needUpdate: false });
       this.props.apiAdminRequest();
     }
-  }
-
-  handleDialog = () => {
-    const dialog = (
-      <Dialog header="Are you happy?" actions={[{ name: "Cancel" }, { name: "Continue" }]}>
-        <div>Please check the left and right side of this element for fun.</div>
-      </Dialog>);
-    Rmdc.showDialog(dialog);
   }
 
   handleTimeoutError() {
@@ -127,6 +118,7 @@ class App extends React.Component {
     });
     let tabbar;
     let toolbox;
+    let fab;
     if (currentScreen) {
       if (currentScreen.panels) {
         tabbar = (
@@ -147,9 +139,23 @@ class App extends React.Component {
           <ToolbarSection align="end" >
             {currentScreen.toolbox.map((p, index) => {
               const k = `tb_${index}`;
-              return (<Button key={k} raised style={{ marginRight: "48px" }}>{p}</Button>);
+              return (
+                <Button
+                  key={k}
+                  raised
+                  style={{ marginRight: "48px" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    p.onAction(p);
+                  }}
+                >
+                  {p.title}
+                </Button>);
             })}
           </ToolbarSection>);
+      }
+      if (currentScreen.fab) {
+        fab = <Fab icon={currentScreen.fab.icon} onClick={currentScreen.fab.onAction} />;
       }
     }
     return (
@@ -204,7 +210,7 @@ class App extends React.Component {
             ))}
           </Switch>
         </Content>
-        <Fab icon="favorite" onClick={this.handleDialog} />
+        {fab}
         <Snackbar message={message} />
       </Content>
     );
