@@ -121,15 +121,26 @@ class App extends React.Component {
     let fab;
     if (currentScreen) {
       if (currentScreen.panels) {
+        const ac = "var(--mdc-theme-text-primary-on-primary, white)";
+        const c = "rgba(255, 255, 255, 0.54)";
         tabbar = (
           <ToolbarSection>
             <Tabbar
               onChange={this.handleToolbarTabChange}
               activeTab={this.state.activeTab}
+              color={c}
+              activeColor={ac}
             >
               {currentScreen.panels.map((p, index) => {
                 const k = `t_${index}`;
-                return (<Tab key={k}>{p}</Tab>);
+                return (
+                  <Tab
+                    key={k}
+                    style={{ minWidth: "80px", width: "80px" }}
+                    ripple
+                  >
+                    {p}
+                  </Tab>);
               })}
             </Tabbar>
           </ToolbarSection>);

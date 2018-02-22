@@ -25,7 +25,10 @@ class Screen extends Component {
 
   render() {
     const { children } = this.props;
-    return <div style={{ padding: "48px" }}>{children} : activeTab={this.props.activeTab}</div>;
+    return (
+      <div style={{ padding: "48px" }}>
+        {children} : activeTab={this.props.activeTab}
+      </div>);
   }
 }
 
