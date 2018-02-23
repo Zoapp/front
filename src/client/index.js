@@ -9,6 +9,7 @@ import Front from "Zoapp/front";
 import Screen from "Zoapp/containers/screen";
 import Rmdc from "zoapp-materialcomponents";
 import config from "../../config/default.json";
+import { appSetMessage } from "../shared/actions/app";
 
 const handleAction = () => {
   Rmdc.showDialog({
@@ -75,3 +76,4 @@ const front = new Front("app", app, config);
 
 front.start(true);
 
+front.store.dispatch(appSetMessage({ message: "Welcome Dude !" }));

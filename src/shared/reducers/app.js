@@ -9,6 +9,8 @@ import {
   API_ADMIN,
   API_SETADMINPARAMETERS,
   APP_SETTITLE,
+  APP_SETMESSAGE,
+  APP_REMOVEMESSAGE,
   AUTH_SIGNOUT,
   FETCH_FAILURE,
   FETCH_REQUEST,
@@ -63,6 +65,16 @@ export default createReducer(initialState, {
   [APP_SETTITLE]: (state, { titleName }) => ({
     ...state,
     titleName,
+  }),
+
+  [APP_SETMESSAGE]: (state, { message }) => ({
+    ...state,
+    message,
+  }),
+
+  [APP_REMOVEMESSAGE]: state => ({
+    ...state,
+    message: null,
   }),
 
   /* Auth section */

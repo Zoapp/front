@@ -50,7 +50,6 @@ export default class Front {
 
   start(hmd = false) {
     this.renderApp(App);
-
     /* global module */
     if (hmd && module.hot) {
       module.hot.accept("./containers/app", () => {
