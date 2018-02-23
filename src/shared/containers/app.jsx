@@ -8,15 +8,14 @@ import React from "react";
 import Rmdc, {
   Button, Content, Fab, Snackbar, Tabbar, Tab,
   Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon,
-  Drawer, DrawerContent,
-  Dialog,
+  Drawer, DrawerHeader, DrawerContent,
 } from "zoapp-materialcomponents";
 import PropTypes from "prop-types";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import Screen from "./screen";
 import UserBox from "./userBox";
-import { appSetTitle } from "../actions/app";
+import { appSetTitle, appRemoveLastMessage } from "../actions/app";
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest } from "../actions/api";
 
@@ -24,6 +23,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const { type: drawer, above: aboveToolbar, themeDark: drawerThemeDark } = props.design.drawer;
+    const snackbar = this.props.message;
     this.state = {
       needUpdate: true,
       activeTab: props.activeTab,
@@ -31,6 +31,7 @@ class App extends React.Component {
       drawerOpen: false,
       drawerThemeDark,
       aboveToolbar,
+      snackbar,
     };
   }
 
@@ -38,6 +39,14 @@ class App extends React.Component {
     this.props.initAuthSettings();
     this.updateAdmin();
     Rmdc.init(this, { typography: true });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let snackbar = nextProps.message;
+    if ((!snackbar) && nextProps.error) {
+      snackbar = { message: nextProps.error };
+    }
+    this.setState({ snackbar });
   }
 
   componentDidUpdate() {
@@ -60,14 +69,6 @@ class App extends React.Component {
       this.setState({ needUpdate: false });
       this.props.apiAdminRequest();
     }
-  }
-
-  handleDialog = () => {
-    const dialog = (
-      <Dialog header="Are you happy?" actions={[{ name: "Cancel" }, { name: "Continue" }]}>
-        <div>Please check the left and right side of this element for fun.</div>
-      </Dialog>);
-    Rmdc.showDialog(dialog);
   }
 
   handleTimeoutError() {
@@ -96,10 +97,6 @@ class App extends React.Component {
     if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
       isLoading = true;
     }
-    let message = "Welcome";
-    if (this.props.error) {
-      message = this.props.error;
-    }
     const items = [];
     const routes = [];
     const { screens, titleName, appName } = this.props;
@@ -127,17 +124,29 @@ class App extends React.Component {
     });
     let tabbar;
     let toolbox;
+    let fab;
     if (currentScreen) {
       if (currentScreen.panels) {
+        const ac = "var(--mdc-theme-text-primary-on-primary, white)";
+        const c = "rgba(255, 255, 255, 0.54)";
         tabbar = (
           <ToolbarSection>
             <Tabbar
               onChange={this.handleToolbarTabChange}
               activeTab={this.state.activeTab}
+              color={c}
+              activeColor={ac}
             >
               {currentScreen.panels.map((p, index) => {
                 const k = `t_${index}`;
-                return (<Tab key={k}>{p}</Tab>);
+                return (
+                  <Tab
+                    key={k}
+                    style={{ minWidth: "80px", width: "80px" }}
+                    ripple
+                  >
+                    {p}
+                  </Tab>);
               })}
             </Tabbar>
           </ToolbarSection>);
@@ -147,10 +156,32 @@ class App extends React.Component {
           <ToolbarSection align="end" >
             {currentScreen.toolbox.map((p, index) => {
               const k = `tb_${index}`;
-              return (<Button key={k} raised style={{ marginRight: "48px" }}>{p}</Button>);
+              return (
+                <Button
+                  key={k}
+                  raised
+                  style={{ marginRight: "48px", backgroundColor: "var(--mdc-theme-secondary, #018786)" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    p.onAction(p);
+                  }}
+                >
+                  {p.title}
+                </Button>);
             })}
           </ToolbarSection>);
       }
+      if (currentScreen.fab) {
+        fab = <Fab icon={currentScreen.fab.icon} onClick={currentScreen.fab.onAction} />;
+      }
+    }
+    let snackbar;
+    if (this.state.snackbar) {
+      snackbar = (
+        <Snackbar
+          message={this.state.snackbar.message}
+          onTimeout={() => { this.props.appRemoveLastMessage(); }}
+        />);
     }
     return (
       <Content>
@@ -175,6 +206,14 @@ class App extends React.Component {
           onClose={this.toggleDrawer}
           themeDark={this.state.drawerThemeDark}
         >
+          <DrawerHeader
+            style={{
+              backgroundColor: "var(--mdc-theme-secondary-dark, #004040)",
+              color: "var(--mdc-theme-text-primary-on-primary, white)",
+            }}
+          >
+            {appName}
+          </DrawerHeader>
           <DrawerContent list>
             {items.map(item => (
               <Link
@@ -204,8 +243,8 @@ class App extends React.Component {
             ))}
           </Switch>
         </Content>
-        <Fab icon="favorite" onClick={this.handleDialog} />
-        <Snackbar message={message} />
+        {fab}
+        {snackbar}
       </Content>
     );
   }
@@ -213,6 +252,7 @@ class App extends React.Component {
 
 App.defaultProps = {
   error: null,
+  message: null,
   admin: null,
   appName: "",
   screens: [],
@@ -226,6 +266,7 @@ App.propTypes = {
   titleName: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.shape({}),
+  message: PropTypes.shape({}),
   admin: PropTypes.shape({}),
   appName: PropTypes.string,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
@@ -235,6 +276,7 @@ App.propTypes = {
   initAuthSettings: PropTypes.func.isRequired,
   /* appSetTitle: PropTypes.func.isRequired, */
   apiAdminRequest: PropTypes.func.isRequired,
+  appRemoveLastMessage: PropTypes.func.isRequired,
   activeTab: PropTypes.number,
 };
 
@@ -254,14 +296,18 @@ const mapStateToProps = (state) => {
   } else if ((!error) && state.user && state.user.error) {
     ({ error } = state.user);
   }
+  const { message } = state.app;
   return {
-    admin, isLoading, isSignedIn, titleName, error, screens, appName: name, design,
+    admin, isLoading, isSignedIn, titleName, error, screens, appName: name, design, message,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   appSetTitle: (titleName) => {
     dispatch(appSetTitle(titleName));
+  },
+  appRemoveLastMessage: () => {
+    dispatch(appRemoveLastMessage());
   },
   initAuthSettings: () => {
     dispatch(initAuthSettings());

@@ -7,7 +7,17 @@
 import React from "react";
 import Front from "Zoapp/front";
 import Screen from "Zoapp/containers/screen";
+import Rmdc from "zoapp-materialcomponents";
 import config from "../../config/default.json";
+import { appSetMessage } from "../shared/actions/app";
+
+const handleAction = () => {
+  Rmdc.showDialog({
+    header: "Are you happy?",
+    body: "Please check the left and right side of this element for fun.",
+    actions: [{ name: "Cancel" }, { name: "Continue" }],
+  });
+};
 
 const app = {
   name: "Zoapp",
@@ -27,7 +37,8 @@ const app = {
       access: "auth",
       path: "/",
       panels: ["Panel 1", "Panel 2"],
-      toolbox: ["todo"],
+      toolbox: [{ title: "todo", onAction: handleAction }],
+      fab: { icon: "favorite", onAction: handleAction },
       render: props => React.createElement(Screen, props, "Dashboard"),
     },
     {
@@ -63,4 +74,6 @@ const app = {
 
 const front = new Front("app", app, config);
 
-front.start();
+front.start(true);
+
+front.store.dispatch(appSetMessage({ message: "Welcome Dude !" }));
