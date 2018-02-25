@@ -6,13 +6,13 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Rmdc, { Dialog, DialogFooter, DialogBody, Button } from "zoapp-materialcomponents";
+import Zrmc, { Dialog, DialogFooter, DialogBody, Button } from "zrmc";
 import { connect } from "react-redux";
 import { signOut } from "../actions/auth";
 
 class SignOutDialog extends Component {
   handleCloseDialog = () => {
-    Rmdc.closeDialog();
+    Zrmc.closeDialog();
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }

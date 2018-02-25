@@ -6,13 +6,13 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Rmdc, { Button, Card, CardText, CardActions, FormField, TextField } from "zoapp-materialcomponents";
+import Zrmc, { Button, Card, CardText, CardActions, FormField, TextField } from "zrmc";
 import { connect } from "react-redux";
 import { signIn } from "../actions/auth";
 
 class SignInForm extends Component {
   handleCloseDialog = () => {
-    Rmdc.closeDialog();
+    Zrmc.closeDialog();
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }

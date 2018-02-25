@@ -1,4 +1,4 @@
-import { DialogManager } from "zoapp-materialcomponents";
+import { DialogManager } from "zrmc";
 import displayWebServiceEditor from "shared/components/displayWebServiceEditor";
 
 // Mock `zoapp-ui`

@@ -5,11 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-import Rmdc, {
+import Zrmc, {
   Button, Content, Fab, Snackbar, Tabbar, Tab,
   Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, ToolbarIcon,
   Drawer, DrawerHeader, DrawerContent,
-} from "zoapp-materialcomponents";
+} from "zrmc";
 import PropTypes from "prop-types";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -38,7 +38,7 @@ class App extends React.Component {
   componentDidMount() {
     this.props.initAuthSettings();
     this.updateAdmin();
-    Rmdc.init(this, { typography: true });
+    Zrmc.init(this, { typography: true });
   }
 
   componentWillReceiveProps(nextProps) {

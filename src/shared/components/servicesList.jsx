@@ -6,7 +6,7 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { List, ListItem, ListItemMeta, Button } from "zoapp-materialcomponents";
+import { List, ListItem, ListItemMeta, Button } from "zrmc";
 
 const ServicesList = ({
   name,
