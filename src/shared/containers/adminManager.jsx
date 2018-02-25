@@ -6,14 +6,14 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Rmdc, {
+import Zrmc, {
   Grid,
   Inner,
   Cell,
   Button,
   Content,
   TextField,
-} from "zoapp-materialcomponents";
+} from "zrmc";
 import { connect } from "react-redux";
 import { TableComponent } from "zoapp-ui";
 import { appSetTitle } from "../actions/app";
@@ -35,7 +35,7 @@ const infoStyleD = {
 class AdminManager extends Component {
   static onActionTunnel() {
     // console.log("onActionTunnel", dialog, action);
-    Rmdc.closeDialog();
+    Zrmc.closeDialog();
   }
 
   constructor(props) {
@@ -80,7 +80,7 @@ class AdminManager extends Component {
     // const backend = this.state.backendParams || params.backend || { };
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || { };
     /* const content = <div>Tunnel</div>;
-    Rmdc.showDialog({
+    Zrmc.showDialog({
       title: "Tunnel settings",
       content,
       width: "520px",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardText, CardActions } from "zoapp-materialcomponents";
+import { Card, CardText, CardActions } from "zrmc";
 
 const Loading = () => (
   <Card

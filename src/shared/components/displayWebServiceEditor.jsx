@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from "react";
-import Rmdc, { TextField } from "zoapp-materialcomponents";
+import Zrmc, { TextField } from "zrmc";
 
 const displayWebServiceEditor = (
   title,
@@ -58,7 +58,7 @@ const displayWebServiceEditor = (
     </div>
   );
 
-  Rmdc.showDialog({
+  Zrmc.showDialog({
     header: title,
     body: content,
     actions: [{ name: action }, { name: "Cancel" }],

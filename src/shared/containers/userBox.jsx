@@ -6,12 +6,12 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Rmdc, {
+import Zrmc, {
   Button,
   ToolbarSection,
   ToolbarIcon,
   Menu, MenuItem,
-} from "zoapp-materialcomponents";
+} from "zrmc";
 import { connect } from "react-redux";
 import { apiUserProfileRequest } from "../actions/user";
 import SignInDialog from "./signInDialog";
@@ -26,12 +26,12 @@ class UserBox extends Component {
 
   handleOpenSignInDialog = () => {
     const dialog = <SignInDialog store={this.props.store} />;
-    Rmdc.showDialog(dialog);
+    Zrmc.showDialog(dialog);
   }
 
   handleOpenSignOutDialog = () => {
     const dialog = (<SignOutDialog store={this.props.store} />);
-    Rmdc.showDialog(dialog);
+    Zrmc.showDialog(dialog);
   }
 
   render() {

@@ -7,12 +7,12 @@
 import React from "react";
 import Front from "Zoapp/front";
 import Screen from "Zoapp/containers/screen";
-import Rmdc from "zoapp-materialcomponents";
+import Zrmc from "zrmc";
 import config from "../../config/default.json";
 import { appSetMessage } from "../shared/actions/app";
 
 const handleAction = () => {
-  Rmdc.showDialog({
+  Zrmc.showDialog({
     header: "Are you happy?",
     body: "Please check the left and right side of this element for fun.",
     actions: [{ name: "Cancel" }, { name: "Continue" }],
