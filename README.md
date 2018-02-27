@@ -4,6 +4,9 @@
 Status](https://travis-ci.org/Zoapp/front.svg?branch=master)](https://travis-ci.org/Zoapp/front)
 [![GitHub
 license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zoapp/front/blob/master/LICENSE)
+[![npm
+version](https://badge.fury.io/js/zoapp-front.svg)](https://badge.fury.io/js/zoapp-front)
+
 
 Javascript ES7 React Zoapp frontend client
 
