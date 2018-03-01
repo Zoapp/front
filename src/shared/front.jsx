@@ -9,7 +9,6 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { AppContainer } from "react-hot-loader";
 
 import configureStore from "./store";
 import App from "./containers/app";
@@ -24,37 +23,28 @@ export default class Front {
     } else {
       this.store = configureStore(reducers, sagas, { app: appProperties });
     }
+
     initServices(appConfig);
+
     this.mountNode = document.getElementById(tagId);
   }
 
   renderApp = (Main) => {
     render(
-      <AppContainer warnings={false}>
-        <Provider store={this.store}>
-          <BrowserRouter>
-            <Main store={this.store} />
-          </BrowserRouter>
-        </Provider>
-      </AppContainer>,
+      <Provider store={this.store}>
+        <BrowserRouter>
+          <Main store={this.store} />
+        </BrowserRouter>
+      </Provider>,
       this.mountNode,
     );
   };
 
   restart() {
-    /* eslint-disable global-require */
-    const defaultApp = require("./containers/app").default;
-    /* eslint-enable global-require */
-    this.renderApp(defaultApp);
+    this.renderApp(App);
   }
 
-  start(hmd = false) {
+  start() {
     this.renderApp(App);
-    /* global module */
-    if (hmd && module.hot) {
-      module.hot.accept("./containers/app", () => {
-        this.restart();
-      });
-    }
   }
 }
