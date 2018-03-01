@@ -13,6 +13,8 @@ import Zrmc, {
 import PropTypes from "prop-types";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { hot } from "react-hot-loader";
+
 import Screen from "./screen";
 import UserBox from "./userBox";
 import { appSetTitle, appRemoveLastMessage } from "../actions/app";
@@ -317,4 +319,5 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+/* global module */
+export default hot(module)(withRouter(connect(mapStateToProps, mapDispatchToProps)(App)));

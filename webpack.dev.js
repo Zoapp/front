@@ -5,7 +5,6 @@ const webpack = require("webpack");
 
 module.exports = merge(commonConfig, {
   entry: [
-    "react-hot-loader/patch",
     "webpack-dev-server/client?http://localhost:3031",
     "webpack/hot/only-dev-server",
     "./client/index.js"
@@ -30,5 +29,6 @@ module.exports = merge(commonConfig, {
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
   ]
 });
