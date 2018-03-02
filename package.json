@@ -76,6 +76,7 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "^7.5.1",
+    "html-webpack-plugin": "^3.0.4",
     "jest": "^22.2.2",
     "mocha": "^4.1.0",
     "nodemon": "^1.14.11",
