@@ -37,13 +37,14 @@ class UserBox extends Component {
   render() {
     if (this.props.isSignedIn) {
       const username = this.props.profile ? this.props.profile.username : "";
-      // const avatarClass = this.props.profile ? `${this.props.profile.avatar}-icon` : "";
+
       let avatar = this.props.profile ? this.props.profile.avatar : null;
       if ((!avatar) || avatar === "default") {
         avatar = "account_circle";
       } else {
         avatar = "account_circle";
       }
+
       return (
         <ToolbarSection align="end" shrinkToFit >
           <div style={{ margin: "auto 24px auto 12px" }}>
@@ -65,18 +66,8 @@ class UserBox extends Component {
 
         </ToolbarSection>
       );
-      /* return (
-        <div style={this.props.style} >{username}
-          <IconButton name={avatar} id="profile-menu" className={avatarClass} />
-          <Menu target="profile-menu" align="right">
-            <MenuItem disabled>Profile</MenuItem>
-            <MenuItem disabled>Settings</MenuItem>
-            <MenuItem onClick={(e) => { e.preventDefault(); this.handleOpenSignOutDialog(); }}>
-              Sign out
-            </MenuItem>
-          </Menu>
-        </div>); */
     }
+
     return (
       <ToolbarSection align="end" shrinkToFit >
         <Button
@@ -91,18 +82,6 @@ class UserBox extends Component {
         </Button>
       </ToolbarSection>
     );
-    /* return (
-      <div>
-        <Button onClick={(e) => { e.preventDefault(); this.handleOpenSignInDialog(); }}>
-          SignIn
-        </Button>
-        <IconButton name="account_circle" id="profile-menu" />
-        <Menu target="profile-menu" align="right">
-          <MenuItem disabled>Recover password</MenuItem>
-          <MenuItem disabled>Sign up</MenuItem>
-          <MenuItem disabled>Help</MenuItem>
-        </Menu>
-      </div>); */
   }
 }
 

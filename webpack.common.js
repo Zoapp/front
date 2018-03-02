@@ -1,18 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   context: path.resolve(__dirname, "./src/"),
-  entry: {
-    app: "./client/index.js"
-  },
   output: {
-    path: path.resolve(__dirname, "./dist/public/js"),
-    filename: "app.js",
+    path: path.resolve(__dirname, "./dist/public"),
+    filename: "js/app.js",
     publicPath: "/",
-    hotUpdateChunkFilename: "hot/hot-update.js",
-    hotUpdateMainFilename: "hot/hot-update.json"
   },
   resolve: {
     extensions: [".js", ".jsx"],
@@ -39,8 +35,8 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: "./public",
-        to: path.resolve(__dirname, "./dist/public"),
+        from: "./public/images",
+        to: path.resolve(__dirname, "./dist/public/images"),
         force: true
       },
       {
@@ -53,6 +49,11 @@ module.exports = {
         to: path.resolve(__dirname, "./dist/package.json"),
         force: true
       }
-    ])
+    ]),
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      path: path.resolve(__dirname, "./dist/public"),
+      template: "./public/index.html",
+    }),
   ]
 };

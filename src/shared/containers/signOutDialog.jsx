@@ -33,7 +33,7 @@ class SignOutDialog extends Component {
         width="320px"
       >
         <DialogBody>
-          <div>Are you ok ? </div>
+          <div>You are about to sign out, are you sure?</div>
         </DialogBody>
         <DialogFooter>
           <Button type="cancel" onClick={(e) => { e.preventDefault(); this.handleCloseDialog(); }}>Cancel</Button>

@@ -75,5 +75,9 @@ const app = {
 const front = new Front("app", app, config);
 
 front.start(true);
-
 front.store.dispatch(appSetMessage({ message: "Welcome Dude !" }));
+
+/* global module */
+if (module.hot) {
+  module.hot.accept();
+}
