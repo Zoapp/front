@@ -48,7 +48,7 @@
     "style-loader": "^0.19.1",
     "zoapp-common": "0.1.2",
     "zoapp-ui": "0.4.7",
-    "zrmc": "0.3.8"
+    "zrmc": "^0.8.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
