@@ -162,7 +162,7 @@ class App extends React.Component {
                 <Button
                   key={k}
                   raised
-                  style={{ marginRight: "48px", backgroundColor: "var(--mdc-theme-secondary, #018786)" }}
+                  style={{ margin: "auto 48px auto auto", backgroundColor: "var(--mdc-theme-secondary, #018786)" }}
                   onClick={(e) => {
                     e.preventDefault();
                     p.onAction(p);
