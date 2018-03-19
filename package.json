@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "clean-dist": "rm -r -f dist && mkdir -p dist/public/css",
+    "clean-dist": "rm -r -f dist && shx mkdir -p dist/public/css",
     "compile": "yarn compile:css && babel src/shared -d dist && cp -f ./package.json ./dist/package.json && cp -f ./LICENSE ./dist/LICENSE && cp -f ./README.md ./dist/README.md",
     "compile:css": "yarn clean-dist && cleancss -o dist/public/css/compressed.css node_modules/zrmc/compressed.css node_modules/zoapp-ui/compressed.css",
     "compile:dev": "yarn compile:css && webpack --env=dev --progress --profile --colors",
@@ -81,6 +81,7 @@
     "mocha": "^4.1.0",
     "nodemon": "^1.14.11",
     "react-test-renderer": "^16.2.0",
+    "shx": "^0.2.2",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.0",
     "webpack-merge": "^4.1.1"
