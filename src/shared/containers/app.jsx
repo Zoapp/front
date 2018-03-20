@@ -17,7 +17,8 @@ import { hot } from "react-hot-loader";
 
 import Screen from "./screen";
 import UserBox from "./userBox";
-import { appSetTitle, appRemoveLastMessage } from "../actions/app";
+import { appSetTitle } from "../actions/app";
+import { removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest } from "../actions/api";
 
@@ -25,7 +26,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const { type: drawer, above: aboveToolbar, themeDark: drawerThemeDark } = props.design.drawer;
-    const snackbar = this.props.message;
     this.state = {
       needUpdate: true,
       activeTab: props.activeTab,
@@ -33,7 +33,6 @@ class App extends React.Component {
       drawerOpen: false,
       drawerThemeDark,
       aboveToolbar,
-      snackbar,
     };
   }
 
@@ -41,14 +40,6 @@ class App extends React.Component {
     this.props.initAuthSettings();
     this.updateAdmin();
     Zrmc.init(this, { typography: true });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let snackbar = nextProps.message;
-    if ((!snackbar) && nextProps.error) {
-      snackbar = { message: nextProps.error };
-    }
-    this.setState({ snackbar });
   }
 
   componentDidUpdate() {
@@ -88,6 +79,18 @@ class App extends React.Component {
   toggleDrawer = () => {
     const open = !this.state.drawerOpen;
     this.setState({ drawerOpen: open });
+  }
+
+  renderSnackbar = () => {
+    const { message } = this.props;
+    if (message) {
+      return (
+        <Snackbar
+          message={message}
+          onTimeout={() => { this.props.removeMessage(); }}
+        />);
+    }
+    return null;
   }
 
   render() {
@@ -177,14 +180,6 @@ class App extends React.Component {
         fab = <Fab icon={currentScreen.fab.icon} onClick={currentScreen.fab.onAction} />;
       }
     }
-    let snackbar;
-    if (this.state.snackbar) {
-      snackbar = (
-        <Snackbar
-          message={this.state.snackbar.message}
-          onTimeout={() => { this.props.appRemoveLastMessage(); }}
-        />);
-    }
     return (
       <Content>
         <Toolbar fixed>
@@ -246,14 +241,13 @@ class App extends React.Component {
           </Switch>
         </Content>
         {fab}
-        {snackbar}
+        {this.renderSnackbar()}
       </Content>
     );
   }
 }
 
 App.defaultProps = {
-  error: null,
   message: null,
   admin: null,
   appName: "",
@@ -267,10 +261,9 @@ App.propTypes = {
   isSignedIn: PropTypes.bool.isRequired,
   titleName: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.shape({}),
-  message: PropTypes.shape({}),
   admin: PropTypes.shape({}),
   appName: PropTypes.string,
+  message: PropTypes.string,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
   design: PropTypes.shape({
     drawer: PropTypes.shape({ type: PropTypes.string }),
@@ -278,7 +271,7 @@ App.propTypes = {
   initAuthSettings: PropTypes.func.isRequired,
   /* appSetTitle: PropTypes.func.isRequired, */
   apiAdminRequest: PropTypes.func.isRequired,
-  appRemoveLastMessage: PropTypes.func.isRequired,
+  removeMessage: PropTypes.func.isRequired,
   activeTab: PropTypes.number,
 };
 
@@ -286,21 +279,13 @@ const mapStateToProps = (state) => {
   const {
     admin, screens, name, design,
   } = state.app;
+  const { message } = state.message;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading = (state.app && state.app.loading) ||
     (state.auth && state.auth.loading) || (state.user && state.user.loading);
   const titleName = state.app.titleName ? state.app.titleName : "";
-  let error = null;
-  if (state.app && state.app.error) {
-    ({ error } = state.app);
-  } else if (state.auth && state.auth.error) {
-    ({ error } = state.auth);
-  } else if ((!error) && state.user && state.user.error) {
-    ({ error } = state.user);
-  }
-  const { message } = state.app;
   return {
-    admin, isLoading, isSignedIn, titleName, error, screens, appName: name, design, message,
+    admin, isLoading, isSignedIn, titleName, screens, appName: name, design, message,
   };
 };
 
@@ -308,8 +293,8 @@ const mapDispatchToProps = dispatch => ({
   appSetTitle: (titleName) => {
     dispatch(appSetTitle(titleName));
   },
-  appRemoveLastMessage: () => {
-    dispatch(appRemoveLastMessage());
+  removeMessage: () => {
+    dispatch(removeMessage());
   },
   initAuthSettings: () => {
     dispatch(initAuthSettings());

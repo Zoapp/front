@@ -8,6 +8,7 @@ describe("reducers/index", () => {
       "app",
       "auth",
       "initialize",
+      "message",
       "user",
     ]);
   });

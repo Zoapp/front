@@ -10,10 +10,12 @@ import initialize from "./initialize";
 import auth from "./auth";
 import user from "./user";
 import app from "./app";
+import message from "./message";
 
 export default combineReducers({
   initialize,
   auth,
   user,
   app,
+  message,
 });

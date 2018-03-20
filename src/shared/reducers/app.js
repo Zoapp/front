@@ -9,8 +9,6 @@ import {
   API_ADMIN,
   API_SETADMINPARAMETERS,
   APP_SETTITLE,
-  APP_SETMESSAGE,
-  APP_REMOVEMESSAGE,
   AUTH_SIGNOUT,
   FETCH_FAILURE,
   FETCH_REQUEST,
@@ -24,7 +22,7 @@ export const initialState = {
   titleName: "",
 };
 
-export default createReducer(initialState, {
+export const handlers = {
   /* API section */
   [API_ADMIN + FETCH_REQUEST]: state => ({
     ...state,
@@ -54,6 +52,8 @@ export default createReducer(initialState, {
       ...state.admin,
       params,
     },
+    loading: false,
+    error: null,
   }),
   [API_SETADMINPARAMETERS + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
@@ -67,18 +67,10 @@ export default createReducer(initialState, {
     titleName,
   }),
 
-  [APP_SETMESSAGE]: (state, { message }) => ({
-    ...state,
-    message,
-  }),
-
-  [APP_REMOVEMESSAGE]: state => ({
-    ...state,
-    message: null,
-  }),
-
   /* Auth section */
   [AUTH_SIGNOUT + FETCH_SUCCESS]: state => ({
     ...state, ...initialState,
   }),
-});
+};
+
+export default createReducer(initialState, handlers);

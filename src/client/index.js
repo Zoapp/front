@@ -9,7 +9,7 @@ import Front from "Zoapp/front";
 import Screen from "Zoapp/containers/screen";
 import Zrmc from "zrmc";
 import config from "../../config/default.json";
-import { appSetMessage } from "../shared/actions/app";
+import { setMessage } from "../shared/actions/message";
 
 const handleAction = () => {
   Zrmc.showDialog({
@@ -75,7 +75,7 @@ const app = {
 const front = new Front("app", app, config);
 
 front.start(true);
-front.store.dispatch(appSetMessage({ message: "Welcome Dude !" }));
+front.store.dispatch(setMessage({ message: "Welcome Dude !" }));
 
 /* global module */
 if (module.hot) {
