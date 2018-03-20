@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`containers/CreateAssistant renders correctly 1`] = `
+<div
+  className="mdc-card"
+  style={
+    Object {
+      "margin": "auto",
+      "width": "512px",
+    }
+  }
+>
+  <section
+    className="mdc-card__primary"
+  >
+
+    <h1
+      className="mdc-card__title"
+    >
+      Your credentials
+    </h1>
+
+  </section>
+  <form
+    id="signin-form-form"
+    onSubmit={[Function]}
+  >
+    <section
+      className="mdc-card__supporting-text"
+    >
+      <div
+        className="mdc-form-field"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <div
+          className="mdc-text-field mdc-text-field--upgraded"
+          style={
+            Object {
+              "width": "100%",
+            }
+          }
+        >
+          <input
+            autoComplete="username email"
+            className="mdc-text-field__input"
+            defaultValue=""
+            id="signin-form-username"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            required={true}
+            type="text"
+          />
+          <label
+            className="mdc-floating-label"
+            focused="false"
+            htmlFor="signin-form-username"
+            style={Object {}}
+          >
+            Username | Email
+          </label>
+          <div
+            className="mdc-text-field__bottom-line"
+          />
+        </div>
+      </div>
+      <div
+        className="mdc-form-field"
+        style={
+          Object {
+            "display": "block",
+          }
+        }
+      >
+        <div
+          className="mdc-text-field mdc-text-field--upgraded"
+          style={
+            Object {
+              "width": "100%",
+            }
+          }
+        >
+          <input
+            autoComplete="password"
+            className="mdc-text-field__input"
+            defaultValue=""
+            id="signin-form-password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            required={true}
+            type="password"
+          />
+          <label
+            className="mdc-floating-label"
+            focused="false"
+            htmlFor="signin-form-password"
+            style={Object {}}
+          >
+            Password
+          </label>
+          <div
+            className="mdc-text-field__bottom-line"
+          />
+        </div>
+      </div>
+    </section>
+    <section
+      className="mdc-card__actions"
+    >
+      <button
+        className="mdc-button mdc-button--compact mdc-card__action"
+        onClick={null}
+      >
+
+        Sign in
+      </button>
+    </section>
+  </form>
+</div>
+`;

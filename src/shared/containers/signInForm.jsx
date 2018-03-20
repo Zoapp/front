@@ -10,7 +10,7 @@ import { Button, Card, CardText, CardActions, FormField, TextField } from "zrmc"
 import { connect } from "react-redux";
 import { signIn } from "../actions/auth";
 
-class SignInForm extends Component {
+export class SignInFormBase extends Component {
   state = {
     username: "",
     password: "",
@@ -18,11 +18,11 @@ class SignInForm extends Component {
 
   handleSignIn = (e) => {
     e.preventDefault();
-    const { provider, dispatch } = this.props;
+    const { provider } = this.props;
     const { username, password } = this.state;
 
     if (username !== "" && password !== "") {
-      dispatch(signIn({ provider, username, password }));
+      this.props.signIn(provider, username, password);
     }
   }
 
@@ -39,10 +39,11 @@ class SignInForm extends Component {
         style={{ width: "512px", margin: "auto" }}
         title="Your credentials"
       >
-        <form onSubmit={this.handleSignIn}>
+        <form id="signin-form-form" onSubmit={this.handleSignIn}>
           <CardText>
             <FormField style={{ display: "block" }}>
               <TextField
+                id="signin-form-username"
                 defaultValue={username}
                 onChange={this.createChangeHandler("username")}
                 label="Username | Email"
@@ -53,6 +54,7 @@ class SignInForm extends Component {
             </FormField>
             <FormField style={{ display: "block" }}>
               <TextField
+                id="signin-form-password"
                 defaultValue={password}
                 onChange={this.createChangeHandler("password")}
                 label="Password"
@@ -72,13 +74,19 @@ class SignInForm extends Component {
   }
 }
 
-SignInForm.propTypes = {
+SignInFormBase.propTypes = {
   provider: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
+  signIn: PropTypes.func.isRequired,
 };
 
-SignInForm.defaultProps = {
+SignInFormBase.defaultProps = {
   provider: null,
 };
 
-export default connect()(SignInForm);
+const mapDispatchToProps = dispatch => ({
+  signIn: (provider, username, password) => {
+    dispatch(signIn({ provider, username, password }));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(SignInFormBase);

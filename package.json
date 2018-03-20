@@ -89,7 +89,9 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "shared/(.*)": "<rootDir>/src/shared/$1"
-    }
+      "shared/(.*)": "<rootDir>/src/shared/$1",
+      "tests/(.*)": "<rootDir>/tests/$1"
+    },
+    "setupTestFrameworkScriptFile": "<rootDir>/tests/setupTests.js"
   }
 }
