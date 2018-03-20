@@ -17,7 +17,7 @@ import Zrmc, {
 } from "zrmc";
 import { signIn } from "../actions/auth";
 
-class SignInDialog extends Component {
+export class SignInDialogBase extends Component {
   state = {
     username: "",
     password: "",
@@ -32,11 +32,11 @@ class SignInDialog extends Component {
 
   handleSignIn = (e) => {
     e.preventDefault();
-    const { provider, dispatch } = this.props;
+    const { provider } = this.props;
     const { username, password } = this.state;
 
     if (username !== "" && password !== "") {
-      dispatch(signIn({ provider, username, password }));
+      this.props.signIn(provider, username, password);
       this.handleCloseDialog();
     }
   }
@@ -49,7 +49,7 @@ class SignInDialog extends Component {
     const { username, password } = this.state;
 
     return (
-      <form onSubmit={this.handleSignIn}>
+      <form id="signin-dialog-form" onSubmit={this.handleSignIn}>
         <Dialog
           id={this.props.id}
           onClose={this.handleCloseDialog}
@@ -59,6 +59,7 @@ class SignInDialog extends Component {
           <DialogBody>
             <FormField style={{ display: "block" }}>
               <TextField
+                id="signin-dialog-username"
                 defaultValue={username}
                 onChange={this.createChangeHandler("username")}
                 label="Username | Email"
@@ -69,6 +70,7 @@ class SignInDialog extends Component {
             </FormField>
             <FormField style={{ display: "block" }}>
               <TextField
+                id="signin-dialog-password"
                 defaultValue={password}
                 onChange={this.createChangeHandler("password")}
                 label="Password"
@@ -89,17 +91,23 @@ class SignInDialog extends Component {
   }
 }
 
-SignInDialog.defaultProps = {
+SignInDialogBase.defaultProps = {
   id: null,
   onClosed: null,
   provider: null,
 };
 
-SignInDialog.propTypes = {
+SignInDialogBase.propTypes = {
   id: PropTypes.string,
   onClosed: PropTypes.func,
   provider: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
+  signIn: PropTypes.func.isRequired,
 };
 
-export default connect()(SignInDialog);
+const mapDispatchToProps = dispatch => ({
+  signIn: (provider, username, password) => {
+    dispatch(signIn({ provider, username, password }));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(SignInDialogBase);
