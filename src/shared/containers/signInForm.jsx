@@ -6,74 +6,78 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Zrmc, { Button, Card, CardText, CardActions, FormField, TextField } from "zrmc";
+import { Button, Card, CardText, CardActions, FormField, TextField } from "zrmc";
 import { connect } from "react-redux";
 import { signIn } from "../actions/auth";
 
 class SignInForm extends Component {
-  handleCloseDialog = () => {
-    Zrmc.closeDialog();
-    if (this.props.onClosed instanceof Function) {
-      this.props.onClosed();
+  state = {
+    username: "",
+    password: "",
+  }
+
+  handleSignIn = (e) => {
+    e.preventDefault();
+    const { provider, dispatch } = this.props;
+    const { username, password } = this.state;
+
+    if (username !== "" && password !== "") {
+      dispatch(signIn({ provider, username, password }));
     }
   }
 
-  handleSignIn = () => {
-    const username = this.usernameField.inputRef.value;
-    const password = this.passwordField.inputRef.value;
-    if (username !== "" && password !== "") {
-      const { provider, dispatch } = this.props;
-      dispatch(signIn({ provider, username, password }));
-      this.handleCloseDialog();
-    }
-  }
+  createChangeHandler = field => (e) => {
+    this.setState({ [field]: e.target.value });
+  };
 
   render() {
+    const { username, password } = this.state;
+
     return (
       <Card
         shadow={0}
         style={{ width: "512px", margin: "auto" }}
         title="Your credentials"
       >
-        <CardText>
-          <form>
+        <form onSubmit={this.handleSignIn}>
+          <CardText>
             <FormField style={{ display: "block" }}>
               <TextField
-                onChange={this.handleUsernameChange}
+                defaultValue={username}
+                onChange={this.createChangeHandler("username")}
                 label="Username | Email"
                 style={{ width: "100%" }}
                 autoComplete="username email"
-                ref={(input) => { this.usernameField = input; }}
+                required
               />
             </FormField>
             <FormField style={{ display: "block" }}>
               <TextField
-                onChange={this.handlePasswordChange}
+                defaultValue={password}
+                onChange={this.createChangeHandler("password")}
                 label="Password"
                 type="password"
                 style={{ width: "100%" }}
                 autoComplete="password"
-                ref={(input) => { this.passwordField = input; }}
+                required
               />
             </FormField>
-          </form>
-        </CardText>
-        <CardActions>
-          <Button type="button" onClick={(e) => { e.preventDefault(); this.handleSignIn(); }}>Sign in</Button>
-        </CardActions>
+          </CardText>
+          <CardActions>
+            <Button type="submit">Sign in</Button>
+          </CardActions>
+        </form>
       </Card>
     );
   }
 }
 
 SignInForm.propTypes = {
-  onClosed: PropTypes.func,
   provider: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
 };
 
 SignInForm.defaultProps = {
-  onClosed: null,
   provider: null,
 };
 
