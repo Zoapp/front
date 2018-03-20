@@ -5,11 +5,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { APP_SETTITLE } from "./constants";
+import { MESSAGE_SETMESSAGE, MESSAGE_REMOVEMESSAGE } from "./constants";
 
-export function appSetTitle(titleName) {
+export function setMessage(message) {
   return {
-    type: APP_SETTITLE,
-    titleName,
+    type: MESSAGE_SETMESSAGE,
+    message,
+  };
+}
+
+export function removeMessage() {
+  return {
+    type: MESSAGE_REMOVEMESSAGE,
   };
 }
