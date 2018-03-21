@@ -6,7 +6,14 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Card, CardText, CardActions, FormField, TextField } from "zrmc";
+import {
+  Button,
+  Card,
+  CardText,
+  CardActions,
+  FormField,
+  TextField,
+} from "zrmc";
 import { connect } from "react-redux";
 import { signIn } from "../actions/auth";
 
@@ -14,7 +21,7 @@ export class SignInFormBase extends Component {
   state = {
     username: "",
     password: "",
-  }
+  };
 
   handleSignIn = (e) => {
     e.preventDefault();
@@ -24,9 +31,9 @@ export class SignInFormBase extends Component {
     if (username !== "" && password !== "") {
       this.props.signIn(provider, username, password);
     }
-  }
+  };
 
-  createChangeHandler = field => (e) => {
+  createChangeHandler = (field) => (e) => {
     this.setState({ [field]: e.target.value });
   };
 
@@ -83,7 +90,7 @@ SignInFormBase.defaultProps = {
   provider: null,
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   signIn: (provider, username, password) => {
     dispatch(signIn({ provider, username, password }));
   },

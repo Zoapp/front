@@ -6,14 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Zrmc, {
-  Grid,
-  Inner,
-  Cell,
-  Button,
-  Content,
-  TextField,
-} from "zrmc";
+import Zrmc, { Grid, Inner, Cell, Button, Content, TextField } from "zrmc";
 import { connect } from "react-redux";
 import { TableComponent } from "zoapp-ui";
 import { appSetTitle } from "../actions/app";
@@ -59,7 +52,7 @@ class AdminManager extends Component {
 
   onChangeTunnel = (tunnelParams) => {
     this.setState({ tunnelParams });
-  }
+  };
 
   onSaveBackend() {
     if (this.state.tunnelParams) {
@@ -75,7 +68,7 @@ class AdminManager extends Component {
   }
 
   displayTunnelDialog() {
-    this.todo = { };
+    this.todo = {};
     // const { params } = this.props.admin;
     // const backend = this.state.backendParams || params.backend || { };
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || { };
@@ -90,13 +83,13 @@ class AdminManager extends Component {
 
   render() {
     let { isLoading } = this.props;
-    if ((!isLoading) && (!this.props.admin) && this.props.isSignedIn) {
+    if (!isLoading && !this.props.admin && this.props.isSignedIn) {
       isLoading = true;
     }
     if (!this.props.isSignedIn) {
-      return (<SignInForm />);
+      return <SignInForm />;
     } else if (isLoading || this.props.admin == null) {
-      return (<Loading />);
+      return <Loading />;
     }
     const active = this.props.activeTab;
     let content = "";
@@ -104,24 +97,42 @@ class AdminManager extends Component {
       const saveDisabled = !this.state.botParams;
       content = (
         <Grid>
-          <Cell className="mdl-color--white" col={12} style={{ display: "table" }}>
+          <Cell
+            className="mdl-color--white"
+            col={12}
+            style={{ display: "table" }}
+          >
             <div style={{ width: "200px", display: "table-cell" }}>
-              <div style={{
-                position: "absolute", width: "180px", height: "180px", margin: "24px", backgroundColor: "#ddd",
-              }}
+              <div
+                style={{
+                  position: "absolute",
+                  width: "180px",
+                  height: "180px",
+                  margin: "24px",
+                  backgroundColor: "#ddd",
+                }}
               />
             </div>
-            <div style={{ display: "table-cell" }}>
-            TODO
+            <div style={{ display: "table-cell" }}>TODO</div>
+            <div>
+              <Button
+                raised
+                colored
+                disabled={saveDisabled}
+                style={{ float: "right", margin: "24px" }}
+              >
+                SAVE
+              </Button>
             </div>
-            <div><Button raised colored disabled={saveDisabled} style={{ float: "right", margin: "24px" }}>SAVE</Button></div>
           </Cell>
-        </Grid>);
+        </Grid>
+      );
     } else if (active === 1) {
       content = (
         <Grid>
           <div>Services</div>
-        </Grid>);
+        </Grid>
+      );
     } else if (active === 2) {
       const items = [];
       const status = "you";
@@ -137,8 +148,15 @@ class AdminManager extends Component {
       const title = (
         <div style={infoStyleD}>
           You could give an access to your collaborators here.
-          <Button raised colored style={{ float: "right", marginBottom: "24px" }}>ADD</Button>
-        </div>);
+          <Button
+            raised
+            colored
+            style={{ float: "right", marginBottom: "24px" }}
+          >
+            ADD
+          </Button>
+        </div>
+      );
       content = (
         <Grid>
           <Inner>
@@ -149,26 +167,40 @@ class AdminManager extends Component {
                   headers={headers}
                   items={items}
                   selectedItem={-1}
-                  onSelect={() => { }}
+                  onSelect={() => {}}
                 />
               </div>
             </Cell>
           </Inner>
-        </Grid>);
+        </Grid>
+      );
     } else if (active === 3) {
       const { params } = this.props.admin;
-      const emailServer = this.state.emailParams || params.emailServer || { };
-      const backend = this.state.backendParams || params.backend || { };
+      const emailServer = this.state.emailParams || params.emailServer || {};
+      const backend = this.state.backendParams || params.backend || {};
       // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
       // const hasTunnelParams = !!this.state.tunnelParams;
-      const saveBackendDisabled = !(this.state.backendParams || this.state.tunnelParams);
+      const saveBackendDisabled = !(
+        this.state.backendParams || this.state.tunnelParams
+      );
       const saveEmailDisabled = !this.state.emailServerParams;
       content = (
         <Grid>
           <Cell className="mdl-color--white" col={12}>
             <div style={infoStyleD}>
               Backend configuration
-              <Button raised colored disabled={saveBackendDisabled} style={{ float: "right" }} onClick={(e) => { e.preventDefault(); this.onSaveBackend(); }}>SAVE</Button>
+              <Button
+                raised
+                colored
+                disabled={saveBackendDisabled}
+                style={{ float: "right" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.onSaveBackend();
+                }}
+              >
+                SAVE
+              </Button>
             </div>
             <form style={infoStyleD}>
               <div style={{ width: "520px" }}>
@@ -179,50 +211,64 @@ class AdminManager extends Component {
                   value={backend.publicUrl}
                 />
               </div>
-              <div><TextField
-                onChange={() => {}}
-                label="Api url"
-                disabled
-                style={{ width: "400px" }}
-                value={backend.apiUrl}
-              />
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="Api url"
+                  disabled
+                  style={{ width: "400px" }}
+                  value={backend.apiUrl}
+                />
               </div>
-              <div><TextField
-                onChange={() => {}}
-                label="Auth url"
-                disabled
-                style={{ width: "400px" }}
-                value={backend.authUrl}
-              />
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="Auth url"
+                  disabled
+                  style={{ width: "400px" }}
+                  value={backend.authUrl}
+                />
               </div>
-              <div><TextField
-                onChange={() => {}}
-                label="AppId"
-                disabled
-                style={{ width: "400px" }}
-                value={backend.clientId}
-              />
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="AppId"
+                  disabled
+                  style={{ width: "400px" }}
+                  value={backend.clientId}
+                />
               </div>
-              <div><TextField
-                onChange={() => {}}
-                label="Secret"
-                disabled
-                style={{ width: "400px" }}
-                value={backend.clientSecret}
-              />
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="Secret"
+                  disabled
+                  style={{ width: "400px" }}
+                  value={backend.clientSecret}
+                />
               </div>
             </form>
             <div />
           </Cell>
           <Cell className="mdl-color--white" col={12}>
-            <div style={infoStyleD}>Email server configuration<Button raised colored disabled={saveEmailDisabled} style={{ float: "right" }}>SAVE</Button></div>
+            <div style={infoStyleD}>
+              Email server configuration<Button
+                raised
+                colored
+                disabled={saveEmailDisabled}
+                style={{ float: "right" }}
+              >
+                SAVE
+              </Button>
+            </div>
             <form style={infoStyleD} autoComplete="nope">
-              <div><TextField
-                onChange={() => {}}
-                label="Server address"
-                style={{ width: "400px" }}
-                value={emailServer.url}
-              />
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="Server address"
+                  style={{ width: "400px" }}
+                  value={emailServer.url}
+                />
               </div>
               <div>
                 <TextField
@@ -247,18 +293,28 @@ class AdminManager extends Component {
             <div />
           </Cell>
           <Cell className="mdl-color--white" col={12}>
-            <div style={infoStyleD}><span style={{ color: "#d50000" }}>Delete this assistant</span>
-              <Button raised colored style={{ float: "right", marginBottom: "24px", backgroundColor: "#d50000" }}>DELETE</Button>
+            <div style={infoStyleD}>
+              <span style={{ color: "#d50000" }}>Delete this assistant</span>
+              <Button
+                raised
+                colored
+                style={{
+                  float: "right",
+                  marginBottom: "24px",
+                  backgroundColor: "#d50000",
+                }}
+              >
+                DELETE
+              </Button>
             </div>
             <div />
           </Cell>
-        </Grid>);
+        </Grid>
+      );
     }
     return (
       <Content className="mdl-color--grey-100">
-        <section>
-          {content}
-        </section>
+        <section>{content}</section>
       </Content>
     );
   }
@@ -295,11 +351,15 @@ const mapStateToProps = (state) => {
   const { user } = state;
   const profile = user ? user.profile : null;
   return {
-    admin, isLoading, isSignedIn, user, profile,
+    admin,
+    isLoading,
+    isSignedIn,
+    user,
+    profile,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   appSetTitle: (titleName) => {
     dispatch(appSetTitle(titleName));
   },

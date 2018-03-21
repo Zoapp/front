@@ -29,7 +29,7 @@ const displayWebServiceEditor = (
         label="Name"
         error="Wrong value"
         style={{ width: "100%" }}
-        ref={input => setInput(input, "name")}
+        ref={(input) => setInput(input, "name")}
       />
       <TextField
         defaultValue={url}
@@ -37,7 +37,7 @@ const displayWebServiceEditor = (
         label="Url"
         error="Wrong value"
         style={{ width: "100%" }}
-        ref={input => setInput(input, "url")}
+        ref={(input) => setInput(input, "url")}
       />
       <TextField
         defaultValue={secret}
@@ -45,7 +45,7 @@ const displayWebServiceEditor = (
         label="Secret"
         error="Wrong value"
         style={{ width: "100%" }}
-        ref={input => setInput(input, "secret")}
+        ref={(input) => setInput(input, "secret")}
       />
       <TextField
         defaultValue={classes}
@@ -53,7 +53,7 @@ const displayWebServiceEditor = (
         label="Classes"
         error="Wrong value"
         style={{ width: "100%" }}
-        ref={input => setInput(input, "classes")}
+        ref={(input) => setInput(input, "classes")}
       />
     </div>
   );

@@ -21,14 +21,14 @@ export class SignInDialogBase extends Component {
   state = {
     username: "",
     password: "",
-  }
+  };
 
   handleCloseDialog = () => {
     Zrmc.closeDialog();
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }
-  }
+  };
 
   handleSignIn = (e) => {
     e.preventDefault();
@@ -39,9 +39,9 @@ export class SignInDialogBase extends Component {
       this.props.signIn(provider, username, password);
       this.handleCloseDialog();
     }
-  }
+  };
 
-  createChangeHandler = field => (e) => {
+  createChangeHandler = (field) => (e) => {
     this.setState({ [field]: e.target.value });
   };
 
@@ -104,7 +104,7 @@ SignInDialogBase.propTypes = {
   signIn: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   signIn: (provider, username, password) => {
     dispatch(signIn({ provider, username, password }));
   },

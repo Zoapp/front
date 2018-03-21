@@ -11,7 +11,9 @@ describe("FileInput", () => {
   });
 
   it("can take an accept prop", () => {
-    const component = renderer.create(React.createElement(FileInput, { accept: "image/*" }));
+    const component = renderer.create(
+      React.createElement(FileInput, { accept: "image/*" }),
+    );
 
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();

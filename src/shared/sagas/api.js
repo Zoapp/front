@@ -17,15 +17,13 @@ import {
   apiSetAdminParametersError,
   apiSetAdminParametersSuccess,
 } from "../actions/api";
-import {
-  apiUserProfileError,
-  apiUserProfileSuccess,
-} from "../actions/user";
+import { apiUserProfileError, apiUserProfileSuccess } from "../actions/user";
 import { getWebService } from "../services";
 
 const api = [
   /* User */
-  [API_USERPROFILE + FETCH_REQUEST,
+  [
+    API_USERPROFILE + FETCH_REQUEST,
     function* f() {
       try {
         const response = yield getWebService().get("me");
@@ -36,7 +34,8 @@ const api = [
     },
   ],
   /* Admin */
-  [API_ADMIN + FETCH_REQUEST,
+  [
+    API_ADMIN + FETCH_REQUEST,
     function* f() {
       try {
         const response = yield getWebService().get("admin");
@@ -46,7 +45,8 @@ const api = [
       }
     },
   ],
-  [API_SETADMINPARAMETERS + FETCH_REQUEST,
+  [
+    API_SETADMINPARAMETERS + FETCH_REQUEST,
     function* f(action) {
       try {
         const { params } = action;

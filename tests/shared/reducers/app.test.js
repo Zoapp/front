@@ -76,9 +76,12 @@ describe("reducers/app", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, apiActions.apiSetAdminParametersSuccess({
-      params,
-    }));
+    const state = reducer(
+      prevState,
+      apiActions.apiSetAdminParametersSuccess({
+        params,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       loading: false,
@@ -94,9 +97,12 @@ describe("reducers/app", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, apiActions.apiSetAdminParametersError({
-      error,
-    }));
+    const state = reducer(
+      prevState,
+      apiActions.apiSetAdminParametersError({
+        error,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       error,

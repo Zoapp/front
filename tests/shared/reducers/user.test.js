@@ -30,10 +30,13 @@ describe("reducers/user", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, authActions.signInComplete({
-      attributes,
-      provider,
-    }));
+    const state = reducer(
+      prevState,
+      authActions.signInComplete({
+        attributes,
+        provider,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       attributes,
@@ -50,10 +53,13 @@ describe("reducers/user", () => {
     };
     const provider = "auth provider";
 
-    const prevState = reducer(undefined, authActions.signInComplete({
-      attributes,
-      provider,
-    }));
+    const prevState = reducer(
+      undefined,
+      authActions.signInComplete({
+        attributes,
+        provider,
+      }),
+    );
 
     const state = reducer(prevState, authActions.signOutComplete({ provider }));
     expect(state).toEqual(initialState);
@@ -70,7 +76,10 @@ describe("reducers/user", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.apiUserProfileSuccess({ profile }));
+    const state = reducer(
+      prevState,
+      actions.apiUserProfileSuccess({ profile }),
+    );
     expect(state).toEqual({
       ...prevState,
       error: null,

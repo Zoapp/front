@@ -11,11 +11,7 @@ import {
   AUTH_SIGNOUT,
   FETCH_REQUEST,
 } from "../actions/constants";
-import {
-  signInComplete,
-  signOutError,
-  signOutComplete,
-} from "../actions/auth";
+import { signInComplete, signOutError, signOutComplete } from "../actions/auth";
 import { getAuthService } from "../services";
 
 function* authenticate({ username, password, provider }) {

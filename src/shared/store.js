@@ -11,13 +11,19 @@ import reducers from "./reducers";
 import rootSaga from "./sagas";
 
 /* global window */
-export default function configureStore(extReducers, extSaga, initialState = {}) {
+export default function configureStore(
+  extReducers,
+  extSaga,
+  initialState = {},
+) {
   const sagaMiddleware = createSagaMiddleware();
 
   /* eslint-disable no-underscore-dangle */
-  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const store = createStore(
-    reducers, initialState,
+    reducers,
+    initialState,
     composeEnhancers(applyMiddleware(sagaMiddleware)),
   );
   sagaMiddleware.run(rootSaga);

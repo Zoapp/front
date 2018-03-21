@@ -15,7 +15,7 @@ describe("reducers/createReducer", () => {
   it("calls a handler if it exists", () => {
     const initialState = { foo: "foo" };
     const handlers = {
-      MY_HANDLER: state => ({ ...state, foo: "new-value" }),
+      MY_HANDLER: (state) => ({ ...state, foo: "new-value" }),
     };
 
     const reducer = createReducer(initialState, handlers);
