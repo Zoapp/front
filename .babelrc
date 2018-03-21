@@ -1,21 +1,9 @@
 {
     "plugins": [
-        "syntax-dynamic-import",
         "transform-class-properties",
         "transform-object-rest-spread",
         "transform-decorators-legacy",
         "react-hot-loader/babel",
-        [
-            "module-resolver",
-            {
-                "alias": {
-                    "zoapp-front": "./shared"
-                },
-                "root": [
-                    "./src"
-                ]
-            }
-        ],
         [
             "transform-runtime",
             {
@@ -33,9 +21,25 @@
                         "last 2 versions",
                         "IE >= 11"
                     ]
-                }
+                },
+                "modules": false
             }
         ],
         "react"
-    ]
+    ],
+    "env": {
+        "test": {
+            "presets": [
+                [
+                    "env",
+                    {
+                        "targets": {
+                            "node": "current"
+                        }
+                    }
+                ],
+                "react"
+            ]
+        }
+    }
 }
