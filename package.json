@@ -8,7 +8,7 @@
   "scripts": {
     "clean-dist": "rm -r -f dist && shx mkdir -p dist/public/css",
     "compile": "yarn compile:css && babel src/shared -d dist && cp -f ./package.json ./dist/package.json && cp -f ./LICENSE ./dist/LICENSE && cp -f ./README.md ./dist/README.md",
-    "compile:css": "yarn clean-dist && cleancss -o dist/public/css/compressed.css src/public/css/app.css node_modules/zrmc/compressed.css node_modules/zoapp-ui/compressed.css",
+    "compile:css": "yarn clean-dist && cleancss -o dist/public/css/compressed.css node_modules/zrmc/compressed.css node_modules/zoapp-ui/compressed.css src/public/css/app.css",
     "compile:dev": "yarn compile:css && webpack --env=dev --progress --profile --colors",
     "dev": "yarn compile:dev && yarn start:dev",
     "lint": "eslint src/shared tests/ --ext=js --ext=jsx",
