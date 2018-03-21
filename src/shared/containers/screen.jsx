@@ -28,7 +28,8 @@ class Screen extends Component {
     return (
       <div style={{ padding: "48px" }}>
         {children} : activeTab={this.props.activeTab}
-      </div>);
+      </div>
+    );
   }
 }
 
@@ -47,11 +48,12 @@ const mapStateToProps = (state) => {
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading = state.loading;
   return {
-    isLoading, isSignedIn,
+    isLoading,
+    isSignedIn,
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   appSetTitle: (titleName) => {
     dispatch(appSetTitle(titleName));
   },

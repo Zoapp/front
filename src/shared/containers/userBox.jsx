@@ -10,7 +10,8 @@ import Zrmc, {
   Button,
   ToolbarSection,
   ToolbarIcon,
-  Menu, MenuItem,
+  Menu,
+  MenuItem,
 } from "zrmc";
 import { connect } from "react-redux";
 import { apiUserProfileRequest } from "../actions/user";
@@ -19,7 +20,7 @@ import SignOutDialog from "./signOutDialog";
 
 class UserBox extends Component {
   componentDidUpdate() {
-    if ((!this.props.profile) && this.props.isSignedIn) {
+    if (!this.props.profile && this.props.isSignedIn) {
       this.props.apiUserProfileRequest();
     }
   }
@@ -27,51 +28,50 @@ class UserBox extends Component {
   handleOpenSignInDialog = () => {
     const dialog = <SignInDialog store={this.props.store} />;
     Zrmc.showDialog(dialog);
-  }
+  };
 
   handleOpenSignOutDialog = () => {
-    const dialog = (<SignOutDialog store={this.props.store} />);
+    const dialog = <SignOutDialog store={this.props.store} />;
     Zrmc.showDialog(dialog);
-  }
+  };
 
   render() {
     if (this.props.isSignedIn) {
       const username = this.props.profile ? this.props.profile.username : "";
 
       let avatar = this.props.profile ? this.props.profile.avatar : null;
-      if ((!avatar) || avatar === "default") {
+      if (!avatar || avatar === "default") {
         avatar = "account_circle";
       } else {
         avatar = "account_circle";
       }
 
       return (
-        <ToolbarSection align="end" shrinkToFit >
-          <div style={{ margin: "auto 24px auto 12px" }}>
-            {username}
-          </div>
+        <ToolbarSection align="end" shrinkToFit>
+          <div style={{ margin: "auto 24px auto 12px" }}>{username}</div>
           <ToolbarIcon
             name={avatar}
             menu={
-              <Menu anchorMargin={{ bottom: "4px" }} role="menu" >
+              <Menu anchorMargin={{ bottom: "4px" }} role="menu">
                 <MenuItem disabled>Profile</MenuItem>
                 <MenuItem disabled>Settings</MenuItem>
-                <MenuItem
-                  onSelected={this.handleOpenSignOutDialog}
-                >
+                <MenuItem onSelected={this.handleOpenSignOutDialog}>
                   Sign out
                 </MenuItem>
-              </Menu>}
+              </Menu>
+            }
           />
-
         </ToolbarSection>
       );
     }
 
     return (
-      <ToolbarSection align="end" shrinkToFit >
+      <ToolbarSection align="end" shrinkToFit>
         <Button
-          onClick={(e) => { e.preventDefault(); this.handleOpenSignInDialog(); }}
+          onClick={(e) => {
+            e.preventDefault();
+            this.handleOpenSignInDialog();
+          }}
           raised
           dense
           compact
@@ -89,7 +89,10 @@ UserBox.defaultProps = { profile: null, isSignedIn: false };
 
 UserBox.propTypes = {
   store: PropTypes.shape({}).isRequired,
-  profile: PropTypes.shape({ username: PropTypes.string, avatar: PropTypes.string }),
+  profile: PropTypes.shape({
+    username: PropTypes.string,
+    avatar: PropTypes.string,
+  }),
   isSignedIn: PropTypes.bool,
   apiUserProfileRequest: PropTypes.func.isRequired,
 };
@@ -100,7 +103,7 @@ const mapStateToProps = (state) => {
   return { profile, isSignedIn };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   apiUserProfileRequest: () => {
     dispatch(apiUserProfileRequest());
   },

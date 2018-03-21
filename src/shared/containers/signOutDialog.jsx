@@ -16,13 +16,13 @@ class SignOutDialog extends Component {
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }
-  }
+  };
 
   handleSignOut = () => {
     const { provider, dispatch } = this.props;
     dispatch(signOut({ provider }));
     this.handleCloseDialog();
-  }
+  };
 
   render() {
     return (
@@ -36,8 +36,24 @@ class SignOutDialog extends Component {
           <div>You are about to sign out, are you sure?</div>
         </DialogBody>
         <DialogFooter>
-          <Button type="cancel" onClick={(e) => { e.preventDefault(); this.handleCloseDialog(); }}>Cancel</Button>
-          <Button type="accept" onClick={(e) => { e.preventDefault(); this.handleSignOut(); }}>Yes</Button>
+          <Button
+            type="cancel"
+            onClick={(e) => {
+              e.preventDefault();
+              this.handleCloseDialog();
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="accept"
+            onClick={(e) => {
+              e.preventDefault();
+              this.handleSignOut();
+            }}
+          >
+            Yes
+          </Button>
         </DialogFooter>
       </Dialog>
     );

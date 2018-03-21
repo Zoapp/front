@@ -8,27 +8,32 @@ import React from "react";
 import PropTypes from "prop-types";
 import { List, ListItem, ListItemMeta, Button } from "zrmc";
 
-const ServicesList = ({
-  name,
-  items,
-  onSelect,
-  addDisabled,
-}) => (
+const ServicesList = ({ name, items, onSelect, addDisabled }) => (
   <div className="mrb-sublist">
     <div className="mrb-subheader">
       <Button
         raised
         className="mrb-subheader-right"
         disabled={!!addDisabled}
-        onClick={(e) => { e.preventDefault(); if (onSelect) { onSelect({ name, state: "add" }); } }}
-      >Add
+        onClick={(e) => {
+          e.preventDefault();
+          if (onSelect) {
+            onSelect({ name, state: "add" });
+          }
+        }}
+      >
+        Add
       </Button>
       <h4>{name}</h4>
     </div>
-    <List>{
-      items.map((item, index) => {
-        const icon = item.status === "start" ? "play_circle_filled" : "play_circle_outline";
-        const color = item.status === "start" ? "service_start" : "service_stop";
+    <List>
+      {items.map((item, index) => {
+        const icon =
+          item.status === "start"
+            ? "play_circle_filled"
+            : "play_circle_outline";
+        const color =
+          item.status === "start" ? "service_start" : "service_stop";
         const classes = `selectableListItem ${color}`;
         const key = `sl_${index}`;
         return (
@@ -37,9 +42,13 @@ const ServicesList = ({
             icon={icon}
             className={classes}
             onClick={(e) => {
-              e.preventDefault(); if (onSelect) {
+              e.preventDefault();
+              if (onSelect) {
                 onSelect({
-                  name, state: "select", index, item,
+                  name,
+                  state: "select",
+                  index,
+                  item,
                 });
               }
             }}
@@ -56,8 +65,7 @@ const ServicesList = ({
             />
           </ListItem>
         );
-      })
-    }
+      })}
     </List>
   </div>
 );

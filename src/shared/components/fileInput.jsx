@@ -19,18 +19,18 @@ class FileInput extends Component {
       }
     };
     reader.readAsText(file);
-  }
+  };
 
   render() {
     const { accept } = this.props;
 
     return (
-      <div className="fileInput" >
+      <div className="fileInput">
         <i className="material-icons">cloud_upload</i>
         <input
           type="file"
           accept={accept}
-          onChange={e => this.handleFileChange(e.target.files)}
+          onChange={(e) => this.handleFileChange(e.target.files)}
         />
       </div>
     );

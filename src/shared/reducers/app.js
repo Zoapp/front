@@ -24,7 +24,7 @@ export const initialState = {
 
 export const handlers = {
   /* API section */
-  [API_ADMIN + FETCH_REQUEST]: state => ({
+  [API_ADMIN + FETCH_REQUEST]: (state) => ({
     ...state,
     loading: true,
     error: null,
@@ -41,7 +41,7 @@ export const handlers = {
     error,
   }),
 
-  [API_SETADMINPARAMETERS + FETCH_REQUEST]: state => ({
+  [API_SETADMINPARAMETERS + FETCH_REQUEST]: (state) => ({
     ...state,
     loading: true,
     error: null,
@@ -68,8 +68,9 @@ export const handlers = {
   }),
 
   /* Auth section */
-  [AUTH_SIGNOUT + FETCH_SUCCESS]: state => ({
-    ...state, ...initialState,
+  [AUTH_SIGNOUT + FETCH_SUCCESS]: (state) => ({
+    ...state,
+    ...initialState,
   }),
 };
 

@@ -25,7 +25,7 @@ export default class ProcessingDialog extends Component {
     this.setState({
       openDialog: true,
     });
-  }
+  };
 
   handleCloseDialog = () => {
     this.setState({
@@ -34,7 +34,7 @@ export default class ProcessingDialog extends Component {
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }
-  }
+  };
 
   render() {
     return (
@@ -44,9 +44,7 @@ export default class ProcessingDialog extends Component {
         header="Processing"
         style={{ width: "320px" }}
       >
-        <DialogBody>
-                  Please wait ...
-        </DialogBody>
+        <DialogBody>Please wait ...</DialogBody>
         <DialogFooter />
       </Dialog>
     );

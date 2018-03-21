@@ -17,75 +17,97 @@ import Zrmc, {
 } from "zrmc";
 import { signIn } from "../actions/auth";
 
-class SignInDialog extends Component {
+export class SignInDialogBase extends Component {
+  state = {
+    username: "",
+    password: "",
+  };
+
   handleCloseDialog = () => {
     Zrmc.closeDialog();
     if (this.props.onClosed instanceof Function) {
       this.props.onClosed();
     }
-  }
+  };
 
-  handleSignIn = () => {
-    const username = this.usernameField.inputRef.value;
-    const password = this.passwordField.inputRef.value;
+  handleSignIn = (e) => {
+    e.preventDefault();
+    const { provider } = this.props;
+    const { username, password } = this.state;
+
     if (username !== "" && password !== "") {
-      const { provider, dispatch } = this.props;
-      dispatch(signIn({ provider, username, password }));
+      this.props.signIn(provider, username, password);
       this.handleCloseDialog();
     }
-  }
+  };
+
+  createChangeHandler = (field) => (e) => {
+    this.setState({ [field]: e.target.value });
+  };
 
   render() {
+    const { username, password } = this.state;
+
     return (
-      <Dialog
-        id={this.props.id}
-        onClose={this.handleCloseDialog}
-        header="Your credentials"
-        width="320px"
-      >
-        <DialogBody>
-          <form>
+      <form id="signin-dialog-form" onSubmit={this.handleSignIn}>
+        <Dialog
+          id={this.props.id}
+          onClose={this.handleCloseDialog}
+          header="Your credentials"
+          width="320px"
+        >
+          <DialogBody>
             <FormField style={{ display: "block" }}>
               <TextField
-                onChange={this.handleUsernameChange}
+                id="signin-dialog-username"
+                defaultValue={username}
+                onChange={this.createChangeHandler("username")}
                 label="Username | Email"
                 style={{ width: "200px" }}
                 autoComplete="username email"
-                ref={(input) => { this.usernameField = input; }}
+                required
               />
             </FormField>
             <FormField style={{ display: "block" }}>
               <TextField
-                onChange={this.handlePasswordChange}
+                id="signin-dialog-password"
+                defaultValue={password}
+                onChange={this.createChangeHandler("password")}
                 label="Password"
                 type="password"
                 style={{ width: "200px" }}
                 autoComplete="password"
-                ref={(input) => { this.passwordField = input; }}
+                required
               />
             </FormField>
-          </form>
-        </DialogBody>
-        <DialogFooter>
-          <Button type="cancel" onClick={(e) => { e.preventDefault(); this.handleCloseDialog(); }}>Cancel</Button>
-          <Button type="accept" onClick={(e) => { e.preventDefault(); this.handleSignIn(); }}>Sign in</Button>
-        </DialogFooter>
-      </Dialog>
+          </DialogBody>
+          <DialogFooter>
+            <Button type="button">Cancel</Button>
+            <Button type="submit">Sign in</Button>
+          </DialogFooter>
+        </Dialog>
+      </form>
     );
   }
 }
 
-SignInDialog.defaultProps = {
+SignInDialogBase.defaultProps = {
   id: null,
   onClosed: null,
   provider: null,
 };
 
-SignInDialog.propTypes = {
+SignInDialogBase.propTypes = {
   id: PropTypes.string,
   onClosed: PropTypes.func,
   provider: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
+  signIn: PropTypes.func.isRequired,
 };
 
-export default connect()(SignInDialog);
+const mapDispatchToProps = (dispatch) => ({
+  signIn: (provider, username, password) => {
+    dispatch(signIn({ provider, username, password }));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(SignInDialogBase);

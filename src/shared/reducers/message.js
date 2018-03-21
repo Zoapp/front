@@ -42,7 +42,7 @@ export const handlers = {
     message,
   }),
 
-  [MESSAGE_REMOVEMESSAGE]: state => ({
+  [MESSAGE_REMOVEMESSAGE]: (state) => ({
     ...state,
     message: null,
   }),

@@ -19,7 +19,10 @@ describe("reducers/app", () => {
   });
 
   it("removes message", () => {
-    const prevState = reducer(undefined, actions.setMessage("An error message"));
+    const prevState = reducer(
+      undefined,
+      actions.setMessage("An error message"),
+    );
     expect(prevState).toEqual({
       ...initialState,
       message: "An error message",

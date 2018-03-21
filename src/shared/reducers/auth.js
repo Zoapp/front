@@ -81,7 +81,7 @@ export default createReducer(initialState, {
       error,
     };
   },
-  [AUTH_SIGNOUT + FETCH_REQUEST]: state => ({
+  [AUTH_SIGNOUT + FETCH_REQUEST]: (state) => ({
     ...state,
     loading: true,
     error: null,

@@ -15,11 +15,14 @@ describe("reducers/auth", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.signIn({
-      password,
-      provider,
-      username,
-    }));
+    const state = reducer(
+      prevState,
+      actions.signIn({
+        password,
+        provider,
+        username,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       [provider]: {
@@ -39,10 +42,13 @@ describe("reducers/auth", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.signIn({
-      username,
-      password,
-    }));
+    const state = reducer(
+      prevState,
+      actions.signIn({
+        username,
+        password,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       loading: true,
@@ -60,11 +66,14 @@ describe("reducers/auth", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.signInComplete({
-      password,
-      provider,
-      username,
-    }));
+    const state = reducer(
+      prevState,
+      actions.signInComplete({
+        password,
+        provider,
+        username,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       [provider]: {
@@ -81,10 +90,13 @@ describe("reducers/auth", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.signInComplete({
-      password,
-      username,
-    }));
+    const state = reducer(
+      prevState,
+      actions.signInComplete({
+        password,
+        username,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       loading: false,
@@ -99,10 +111,13 @@ describe("reducers/auth", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.signInError({
-      error,
-      provider,
-    }));
+    const state = reducer(
+      prevState,
+      actions.signInError({
+        error,
+        provider,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       [provider]: {
@@ -156,10 +171,13 @@ describe("reducers/auth", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.signOutError({
-      error,
-      provider,
-    }));
+    const state = reducer(
+      prevState,
+      actions.signOutError({
+        error,
+        provider,
+      }),
+    );
     expect(state).toEqual({
       ...prevState,
       error,

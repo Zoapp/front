@@ -31,7 +31,7 @@ export default createReducer(initialState, {
   [AUTH_SIGNOUT + FETCH_SUCCESS]: () => ({
     ...initialState,
   }),
-  [API_USERPROFILE + FETCH_REQUEST]: state => ({
+  [API_USERPROFILE + FETCH_REQUEST]: (state) => ({
     ...state,
     loading: true,
     error: null,

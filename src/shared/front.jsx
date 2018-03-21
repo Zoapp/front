@@ -15,7 +15,12 @@ import App from "./containers/app";
 import { initServices } from "./services";
 
 export default class Front {
-  constructor(tagId, appProperties, appConfig, { store, reducers = {}, sagas = {} } = { }) {
+  constructor(
+    tagId,
+    appProperties,
+    appConfig,
+    { store, reducers = {}, sagas = {} } = {},
+  ) {
     this.appProperties = appProperties;
 
     if (store) {
