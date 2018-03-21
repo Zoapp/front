@@ -49,7 +49,7 @@ const app = {
       path: "/admin",
       access: "auth",
       panels: ["General", "Extensions", "Users", "Advanced"],
-      rendero: props => React.createElement(Screen, props, "Admin"),
+      render: props => React.createElement(Screen, props, "Admin"),
     },
     {
       id: "3",
