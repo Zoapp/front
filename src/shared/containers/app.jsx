@@ -188,10 +188,10 @@ class App extends React.Component {
               return (
                 <Button
                   key={k}
-                  raised
                   style={{
                     margin: "auto 48px auto auto",
                     backgroundColor: "var(--mdc-theme-secondary, #018786)",
+                    color: "#000",
                   }}
                   onClick={(e) => {
                     e.preventDefault();

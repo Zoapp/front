@@ -49,7 +49,7 @@ const app = {
       path: "/admin",
       access: "auth",
       panels: ["General", "Extensions", "Users", "Advanced"],
-      render: props => React.createElement(Screen, props, "Admin"),
+      rendero: props => React.createElement(Screen, props, "Admin"),
     },
     {
       id: "3",
@@ -75,7 +75,7 @@ const app = {
 const front = new Front("app", app, config);
 
 front.start(true);
-front.store.dispatch(setMessage({ message: "Welcome Dude !" }));
+front.store.dispatch(setMessage("Welcome Dude !"));
 
 /* global module */
 if (module.hot) {
