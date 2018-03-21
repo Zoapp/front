@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/CreateAssistant renders correctly 1`] = `
+exports[`containers/signInForm renders correctly 1`] = `
 <div
   className="mdc-card"
   style={
@@ -13,13 +13,13 @@ exports[`containers/CreateAssistant renders correctly 1`] = `
   <section
     className="mdc-card__primary"
   >
-
+    
     <h1
       className="mdc-card__title"
     >
       Your credentials
     </h1>
-
+    
   </section>
   <form
     id="signin-form-form"
@@ -116,7 +116,7 @@ exports[`containers/CreateAssistant renders correctly 1`] = `
         className="mdc-button mdc-button--compact mdc-card__action"
         onClick={null}
       >
-
+        
         Sign in
       </button>
     </section>
