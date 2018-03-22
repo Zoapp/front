@@ -48,7 +48,12 @@ module.exports = {
         from: path.resolve(__dirname, "./package.json"),
         to: path.resolve(__dirname, "./dist/package.json"),
         force: true
-      }
+      },
+      {
+        from: "../dist/compressed.css",
+        to: path.resolve(__dirname, "./dist/public/css/compressed.css"),
+        force: true
+      },
     ]),
     new HtmlWebpackPlugin({
       filename: "index.html",
