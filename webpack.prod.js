@@ -4,7 +4,7 @@ const webpack = require('webpack');
 
 module.exports = merge(commonConfig, {
   entry: {
-    app: "./client/index.jsx"
+    app: "./client/index.js"
   },
   plugins: [
     new webpack.LoaderOptionsPlugin({
