@@ -1,5 +1,8 @@
 import * as actions from "shared/actions/message";
-import reducer, { initialState } from "shared/reducers/message";
+import reducer, {
+  initialState,
+  addErrorToState,
+} from "shared/reducers/message";
 
 describe("reducers/app", () => {
   it("returns the initial state", () => {
@@ -32,6 +35,36 @@ describe("reducers/app", () => {
     expect(state).toEqual({
       ...prevState,
       message: null,
+    });
+  });
+
+  describe("test addErrorToState function", () => {
+    it("addErrorMessage with a valid string message", () => {
+      const state = addErrorToState(initialState, {
+        error: "An error message",
+      });
+
+      expect(state).toEqual({
+        ...initialState,
+        message: "An error message",
+      });
+    });
+
+    it("addErrorMessage with an Error instance", () => {
+      const state = addErrorToState(initialState, {
+        error: Error("An error message"),
+      });
+
+      expect(state).toEqual({
+        ...initialState,
+        message: "An error message",
+      });
+    });
+
+    it("addErrorMessage with a non valid error", () => {
+      const state = addErrorToState(initialState, { error: true });
+
+      expect(state).toEqual(initialState);
     });
   });
 });
