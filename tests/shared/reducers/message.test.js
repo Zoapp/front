@@ -38,8 +38,8 @@ describe("reducers/app", () => {
     });
   });
 
-  describe("test addErrorToState function", () => {
-    it("addErrorMessage with a valid string message", () => {
+  describe("addErrorToState", () => {
+    it("accepts an error as a string", () => {
       const state = addErrorToState(initialState, {
         error: "An error message",
       });
@@ -50,7 +50,7 @@ describe("reducers/app", () => {
       });
     });
 
-    it("addErrorMessage with an Error instance", () => {
+    it("accepts an error as a Error object", () => {
       const state = addErrorToState(initialState, {
         error: Error("An error message"),
       });
@@ -61,7 +61,7 @@ describe("reducers/app", () => {
       });
     });
 
-    it("addErrorMessage with a non valid error", () => {
+    it("ignores invalid error types", () => {
       const state = addErrorToState(initialState, { error: true });
 
       expect(state).toEqual(initialState);
