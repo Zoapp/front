@@ -16,10 +16,21 @@ import {
   FETCH_FAILURE,
 } from "../actions/constants";
 
-export const addErrorToState = (state, { error }) => ({
-  ...state,
-  message: error,
-});
+export const addErrorToState = (state, { error }) => {
+  let message;
+  if (error instanceof Error) {
+    ({ message } = error);
+  } else if (typeof error === "string") {
+    message = error;
+  } else {
+    throw new Error("addErrorToState requires either an Error or a string");
+  }
+
+  return {
+    ...state,
+    message,
+  };
+};
 
 export const initialState = {
   message: null,
