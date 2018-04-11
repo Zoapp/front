@@ -61,10 +61,10 @@ describe("reducers/app", () => {
       });
     });
 
-    it("ignores invalid error types", () => {
-      const state = addErrorToState(initialState, { error: true });
-
-      expect(state).toEqual(initialState);
+    it("throws a Error object if the error message is not a valid string", () => {
+      expect(() => {
+        addErrorToState(initialState, { error: true });
+      }).toThrowError("addErrorToState requires either an Error or a string");
     });
   });
 });

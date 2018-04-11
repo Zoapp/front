@@ -17,16 +17,13 @@ import {
 } from "../actions/constants";
 
 export const addErrorToState = (state, { error }) => {
-  let message = error;
-
-  if (message instanceof Error) {
+  let message;
+  if (error instanceof Error) {
     ({ message } = error);
-  }
-
-  if (typeof message !== "string") {
-    return {
-      ...state,
-    };
+  } else if (typeof error === "string") {
+    message = error;
+  } else {
+    throw new Error("addErrorToState requires either an Error or a string");
   }
 
   return {
