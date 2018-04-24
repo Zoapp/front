@@ -16,7 +16,8 @@
     "test": "jest",
     "start:dev": "webpack-dev-server --env=dev",
     "willPublish": "yarn run lint && yarn run test && yarn run compile",
-    "distribute": "yarn willPublish && npm publish ./dist"
+    "distribute": "yarn willPublish && npm publish ./dist",
+    "distribute:dev": "yarn compile && cd ./dist && yarn pack"
   },
   "repository": {
     "type": "git",
