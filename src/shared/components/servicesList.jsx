@@ -43,7 +43,16 @@ const ServicesList = ({ name, items, onSelect, addDisabled }) => (
             className={classes}
             onClick={(e) => {
               e.preventDefault();
-              if (onSelect) {
+              let role;
+              if (
+                Object.prototype.hasOwnProperty.call(
+                  e.target.attributes,
+                  "role",
+                )
+              ) {
+                role = e.target.attributes.role.value;
+              }
+              if (onSelect && role !== "button") {
                 onSelect({
                   name,
                   state: "select",
