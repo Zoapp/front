@@ -13,7 +13,9 @@ describe("displayWebServiceEditor", () => {
     const title = "a title";
     const action = "an action";
     const actionDef = "an action def";
-    const parameters = {};
+    const parameters = {
+      classes: ["foo", "bar", "baz"],
+    };
     const setInput = jest.fn();
     const onEditAction = jest.fn();
     const className = "";
