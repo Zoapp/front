@@ -18,8 +18,12 @@ const displayWebServiceEditor = (
 ) => {
   const name = parameters.name ? parameters.name : "";
   const url = parameters.url ? parameters.url : "";
-  const classes = parameters.classes ? parameters.classes : "";
+  let classes = parameters.classes ? parameters.classes : "";
   const secret = parameters.secret ? parameters.secret : "";
+
+  if (classes instanceof Array) {
+    classes = classes.join(",");
+  }
 
   const content = (
     <div>
