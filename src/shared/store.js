@@ -9,6 +9,7 @@ import createSagaMiddleware from "redux-saga";
 
 import reducers from "./reducers";
 import rootSaga from "./sagas";
+import signoutMiddleware from "./middleware/signoutMiddleware";
 
 /* global window */
 export default function configureStore(
@@ -24,7 +25,7 @@ export default function configureStore(
   const store = createStore(
     reducers,
     initialState,
-    composeEnhancers(applyMiddleware(sagaMiddleware)),
+    composeEnhancers(applyMiddleware(sagaMiddleware, signoutMiddleware)),
   );
   sagaMiddleware.run(rootSaga);
 
