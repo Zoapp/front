@@ -11,7 +11,6 @@ const middleware = (store) => (next) => (action) => {
     Object.prototype.hasOwnProperty.call(action.error, "response") &&
     action.error.response.status === 401
   ) {
-    console.log(action);
     store.dispatch(signOut({ provider: store.getState().auth.provider }));
   }
 
