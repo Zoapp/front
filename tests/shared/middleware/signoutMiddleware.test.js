@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import signoutMiddleware from "shared/middleware/signoutMiddleware";
+import { signOut } from "shared/actions/auth";
 import { FETCH_FAILURE } from "shared/actions/constants";
 
 describe("signoutMiddleware", () => {
@@ -98,7 +99,7 @@ describe("signoutMiddleware", () => {
     invoke(action);
 
     expect(next).toHaveBeenCalledWith(action);
-    expect(store.dispatch).toHaveBeenCalled();
+    expect(store.dispatch).toHaveBeenCalledWith(signOut({ provider: "foo" }));
     expect(store.getState).toHaveBeenCalled();
   });
 });
