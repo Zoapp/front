@@ -25,7 +25,7 @@ export class SignInDialogBase extends Component {
 
   handleCloseDialog = () => {
     Zrmc.closeDialog();
-    if (this.props.onClosed instanceof Function) {
+    if (this.props.onClosed !== null) {
       this.props.onClosed();
     }
   };
@@ -82,7 +82,16 @@ export class SignInDialogBase extends Component {
             </FormField>
           </DialogBody>
           <DialogFooter>
-            <Button type="button">Cancel</Button>
+            <Button
+              id="signin-dialog-cancel-button"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                this.handleCloseDialog();
+              }}
+            >
+              Cancel
+            </Button>
             <Button type="submit">Sign in</Button>
           </DialogFooter>
         </Dialog>
