@@ -40,14 +40,7 @@ class AdminManager extends Component {
       backendParams: null,
       emailServerParams: null,
     };
-  }
-
-  componentWillMount() {
-    this.updateParams();
-  }
-
-  componentWillUpdate() {
-    this.updateParams();
+    this.props.appSetTitle("Admin");
   }
 
   onChangeTunnel = (tunnelParams) => {
@@ -61,10 +54,6 @@ class AdminManager extends Component {
       this.setState({ tunnelParams: null });
       this.props.apiSetAdminParametersRequest({ tunnel });
     }
-  }
-
-  updateParams() {
-    this.props.appSetTitle("Admin");
   }
 
   displayTunnelDialog() {
