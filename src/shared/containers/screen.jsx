@@ -10,17 +10,11 @@ import { connect } from "react-redux";
 import { appSetTitle } from "../actions/app";
 
 class Screen extends Component {
-  componentWillMount() {
-    this.updateParams();
-  }
+  constructor(props) {
+    super(props);
 
-  componentWillUpdate() {
-    this.updateParams();
-  }
-
-  updateParams() {
-    const { screen } = this.props;
-    this.props.appSetTitle(screen.name);
+    const { screen } = props;
+    props.appSetTitle(screen.name);
   }
 
   render() {

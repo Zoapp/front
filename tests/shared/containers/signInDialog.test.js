@@ -58,4 +58,20 @@ describe("containers/signInDialog", () => {
     expect(signInSpy).toHaveBeenCalled();
     expect(Zrmc.closeDialog).toHaveBeenCalled();
   });
+
+  it("should close dialog on cancel", () => {
+    Zrmc.closeDialog = jest.fn();
+    const signInSpy = jest.fn();
+    const onClosedSpy = jest.fn();
+    const wrapper = shallow(
+      <SignInDialogBase signIn={signInSpy} onClosed={onClosedSpy} />,
+    );
+
+    wrapper
+      .find("#signin-dialog-cancel-button")
+      .simulate("click", { preventDefault() {} });
+    expect(signInSpy).not.toHaveBeenCalled();
+    expect(onClosedSpy).toHaveBeenCalled();
+    expect(Zrmc.closeDialog).toHaveBeenCalled();
+  });
 });

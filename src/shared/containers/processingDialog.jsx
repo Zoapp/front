@@ -15,10 +15,13 @@ export default class ProcessingDialog extends Component {
     this.state = { openDialog: open };
   }
 
-  componentWillReceiveProps(props) {
-    if (this.props.open !== props.open) {
-      this.setState({ openDialog: props.open });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.open !== prevState.openDialog) {
+      return {
+        openDialog: nextProps.open,
+      };
     }
+    return null;
   }
 
   handleOpenDialog = () => {
