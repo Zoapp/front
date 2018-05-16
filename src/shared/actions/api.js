@@ -46,8 +46,8 @@ export function apiSetAdminParametersError({ error }) {
   };
 }
 
-export function apiGetAdminParametersRequest(name) {
-  return { type: API_GETADMINPARAMETERS + FETCH_REQUEST, name };
+export function apiGetAdminParametersRequest(name, parameterType = null) {
+  return { type: API_GETADMINPARAMETERS + FETCH_REQUEST, name, parameterType };
 }
 
 export function apiGetAdminParametersSuccess(params) {

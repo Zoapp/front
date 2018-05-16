@@ -68,11 +68,11 @@ export const handlers = {
     loading: true,
     error: null,
   }),
-  [API_GETADMINPARAMETERS + FETCH_SUCCESS]: (state, adminParameters) => ({
+  [API_GETADMINPARAMETERS + FETCH_SUCCESS]: (state, { params }) => ({
     ...state,
     loading: false,
     error: null,
-    adminParameters,
+    adminParameters: params,
   }),
   [API_GETADMINPARAMETERS + FETCH_FAILURE]: (state, error) => ({
     ...state,

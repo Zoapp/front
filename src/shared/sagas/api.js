@@ -63,9 +63,17 @@ const api = [
   [
     API_GETADMINPARAMETERS + FETCH_REQUEST,
     function* f(action) {
-      const { name } = action;
+      const { name, parameterType } = action;
       try {
-        const response = yield getWebService().get(`params/${name}`);
+        let response;
+        if (parameterType === null) {
+          response = yield getWebService().get(`params/${name}`);
+        } else {
+          response = yield getWebService().get(
+            `params/${name}/${parameterType}`,
+          );
+        }
+
         yield put(apiGetAdminParametersSuccess(response));
       } catch (error) {
         yield put(apiGetAdminParametersFailure(error));
