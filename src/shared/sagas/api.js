@@ -10,12 +10,15 @@ import {
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
   FETCH_REQUEST,
+  API_GETADMINPARAMETERS,
 } from "../actions/constants";
 import {
   apiAdminError,
   apiAdminSuccess,
   apiSetAdminParametersError,
   apiSetAdminParametersSuccess,
+  apiGetAdminParametersSuccess,
+  apiGetAdminParametersFailure,
 } from "../actions/api";
 import { apiUserProfileError, apiUserProfileSuccess } from "../actions/user";
 import { getWebService } from "../services";
@@ -54,6 +57,18 @@ const api = [
         yield put(apiSetAdminParametersSuccess({ params: response }));
       } catch (error) {
         yield put(apiSetAdminParametersError({ error }));
+      }
+    },
+  ],
+  [
+    API_GETADMINPARAMETERS + FETCH_REQUEST,
+    function* f(action) {
+      const { name } = action;
+      try {
+        const response = yield getWebService().get(`params/${name}`);
+        yield put(apiGetAdminParametersSuccess(response));
+      } catch (error) {
+        yield put(apiGetAdminParametersFailure(error));
       }
     },
   ],

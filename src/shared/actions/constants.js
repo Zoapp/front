@@ -28,6 +28,7 @@ export const API_SAVEUSERPROFILE = "API_SAVEUSERPROFILE";
 // API admin constants
 export const API_ADMIN = "API_ADMIN";
 export const API_SETADMINPARAMETERS = "API_SETADMINPARAMETERS";
+export const API_GETADMINPARAMETERS = "API_GETADMINPARAMETERS";
 
 // App logic constants
 export const APP_SETTITLE = "APP_SETTITLE";
