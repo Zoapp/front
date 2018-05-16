@@ -21,6 +21,7 @@ import Zrmc, {
   DrawerHeader,
   DrawerContent,
 } from "zrmc";
+import { DrawerFooter } from "zoapp-ui";
 import PropTypes from "prop-types";
 import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -120,10 +121,11 @@ class App extends React.Component {
     if (!isLoading && !this.props.admin && this.props.isSignedIn) {
       isLoading = true;
     }
-    const items = [];
+    const drawerContentItems = [];
     const routes = [];
-    const { screens, titleName, appName } = this.props;
+    const { design, screens, titleName, appName } = this.props;
     let currentScreen = null;
+
     screens.forEach((screen) => {
       if (
         screen.isDrawerItem &&
@@ -136,7 +138,7 @@ class App extends React.Component {
           activated = true;
           currentScreen = screen;
         }
-        items.push({
+        drawerContentItems.push({
           activated,
           ...screen,
         });
@@ -149,6 +151,12 @@ class App extends React.Component {
         }
       }
     });
+
+    const drawerFooter =
+      design.drawer && design.drawer.renderFooter ? (
+        <DrawerFooter>{design.drawer.renderFooter()}</DrawerFooter>
+      ) : null;
+
     let tabbar;
     let toolbox;
     let fab;
@@ -246,7 +254,7 @@ class App extends React.Component {
             {appName}
           </DrawerHeader>
           <DrawerContent list>
-            {items.map((item) => (
+            {drawerContentItems.map((item) => (
               <Link
                 key={item.id}
                 href={`#${item.name}`}
@@ -259,6 +267,7 @@ class App extends React.Component {
               </Link>
             ))}
           </DrawerContent>
+          {drawerFooter}
         </Drawer>
         <Content>
           <Switch>
