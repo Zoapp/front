@@ -14,6 +14,7 @@ import {
   MESSAGE_SETMESSAGE,
   MESSAGE_REMOVEMESSAGE,
   FETCH_FAILURE,
+  API_GETADMINPARAMETERS,
 } from "../actions/constants";
 
 export const addErrorToState = (state, { error }) => {
@@ -40,6 +41,7 @@ export const handlers = {
   /* App section */
   [API_ADMIN + FETCH_FAILURE]: addErrorToState,
   [API_SETADMINPARAMETERS + FETCH_FAILURE]: addErrorToState,
+  [API_GETADMINPARAMETERS + FETCH_FAILURE]: addErrorToState,
 
   /* Auth section */
   [AUTH_SIGNIN + FETCH_FAILURE]: addErrorToState,

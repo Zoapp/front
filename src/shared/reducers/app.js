@@ -8,6 +8,7 @@ import createReducer from "./createReducer";
 import {
   API_ADMIN,
   API_SETADMINPARAMETERS,
+  API_GETADMINPARAMETERS,
   APP_SETTITLE,
   AUTH_SIGNOUT,
   FETCH_FAILURE,
@@ -17,6 +18,7 @@ import {
 
 export const initialState = {
   admin: null,
+  adminParameters: null,
   error: null,
   loading: false,
   titleName: "",
@@ -57,6 +59,24 @@ export const handlers = {
   }),
   [API_SETADMINPARAMETERS + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
+    loading: false,
+    error,
+  }),
+
+  [API_GETADMINPARAMETERS + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [API_GETADMINPARAMETERS + FETCH_SUCCESS]: (state, { params }) => ({
+    ...state,
+    loading: false,
+    error: null,
+    adminParameters: params,
+  }),
+  [API_GETADMINPARAMETERS + FETCH_FAILURE]: (state, error) => ({
+    ...state,
+    adminParameters: null,
     loading: false,
     error,
   }),
