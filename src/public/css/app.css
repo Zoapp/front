@@ -17,3 +17,14 @@
   height: 100%;
   overflow: hidden; 
 }
+
+.mdc-toolbar-fixed-adjust {
+  overflow: auto;
+  height: calc(100vh - 64px);
+  width: 100%;
+}
+
+.mdl-layout__content {
+  height: 100%;
+  width: 100%;
+}
