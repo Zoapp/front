@@ -67,10 +67,11 @@ const api = [
       try {
         let response;
         if (parameterType === null) {
-          response = yield getWebService().get(`params/${name}`);
+          response = yield getWebService().get(`params/${name}`, false);
         } else {
           response = yield getWebService().get(
             `params/${name}/${parameterType}`,
+            false,
           );
         }
 
