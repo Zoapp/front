@@ -7,9 +7,13 @@
 import React from "react";
 import Front from "Zoapp/front";
 import Screen from "Zoapp/containers/screen";
+import AdminManager from "ZoappContainers/adminManager";
+import Advanced from "ZoappContainers/admin/advanced";
+import Users from "ZoappContainers/admin/users";
 import Zrmc from "zrmc";
 import config from "../../config/default.json";
 import { setMessage } from "../shared/actions/message";
+
 
 const handleAction = () => {
   Zrmc.showDialog({
@@ -48,8 +52,13 @@ const app = {
       name: "Admin",
       path: "/admin",
       access: "auth",
-      panels: ["General", "Extensions", "Users", "Advanced"],
-      render: props => React.createElement(Screen, props, "Admin"),
+      panels: ["Users", "Advanced"],
+      render: props => <AdminManager {...props } tabs={
+          [
+            <Users key="users" />,
+            <Advanced key="advanced" />,
+          ]
+      } />,
     },
     {
       id: "3",
