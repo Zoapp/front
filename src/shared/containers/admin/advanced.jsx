@@ -8,7 +8,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Zrmc, { Grid, Inner, Cell, Button, Icon, TextField } from "zrmc";
 import { connect } from "react-redux";
-import { apiSetAdminParametersRequest } from "../../actions/api";
+import {
+  apiSetAdminParametersRequest,
+  apiAdminUpdateRequest,
+} from "../../actions/api";
 import TunnelBox from "../../components/tunnelBox";
 import { infoStyleD, FORM_WIDTH } from "./styles";
 
@@ -16,10 +19,17 @@ class Advanced extends Component {
   constructor(props) {
     super(props);
 
+    const { params } = props.admin;
+
     this.state = {
       tunnelParams: null,
       backendParams: null,
-      emailServerParams: null,
+      emailServerParams: {
+        url: params.emailServer.url || "",
+        port: params.emailServer.port || "",
+        username: params.emailServer.username || "",
+        password: params.emailServer.password || "",
+      },
     };
   }
 
@@ -55,10 +65,49 @@ class Advanced extends Component {
     });
   }
 
+  onEmailParamsChange = (field, e) => {
+    const { value } = e.currentTarget;
+
+    this.setState((prevState) => ({
+      emailServerParams: {
+        ...prevState.emailServerParams,
+        [field]: value,
+      },
+    }));
+  };
+
+  onSaveEmailParams = () => {
+    const params = this.state.emailServerParams;
+
+    if (
+      params.url.length === 0 ||
+      params.port.length === 0 ||
+      params.username.length === 0 ||
+      params.password.length === 0
+    ) {
+      Zrmc.showDialog({
+        header: "email settings",
+        body: "all parameters are mandatory",
+        syle: { width: "520px" },
+      });
+      return;
+    }
+
+    this.props.apiAdminUpdateRequest({
+      emailServer: params,
+    });
+
+    Zrmc.showDialog({
+      header: "email settings",
+      body: "parameters saved",
+      syle: { width: "520px" },
+    });
+  };
+
   render() {
     const { params } = this.props.admin;
 
-    const emailServer = this.state.emailParams || params.emailServer || {};
+    const emailServer = this.state.emailServerParams;
     const backend = this.state.backendParams || params.backend || {};
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
     /* const hasTunnelParams = !!this.state.tunnelParams; */
@@ -150,6 +199,10 @@ class Advanced extends Component {
                 raised
                 disabled={saveEmailDisabled}
                 style={{ float: "right" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.onSaveEmailParams();
+                }}
               >
                 SAVE
               </Button>
@@ -157,29 +210,36 @@ class Advanced extends Component {
             <form style={infoStyleD} autoComplete="nope">
               <div>
                 <TextField
-                  onChange={() => {}}
+                  onChange={(e) => this.onEmailParamsChange("url", e)}
                   label="Server address"
                   style={{ width: FORM_WIDTH }}
-                  value={emailServer.url}
+                  defaultValue={emailServer.url}
                 />
               </div>
               <div>
                 <TextField
-                  onChange={() => {}}
+                  onChange={(e) => this.onEmailParamsChange("port", e)}
+                  label="Server port"
+                  style={{ width: FORM_WIDTH }}
+                  defaultValue={emailServer.port}
+                />
+              </div>
+              <div>
+                <TextField
+                  onChange={(e) => this.onEmailParamsChange("username", e)}
                   label="Username"
                   autoComplete="new-password"
                   style={{ width: FORM_WIDTH }}
-                  value={emailServer.username}
+                  defaultValue={emailServer.username}
                 />
               </div>
               <div>
                 <TextField
-                  onChange={() => {}}
+                  onChange={(e) => this.onEmailParamsChange("password", e)}
                   label="Password"
                   autoComplete="new-password"
                   type="password"
                   style={{ width: FORM_WIDTH }}
-                  value={emailServer.password}
                 />
               </div>
             </form>
@@ -199,6 +259,7 @@ Advanced.defaultProps = {
 Advanced.propTypes = {
   admin: PropTypes.shape({ params: PropTypes.shape({}).isRequired }),
   apiSetAdminParametersRequest: PropTypes.func.isRequired,
+  apiAdminUpdateRequest: PropTypes.func.isRequired,
   children: PropTypes.element,
 };
 
@@ -213,6 +274,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   apiSetAdminParametersRequest: (params) => {
     dispatch(apiSetAdminParametersRequest(params));
+  },
+  apiAdminUpdateRequest: (params) => {
+    dispatch(apiAdminUpdateRequest(params));
   },
 });
 
