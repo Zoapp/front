@@ -114,7 +114,10 @@ exports[`containers/signInForm renders correctly 1`] = `
     >
       <button
         className="mdc-button mdc-button--compact mdc-card__action"
+        disabled={false}
+        id={null}
         onClick={null}
+        type="submit"
       >
         
         Sign in

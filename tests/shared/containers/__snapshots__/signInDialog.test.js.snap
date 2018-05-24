@@ -121,14 +121,20 @@ exports[`containers/signInDialog renders correctly 1`] = `
       >
         <button
           className="mdc-dialog__footer__button mdc-dialog__footer__button--cancel mdc-button"
+          disabled={false}
+          id="signin-dialog-cancel-button"
           onClick={[Function]}
+          type="button"
         >
           
           Cancel
         </button>
         <button
           className="mdc-dialog__footer__button mdc-dialog__footer__button--cancel mdc-button"
+          disabled={false}
+          id={null}
           onClick={null}
+          type="submit"
         >
           
           Sign in
