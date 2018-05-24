@@ -11,6 +11,7 @@ import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
   API_GETADMINPARAMETERS,
+  API_ADMIN_UPDATE,
 } from "./constants";
 
 export function apiAdminRequest() {
@@ -23,6 +24,18 @@ export function apiAdminSuccess({ admin }) {
 
 export function apiAdminError({ error }) {
   return { type: API_ADMIN + FETCH_FAILURE, error };
+}
+
+export function apiAdminUpdateRequest(params) {
+  return { type: API_ADMIN_UPDATE + FETCH_REQUEST, params };
+}
+
+export function apiAdminUpdateSuccess({ admin }) {
+  return { type: API_ADMIN_UPDATE + FETCH_SUCCESS, admin };
+}
+
+export function apiAdminUpdateError({ error }) {
+  return { type: API_ADMIN_UPDATE + FETCH_FAILURE, error };
 }
 
 export function apiSetAdminParametersRequest(params) {

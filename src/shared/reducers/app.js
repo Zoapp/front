@@ -14,6 +14,7 @@ import {
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
+  API_ADMIN_UPDATE,
 } from "../actions/constants";
 
 export const initialState = {
@@ -38,6 +39,23 @@ export const handlers = {
     admin,
   }),
   [API_ADMIN + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }),
+
+  [API_ADMIN_UPDATE + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [API_ADMIN_UPDATE + FETCH_SUCCESS]: (state, { admin }) => ({
+    ...state,
+    loading: false,
+    error: null,
+    admin,
+  }),
+  [API_ADMIN_UPDATE + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
     loading: false,
     error,
