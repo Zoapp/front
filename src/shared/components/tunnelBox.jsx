@@ -73,7 +73,7 @@ class TunnelBox extends Component {
             ref={(input) => {
               this.fields.provider = input;
             }}
-            id="unique-component-id"
+            id="tunnel-provider"
             value={value}
             style={{ width: "400px" }}
           >
@@ -91,7 +91,7 @@ class TunnelBox extends Component {
               onChange={(e) => {
                 this.onChange("subdomain", e.target.value);
               }}
-              id="unique-component-id"
+              id="subdomain"
               label="Subdomain"
               style={{ width: "400px" }}
               value={active.subdomain}
@@ -105,7 +105,7 @@ class TunnelBox extends Component {
               onChange={(e) => {
                 this.onChange("host", e.target.value);
               }}
-              id="unique-component-id"
+              id="host"
               label="Host"
               style={{ width: "400px" }}
               value={active.host}
@@ -119,7 +119,7 @@ class TunnelBox extends Component {
               onChange={(e) => {
                 this.onChange("localhost", e.target.value);
               }}
-              id="unique-component-id"
+              id="localhost"
               label="Localhost"
               style={{ width: "400px" }}
               value={active.localhost}
