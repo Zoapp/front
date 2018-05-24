@@ -13,7 +13,9 @@ import SignInForm from "../containers/signInForm";
 import { appSetTitle } from "../actions/app";
 
 class AdminManager extends Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+
     this.props.appSetTitle("Admin");
   }
 
