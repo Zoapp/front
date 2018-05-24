@@ -18,7 +18,6 @@ import { infoStyleD, FORM_WIDTH } from "./styles";
 class Advanced extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     const { params } = props.admin;
     this.state = {
       tunnelParams: null,
