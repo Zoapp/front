@@ -20,10 +20,15 @@ class Advanced extends Component {
     super(props);
 
     const { params } = props.admin;
-
     this.state = {
       tunnelParams: null,
-      backendParams: null,
+      backendParams: {
+        publicUrl: "",
+        apiUrl: params.backend.apiUrl || "",
+        authUrl: params.backend.authUrl || "",
+        clientId: params.backend.clientId || "",
+        clientSecret: params.backend.clientSecret || "",
+      },
       emailServerParams: {
         host: params.emailServer.url || "",
         port: params.emailServer.port || "",
@@ -105,10 +110,8 @@ class Advanced extends Component {
   };
 
   render() {
-    const { params } = this.props.admin;
-
     const emailServer = this.state.emailServerParams;
-    const backend = this.state.backendParams || params.backend || {};
+    const backend = this.state.backendParams;
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
     /* const hasTunnelParams = !!this.state.tunnelParams; */
     const saveBackendDisabled = !(
@@ -139,7 +142,7 @@ class Advanced extends Component {
                   onChange={() => {}}
                   label="Public Api url"
                   style={{ width: FORM_WIDTH }}
-                  value={backend.publicUrl}
+                  defaultValue={backend.publicUrl}
                 />
                 <Icon
                   /* colored={hasTunnelParams} */
@@ -157,7 +160,7 @@ class Advanced extends Component {
                   label="Api url"
                   disabled
                   style={{ width: FORM_WIDTH }}
-                  value={backend.apiUrl}
+                  defaultValue={backend.apiUrl}
                 />
               </div>
               <div>
@@ -166,7 +169,7 @@ class Advanced extends Component {
                   label="Auth url"
                   disabled
                   style={{ width: FORM_WIDTH }}
-                  value={backend.authUrl}
+                  defaultValue={backend.authUrl}
                 />
               </div>
               <div>
@@ -175,7 +178,7 @@ class Advanced extends Component {
                   label="AppId"
                   disabled
                   style={{ width: FORM_WIDTH }}
-                  value={backend.clientId}
+                  defaultValue={backend.clientId}
                 />
               </div>
               <div>
@@ -184,7 +187,7 @@ class Advanced extends Component {
                   label="Secret"
                   disabled
                   style={{ width: FORM_WIDTH }}
-                  value={backend.clientSecret}
+                  defaultValue={backend.clientSecret}
                 />
               </div>
             </form>
