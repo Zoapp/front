@@ -6,7 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Zrmc, { Grid, Inner, Cell, Button, Icon, TextField } from "zrmc";
+import Zrmc, { Grid, Inner, Cell, Button, TextField } from "zrmc";
 import { connect } from "react-redux";
 import {
   apiSetAdminParametersRequest,
@@ -18,7 +18,7 @@ import { infoStyleD, FORM_WIDTH } from "./styles";
 class Advanced extends Component {
   constructor(props) {
     super(props);
-
+    console.log(props);
     const { params } = props.admin;
     this.state = {
       tunnelParams: null,
@@ -207,7 +207,11 @@ class Advanced extends Component {
               <div>
                 <TextField
                   onChange={(e) => this.onEmailParamsChange("host", e)}
-                  label="Server address"
+                  label={
+                    emailServer.address
+                      ? "Server address"
+                      : "Server address (e.g.: smtp.example.com)"
+                  }
                   style={{ width: FORM_WIDTH }}
                   defaultValue={emailServer.host}
                 />
@@ -215,7 +219,9 @@ class Advanced extends Component {
               <div>
                 <TextField
                   onChange={(e) => this.onEmailParamsChange("port", e)}
-                  label="Server port"
+                  label={
+                    emailServer.port ? "Server port" : "Server port (e.g.: 587)"
+                  }
                   style={{ width: FORM_WIDTH }}
                   defaultValue={emailServer.port}
                 />
