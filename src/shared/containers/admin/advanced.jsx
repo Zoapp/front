@@ -25,7 +25,7 @@ class Advanced extends Component {
       tunnelParams: null,
       backendParams: null,
       emailServerParams: {
-        url: params.emailServer.url || "",
+        host: params.emailServer.url || "",
         port: params.emailServer.port || "",
         username: params.emailServer.username || "",
         password: params.emailServer.password || "",
@@ -80,7 +80,7 @@ class Advanced extends Component {
     const params = this.state.emailServerParams;
 
     if (
-      params.url.length === 0 ||
+      params.host.length === 0 ||
       params.port.length === 0 ||
       params.username.length === 0 ||
       params.password.length === 0
@@ -210,10 +210,10 @@ class Advanced extends Component {
             <form style={infoStyleD} autoComplete="nope">
               <div>
                 <TextField
-                  onChange={(e) => this.onEmailParamsChange("url", e)}
+                  onChange={(e) => this.onEmailParamsChange("host", e)}
                   label="Server address"
                   style={{ width: FORM_WIDTH }}
-                  defaultValue={emailServer.url}
+                  defaultValue={emailServer.host}
                 />
               </div>
               <div>
