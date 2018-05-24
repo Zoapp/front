@@ -143,15 +143,8 @@ class Advanced extends Component {
                   label="Public Api url"
                   style={{ width: FORM_WIDTH }}
                   defaultValue={backend.publicUrl}
-                />
-                <Icon
-                  /* colored={hasTunnelParams} */
-                  style={{ float: "right", marginTop: "8px" }}
-                  name="link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    this.displayTunnelDialog();
-                  }}
+                  trailingIcon="link"
+                  onClickTI={this.displayTunnelDialog}
                 />
               </div>
               <div>
