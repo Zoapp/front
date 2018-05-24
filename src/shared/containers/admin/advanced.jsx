@@ -30,7 +30,7 @@ class Advanced extends Component {
         clientSecret: params.backend.clientSecret || "",
       },
       emailServerParams: {
-        host: params.emailServer.url || "",
+        host: params.emailServer.host || "",
         port: params.emailServer.port || "",
         username: params.emailServer.username || "",
         password: params.emailServer.password || "",
