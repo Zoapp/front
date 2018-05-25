@@ -125,6 +125,7 @@ class App extends React.Component {
     const routes = [];
     const { design, screens, titleName, appName } = this.props;
     let currentScreen = null;
+    let displayToolbar = true;
 
     screens.forEach((screen) => {
       if (
@@ -136,12 +137,14 @@ class App extends React.Component {
         let activated = false;
         if (titleName === screen.name) {
           activated = true;
-          currentScreen = screen;
         }
         drawerContentItems.push({
           activated,
           ...screen,
         });
+      }
+      if (titleName === screen.name) {
+        currentScreen = screen;
       }
       if (screen.path) {
         if (screen.path === "*" || screen.path === "/") {
@@ -161,6 +164,10 @@ class App extends React.Component {
     let toolbox;
     let fab;
     if (currentScreen) {
+      if (currentScreen.displayToolbar != null) {
+        // eslint-disable-next-line
+        displayToolbar = currentScreen.displayToolbar;
+      }
       if (currentScreen.panels) {
         const ac = "var(--mdc-theme-text-primary-on-primary, white)";
         const c = "rgba(255, 255, 255, 0.54)";
@@ -225,18 +232,20 @@ class App extends React.Component {
     return (
       <Content>
         <Toolbar fixed>
-          <ToolbarRow>
-            <ToolbarSection align="start">
-              {icon}
-              <ToolbarTitle>
-                <span style={{ fontWeight: "900" }}>{appName} / </span>
-                <span style={{ color: "#ddd" }}>{titleName}</span>
-              </ToolbarTitle>
-            </ToolbarSection>
-            {tabbar}
-            {toolbox}
-            <UserBox store={this.props.store} />
-          </ToolbarRow>
+          {displayToolbar === true && (
+            <ToolbarRow>
+              <ToolbarSection align="start">
+                {icon}
+                <ToolbarTitle>
+                  <span style={{ fontWeight: "900" }}>{appName} / </span>
+                  <span style={{ color: "#ddd" }}>{titleName}</span>
+                </ToolbarTitle>
+              </ToolbarSection>
+              {tabbar}
+              {toolbox}
+              <UserBox store={this.props.store} />
+            </ToolbarRow>
+          )}
         </Toolbar>
         <Drawer
           type={this.state.drawer}
