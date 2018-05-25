@@ -125,7 +125,7 @@ class App extends React.Component {
     const routes = [];
     const { design, screens, titleName, appName } = this.props;
     let currentScreen = null;
-    let displayToolbar = true;
+    let isFullscreen = false;
 
     screens.forEach((screen) => {
       if (
@@ -164,9 +164,9 @@ class App extends React.Component {
     let toolbox;
     let fab;
     if (currentScreen) {
-      if (currentScreen.displayToolbar != null) {
+      if (currentScreen.isFullscreen != null) {
         // eslint-disable-next-line
-        displayToolbar = currentScreen.displayToolbar;
+        isFullscreen = currentScreen.isFullscreen;
       }
       if (currentScreen.panels) {
         const ac = "var(--mdc-theme-text-primary-on-primary, white)";
@@ -229,9 +229,45 @@ class App extends React.Component {
         );
       }
     }
-    return (
-      <Content>
-        {displayToolbar === true && (
+
+    const mainContent = (
+      <Content
+        style={
+          isFullscreen === true
+            ? {
+                position: "fixed",
+                top: 0,
+                left: 0,
+                height: "100%",
+                width: "100%",
+              }
+            : {}
+        }
+      >
+        <Switch>
+          {routes.map((screen) => (
+            <Route
+              key={screen.id}
+              path={screen.path}
+              render={(props) => {
+                if (screen.render) {
+                  return screen.render({
+                    ...props,
+                    screen,
+                    activeTab: this.state.activeTab,
+                  });
+                }
+                return <Screen screen={screen}>{screen.name}</Screen>;
+              }}
+            />
+          ))}
+        </Switch>
+      </Content>
+    );
+
+    if (isFullscreen === false) {
+      return (
+        <Content>
           <Toolbar fixed>
             <ToolbarRow>
               <ToolbarSection align="start">
@@ -246,70 +282,46 @@ class App extends React.Component {
               <UserBox store={this.props.store} />
             </ToolbarRow>
           </Toolbar>
-        )}
-        <Drawer
-          type={this.state.drawer}
-          open={this.state.drawerOpen}
-          above={this.state.aboveToolbar}
-          onClose={this.toggleDrawer}
-          themeDark={this.state.drawerThemeDark}
-        >
-          <DrawerHeader
-            style={{
-              backgroundColor: "var(--mdc-theme-secondary-dark, #004040)",
-              color: "var(--mdc-theme-text-primary-on-primary, white)",
-            }}
+          <Drawer
+            type={this.state.drawer}
+            open={this.state.drawerOpen}
+            above={this.state.aboveToolbar}
+            onClose={this.toggleDrawer}
+            themeDark={this.state.drawerThemeDark}
           >
-            {appName}
-          </DrawerHeader>
-          <DrawerContent list>
-            {drawerContentItems.map((item) => (
-              <Link
-                key={item.id}
-                href={`#${item.name}`}
-                onClick={this.handleDisplayScreen}
-                to={item.path}
-                activated={item.activated}
-                icon={item.icon}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </DrawerContent>
-          {drawerFooter}
-        </Drawer>
-        <Content
-          style={
-            displayToolbar === false
-              ? {
-                  position: "fixed",
-                  top: 0,
-                  left: 0,
-                  height: "100%",
-                  width: "100%",
-                }
-              : {}
-          }
-        >
-          <Switch>
-            {routes.map((screen) => (
-              <Route
-                key={screen.id}
-                path={screen.path}
-                render={(props) => {
-                  if (screen.render) {
-                    return screen.render({
-                      ...props,
-                      screen,
-                      activeTab: this.state.activeTab,
-                    });
-                  }
-                  return <Screen screen={screen}>{screen.name}</Screen>;
-                }}
-              />
-            ))}
-          </Switch>
+            <DrawerHeader
+              style={{
+                backgroundColor: "var(--mdc-theme-secondary-dark, #004040)",
+                color: "var(--mdc-theme-text-primary-on-primary, white)",
+              }}
+            >
+              {appName}
+            </DrawerHeader>
+            <DrawerContent list>
+              {drawerContentItems.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`#${item.name}`}
+                  onClick={this.handleDisplayScreen}
+                  to={item.path}
+                  activated={item.activated}
+                  icon={item.icon}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </DrawerContent>
+            {drawerFooter}
+          </Drawer>
+          {mainContent}
+          {fab}
+          {this.renderSnackbar()}
         </Content>
+      );
+    }
+    return (
+      <Content>
+        {mainContent}
         {fab}
         {this.renderSnackbar()}
       </Content>
