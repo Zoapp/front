@@ -18,21 +18,35 @@ import { infoStyleD, FORM_WIDTH } from "./styles";
 class Advanced extends Component {
   constructor(props) {
     super(props);
-    const { params } = props.admin;
+
+    const emailServer = props.admin.params.emailServer || {
+      host: "",
+      port: "",
+      clientId: "",
+      clientSecret: "",
+    };
+
+    const backend = props.admin.params.backend || {
+      apiUrl: "",
+      authUrl: "",
+      clientId: "",
+      clientSecret: "",
+    };
+
     this.state = {
       tunnelParams: null,
       backendParams: {
         publicUrl: "",
-        apiUrl: params.backend.apiUrl || "",
-        authUrl: params.backend.authUrl || "",
-        clientId: params.backend.clientId || "",
-        clientSecret: params.backend.clientSecret || "",
+        apiUrl: backend.apiUrl || "",
+        authUrl: backend.authUrl || "",
+        clientId: backend.clientId || "",
+        clientSecret: backend.clientSecret || "",
       },
       emailServerParams: {
-        host: params.emailServer.host || "",
-        port: params.emailServer.port || "",
-        username: params.emailServer.username || "",
-        password: params.emailServer.password || "",
+        host: emailServer.host || "",
+        port: emailServer.port || "",
+        username: emailServer.username || "",
+        password: emailServer.password || "",
       },
     };
   }
@@ -258,7 +272,12 @@ Advanced.defaultProps = {
 };
 
 Advanced.propTypes = {
-  admin: PropTypes.shape({ params: PropTypes.shape({}).isRequired }),
+  admin: PropTypes.shape({
+    params: PropTypes.shape({
+      emailServer: PropTypes.shape({}).isRequired,
+      backend: PropTypes.shape({}).isRequired,
+    }).isRequired,
+  }),
   apiSetAdminParametersRequest: PropTypes.func.isRequired,
   apiAdminUpdateRequest: PropTypes.func.isRequired,
   children: PropTypes.element,
