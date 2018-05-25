@@ -231,8 +231,8 @@ class App extends React.Component {
     }
     return (
       <Content>
-        <Toolbar fixed>
-          {displayToolbar === true && (
+        {displayToolbar === true && (
+          <Toolbar fixed>
             <ToolbarRow>
               <ToolbarSection align="start">
                 {icon}
@@ -245,8 +245,8 @@ class App extends React.Component {
               {toolbox}
               <UserBox store={this.props.store} />
             </ToolbarRow>
-          )}
-        </Toolbar>
+          </Toolbar>
+        )}
         <Drawer
           type={this.state.drawer}
           open={this.state.drawerOpen}
@@ -278,7 +278,19 @@ class App extends React.Component {
           </DrawerContent>
           {drawerFooter}
         </Drawer>
-        <Content>
+        <Content
+          style={
+            displayToolbar === false
+              ? {
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  height: "100%",
+                  width: "100%",
+                }
+              : {}
+          }
+        >
           <Switch>
             {routes.map((screen) => (
               <Route
