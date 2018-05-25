@@ -274,8 +274,8 @@ Advanced.defaultProps = {
 Advanced.propTypes = {
   admin: PropTypes.shape({
     params: PropTypes.shape({
-      emailServer: PropTypes.shape({}).isRequired,
-      backend: PropTypes.shape({}).isRequired,
+      emailServer: PropTypes.shape({}),
+      backend: PropTypes.shape({}),
     }).isRequired,
   }),
   apiSetAdminParametersRequest: PropTypes.func.isRequired,
