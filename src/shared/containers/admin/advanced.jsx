@@ -300,4 +300,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Advanced);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Advanced);

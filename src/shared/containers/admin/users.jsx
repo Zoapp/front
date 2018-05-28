@@ -75,4 +75,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Users);
+export default connect(
+  mapStateToProps,
+  null,
+)(Users);
