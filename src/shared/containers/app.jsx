@@ -395,10 +395,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 /* global module */
 export default hot(module)(
-  withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps,
-    )(App),
-  ),
+  withRouter(connect(mapStateToProps, mapDispatchToProps)(App)),
 );
