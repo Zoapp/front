@@ -125,81 +125,86 @@ class Advanced extends Component {
   render() {
     const emailServer = this.state.emailServerParams;
     const backend = this.state.backendParams;
+    const { user } = this.props;
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
     /* const hasTunnelParams = !!this.state.tunnelParams; */
     const saveBackendDisabled = !(
       this.state.backendParams || this.state.tunnelParams
     );
     const saveEmailDisabled = !this.state.emailServerParams;
-    return (
-      <Grid>
-        <Inner>
-          <Cell className="mdl-color--white" span={12}>
-            <div style={infoStyleD}>
-              Backend configuration
-              <Button
-                raised
-                disabled={saveBackendDisabled}
-                style={{ float: "right" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  this.onSaveBackend();
-                }}
-              >
-                SAVE
-              </Button>
+    const backendConfig = (
+      <Inner>
+        <Cell className="mdl-color--white" span={12}>
+          <div style={infoStyleD}>
+            Backend configuration
+            <Button
+              raised
+              disabled={saveBackendDisabled}
+              style={{ float: "right" }}
+              onClick={(e) => {
+                e.preventDefault();
+                this.onSaveBackend();
+              }}
+            >
+              SAVE
+            </Button>
+          </div>
+          <form style={infoStyleD}>
+            <div style={{ width: "520px" }}>
+              <TextField
+                onChange={() => {}}
+                label="Public Api url"
+                style={{ width: FORM_WIDTH }}
+                defaultValue={backend.publicUrl}
+                trailingIcon="link"
+                onClickTI={this.displayTunnelDialog}
+              />
             </div>
-            <form style={infoStyleD}>
-              <div style={{ width: "520px" }}>
-                <TextField
-                  onChange={() => {}}
-                  label="Public Api url"
-                  style={{ width: FORM_WIDTH }}
-                  defaultValue={backend.publicUrl}
-                  trailingIcon="link"
-                  onClickTI={this.displayTunnelDialog}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="Api url"
-                  disabled
-                  style={{ width: FORM_WIDTH }}
-                  defaultValue={backend.apiUrl}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="Auth url"
-                  disabled
-                  style={{ width: FORM_WIDTH }}
-                  defaultValue={backend.authUrl}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="AppId"
-                  disabled
-                  style={{ width: FORM_WIDTH }}
-                  defaultValue={backend.clientId}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="Secret"
-                  disabled
-                  style={{ width: FORM_WIDTH }}
-                  defaultValue={backend.clientSecret}
-                />
-              </div>
-            </form>
-            <div />
-          </Cell>
-        </Inner>
+            <div>
+              <TextField
+                onChange={() => {}}
+                label="Api url"
+                disabled
+                style={{ width: FORM_WIDTH }}
+                defaultValue={backend.apiUrl}
+              />
+            </div>
+            <div>
+              <TextField
+                onChange={() => {}}
+                label="Auth url"
+                disabled
+                style={{ width: FORM_WIDTH }}
+                defaultValue={backend.authUrl}
+              />
+            </div>
+            <div>
+              <TextField
+                onChange={() => {}}
+                label="AppId"
+                disabled
+                style={{ width: FORM_WIDTH }}
+                defaultValue={backend.clientId}
+              />
+            </div>
+            <div>
+              <TextField
+                onChange={() => {}}
+                label="Secret"
+                disabled
+                style={{ width: FORM_WIDTH }}
+                defaultValue={backend.clientSecret}
+              />
+            </div>
+          </form>
+          <div />
+        </Cell>
+      </Inner>
+    );
+
+    let emailConfig = null;
+    if (user.attributes.scope === "admin") {
+      emailConfig = (
         <Inner>
           <Cell className="mdl-color--white" span={12}>
             <div style={infoStyleD}>
@@ -261,6 +266,13 @@ class Advanced extends Component {
             <div />
           </Cell>
         </Inner>
+      );
+    }
+
+    return (
+      <Grid>
+        {backendConfig}
+        {emailConfig}
         {this.props.children}
       </Grid>
     );
@@ -269,6 +281,7 @@ class Advanced extends Component {
 
 Advanced.defaultProps = {
   admin: null,
+  user: null,
 };
 
 Advanced.propTypes = {
@@ -281,13 +294,16 @@ Advanced.propTypes = {
   apiSetAdminParametersRequest: PropTypes.func.isRequired,
   apiAdminUpdateRequest: PropTypes.func.isRequired,
   children: PropTypes.element,
+  user: PropTypes.shape({}),
 };
 
 const mapStateToProps = (state) => {
   const { admin } = state.app;
+  const { user } = state;
 
   return {
     admin,
+    user,
   };
 };
 
