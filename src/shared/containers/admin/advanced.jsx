@@ -128,10 +128,7 @@ class Advanced extends Component {
     const { user } = this.props;
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
     /* const hasTunnelParams = !!this.state.tunnelParams; */
-    const saveBackendDisabled = !(
-      this.state.backendParams || this.state.tunnelParams
-    );
-    const saveEmailDisabled = !this.state.emailServerParams;
+    const publicApiUrlDisabled = user.attributes.scope === "owner";
     const backendConfig = (
       <Inner>
         <Cell className="mdl-color--white" span={12}>
@@ -139,7 +136,6 @@ class Advanced extends Component {
             Backend configuration
             <Button
               raised
-              disabled={saveBackendDisabled}
               style={{ float: "right" }}
               onClick={(e) => {
                 e.preventDefault();
@@ -154,6 +150,7 @@ class Advanced extends Component {
               <TextField
                 onChange={() => {}}
                 label="Public Api url"
+                disabled={publicApiUrlDisabled}
                 style={{ width: FORM_WIDTH }}
                 defaultValue={backend.publicUrl}
                 trailingIcon="link"
@@ -211,7 +208,6 @@ class Advanced extends Component {
               Email server configuration
               <Button
                 raised
-                disabled={saveEmailDisabled}
                 style={{ float: "right" }}
                 onClick={(e) => {
                   e.preventDefault();
