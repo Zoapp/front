@@ -10,12 +10,17 @@ import { Grid, Inner, Cell, Button } from "zrmc";
 import { connect } from "react-redux";
 import { TableComponent } from "zoapp-ui";
 import { infoStyleD } from "./styles";
+import { apiGetUsersRequest } from "../../actions/api";
 
 class Users extends Component {
+  componentDidMount() {
+    this.props.apiGetUsersRequest();
+  }
+
   render() {
     const items = [];
     const status = "you";
-    const { user, profile } = this.props;
+    const { user, profile, users } = this.props;
 
     const values = [];
     values.push(profile.username);
@@ -24,6 +29,14 @@ class Users extends Component {
     values.push(status);
 
     items.push({ id: 1, values, icon: `../images/${profile.avatar}.png` });
+
+    users.forEach((u) => {
+      items.push({
+        id: u.id,
+        values: [u.username, u.email, u.scope, ""],
+        icon: `../images/${u.avatar}.png`,
+      });
+    });
 
     const headers = ["", "username", "email", "role", "status"];
     const title = (
@@ -58,21 +71,30 @@ class Users extends Component {
 Users.defaultProps = {
   profile: {},
   user: null,
+  users: [],
 };
 
 Users.propTypes = {
   profile: PropTypes.shape({}),
   user: PropTypes.shape({}),
+  users: PropTypes.array,
+  apiGetUsersRequest: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
   const { user } = state;
+  const { users } = state.app;
   const profile = user ? user.profile : null;
 
   return {
     user,
     profile,
+    users,
   };
 };
 
-export default connect(mapStateToProps, null)(Users);
+const mapDispatchToProps = (dispatch) => ({
+  apiGetUsersRequest: () => dispatch(apiGetUsersRequest()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users);
