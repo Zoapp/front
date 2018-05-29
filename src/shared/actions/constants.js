@@ -37,3 +37,6 @@ export const APP_SETTITLE = "APP_SETTITLE";
 // Message logic constants
 export const MESSAGE_SETMESSAGE = "MESSAGE_SETMESSAGE";
 export const MESSAGE_REMOVEMESSAGE = "MESSAGE_REMOVEMESSAGE";
+
+// Users
+export const API_GETUSERS = "API_GETUSERS";
