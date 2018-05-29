@@ -15,6 +15,7 @@ import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
   API_ADMIN_UPDATE,
+  API_GETUSERS,
 } from "../actions/constants";
 
 export const initialState = {
@@ -23,6 +24,7 @@ export const initialState = {
   error: null,
   loading: false,
   titleName: "",
+  users: [],
 };
 
 export const handlers = {
@@ -109,6 +111,22 @@ export const handlers = {
   [AUTH_SIGNOUT + FETCH_SUCCESS]: (state) => ({
     ...state,
     ...initialState,
+  }),
+  [API_GETUSERS + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [API_GETUSERS + FETCH_SUCCESS]: (state, { users }) => ({
+    ...state,
+    loading: false,
+    error: null,
+    users,
+  }),
+  [API_GETUSERS + FETCH_FAILURE]: (state, error) => ({
+    ...state,
+    loading: false,
+    error,
   }),
 };
 

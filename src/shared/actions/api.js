@@ -12,6 +12,7 @@ import {
   FETCH_SUCCESS,
   API_GETADMINPARAMETERS,
   API_ADMIN_UPDATE,
+  API_GETUSERS,
 } from "./constants";
 
 export function apiAdminRequest() {
@@ -69,4 +70,16 @@ export function apiGetAdminParametersSuccess(params) {
 
 export function apiGetAdminParametersFailure(error) {
   return { type: API_GETADMINPARAMETERS + FETCH_FAILURE, error };
+}
+
+export function apiGetUsersRequest() {
+  return { type: API_GETUSERS + FETCH_REQUEST };
+}
+
+export function apiGetUsersSuccess(users) {
+  return { type: API_GETUSERS + FETCH_SUCCESS, users };
+}
+
+export function apiGetUsersFailure(error) {
+  return { type: API_GETUSERS + FETCH_FAILURE, error };
 }
