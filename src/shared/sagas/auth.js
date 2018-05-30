@@ -22,7 +22,12 @@ function* authenticate({ username, password, provider }) {
 
     yield put(signInComplete({ attributes: response, provider }));
   } catch (error) {
-    yield put(signOutError({ provider, error }));
+    if (error.response) {
+      const response = yield error.response.json();
+      yield put(signOutError({ provider, error: response.error || error }));
+    } else {
+      yield put(signOutError({ provider, error }));
+    }
   }
 }
 
