@@ -87,12 +87,12 @@ class App extends React.Component {
 
   handleToolbarTabChange = (name, index) => {
     this.setState({ activeTab: index });
-    console.log("change activeTab", this.state.activeTab, index);
+    // console.log("change activeTab", this.state.activeTab, index);
   };
 
   handleDisplayScreen = () => {
     this.setState({ activeTab: 0 });
-    console.log("activeTab", this.state.activeTab);
+    // console.log("activeTab", this.state.activeTab);
   };
 
   toggleDrawer = () => {
@@ -178,7 +178,7 @@ class App extends React.Component {
 
     const { activeTab } = this.state;
 
-    console.log("render activeTab", activeTab);
+    // console.log("render activeTab", activeTab);
 
     if (currentScreen) {
       if (currentScreen.isFullscreen != null) {
