@@ -29,6 +29,7 @@ import { hot } from "react-hot-loader";
 
 import Screen from "./screen";
 import UserBox from "./userBox";
+import SignInForm from "./signInForm";
 import { appSetTitle } from "../actions/app";
 import { removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
@@ -86,10 +87,12 @@ class App extends React.Component {
 
   handleToolbarTabChange = (name, index) => {
     this.setState({ activeTab: index });
+    console.log("change activeTab", this.state.activeTab, index);
   };
 
   handleDisplayScreen = () => {
     this.setState({ activeTab: 0 });
+    console.log("activeTab", this.state.activeTab);
   };
 
   toggleDrawer = () => {
@@ -118,12 +121,19 @@ class App extends React.Component {
       icon = <ToolbarIcon name="menu" onClick={this.onMenuClick} />;
     }
     let { isLoading } = this.props;
-    if (!isLoading && !this.props.admin && this.props.isSignedIn) {
+    const {
+      design,
+      screens,
+      titleName,
+      appName,
+      appSubname,
+      isSignedIn,
+    } = this.props;
+    if (!isLoading && !this.props.admin && isSignedIn) {
       isLoading = true;
     }
     const drawerContentItems = [];
     const routes = [];
-    const { design, screens, titleName, appName } = this.props;
     let currentScreen = null;
     let isFullscreen = false;
 
@@ -131,8 +141,8 @@ class App extends React.Component {
       if (
         screen.isDrawerItem &&
         (screen.access === "all" ||
-          (this.props.isSignedIn && screen.access === "auth") ||
-          (!this.props.isSignedIn && screen.access === "public"))
+          (isSignedIn && screen.access === "auth") ||
+          (!isSignedIn && screen.access === "public"))
       ) {
         let activated = false;
         if (titleName === screen.name) {
@@ -148,7 +158,9 @@ class App extends React.Component {
       }
       if (screen.path) {
         if (screen.path === "*" || screen.path === "/") {
-          routes.push({ ...screen });
+          if (screen.path !== "/" || (screen.access === "auth" && isSignedIn)) {
+            routes.push({ ...screen });
+          }
         } else {
           routes.splice(0, 0, { ...screen });
         }
@@ -163,70 +175,78 @@ class App extends React.Component {
     let tabbar;
     let toolbox;
     let fab;
+
+    const { activeTab } = this.state;
+
+    console.log("render activeTab", activeTab);
+
     if (currentScreen) {
       if (currentScreen.isFullscreen != null) {
         // eslint-disable-next-line
         isFullscreen = currentScreen.isFullscreen;
       }
-      if (currentScreen.panels) {
-        const ac = "var(--mdc-theme-text-primary-on-primary, white)";
-        const c = "rgba(255, 255, 255, 0.54)";
-        tabbar = (
-          <ToolbarSection>
-            <Tabbar
-              onChange={this.handleToolbarTabChange}
-              activeTab={this.state.activeTab}
-              color={c}
-              activeColor={ac}
-            >
-              {currentScreen.panels.map((p, index) => {
-                const k = `t_${index}`;
+      if (isSignedIn || currentScreen.access !== "auth") {
+        if (currentScreen.panels) {
+          const ac = "var(--mdc-theme-text-primary-on-primary, white)";
+          const c = "rgba(255, 255, 255, 0.54)";
+          tabbar = (
+            <ToolbarSection>
+              <Tabbar
+                onChange={this.handleToolbarTabChange}
+                activeTab={activeTab}
+                color={c}
+                activeColor={ac}
+              >
+                {currentScreen.panels.map((p, index) => {
+                  const k = `t_${titleName}_${index}`;
+                  return (
+                    <Tab
+                      key={k}
+                      className={k}
+                      style={{ minWidth: "80px", width: "80px" }}
+                      ripple
+                    >
+                      {p}
+                    </Tab>
+                  );
+                })}
+              </Tabbar>
+            </ToolbarSection>
+          );
+        }
+        if (currentScreen.toolbox) {
+          toolbox = (
+            <ToolbarSection align="end">
+              {currentScreen.toolbox.map((p, index) => {
+                const k = `tb_${index}`;
                 return (
-                  <Tab
+                  <Button
                     key={k}
-                    style={{ minWidth: "80px", width: "80px" }}
-                    ripple
+                    style={{
+                      margin: "auto 48px auto auto",
+                      backgroundColor: "var(--mdc-theme-secondary, #018786)",
+                      color: "#000",
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      p.onAction(p);
+                    }}
                   >
-                    {p}
-                  </Tab>
+                    {p.title}
+                  </Button>
                 );
               })}
-            </Tabbar>
-          </ToolbarSection>
-        );
-      }
-      if (currentScreen.toolbox) {
-        toolbox = (
-          <ToolbarSection align="end">
-            {currentScreen.toolbox.map((p, index) => {
-              const k = `tb_${index}`;
-              return (
-                <Button
-                  key={k}
-                  style={{
-                    margin: "auto 48px auto auto",
-                    backgroundColor: "var(--mdc-theme-secondary, #018786)",
-                    color: "#000",
-                  }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    p.onAction(p);
-                  }}
-                >
-                  {p.title}
-                </Button>
-              );
-            })}
-          </ToolbarSection>
-        );
-      }
-      if (currentScreen.fab) {
-        fab = (
-          <Fab
-            icon={currentScreen.fab.icon}
-            onClick={currentScreen.fab.onAction}
-          />
-        );
+            </ToolbarSection>
+          );
+        }
+        if (currentScreen.fab) {
+          fab = (
+            <Fab
+              icon={currentScreen.fab.icon}
+              onClick={currentScreen.fab.onAction}
+            />
+          );
+        }
       }
     }
 
@@ -250,11 +270,13 @@ class App extends React.Component {
               key={screen.id}
               path={screen.path}
               render={(props) => {
-                if (screen.render) {
+                if (!isSignedIn && screen.access === "auth") {
+                  return <SignInForm screen={screen} />;
+                } else if (screen.render) {
                   return screen.render({
                     ...props,
                     screen,
-                    activeTab: this.state.activeTab,
+                    activeTab,
                   });
                 }
                 return <Screen screen={screen}>{screen.name}</Screen>;
@@ -266,6 +288,16 @@ class App extends React.Component {
     );
 
     if (isFullscreen === false) {
+      let instance;
+      const i = this.props.instance;
+      if (i) {
+        instance = (
+          <span>
+            {" "}
+            - <span style={{ color: i.color }}>{i.name}</span>
+          </span>
+        );
+      }
       return (
         <Content>
           <Toolbar fixed>
@@ -273,7 +305,9 @@ class App extends React.Component {
               <ToolbarSection align="start">
                 {icon}
                 <ToolbarTitle>
-                  <span style={{ fontWeight: "900" }}>{appName} / </span>
+                  <span style={{ fontWeight: "900" }}>
+                    {appName} {appSubname} {instance} /{" "}
+                  </span>
                   <span style={{ color: "#ddd" }}>{titleName}</span>
                 </ToolbarTitle>
               </ToolbarSection>
@@ -303,7 +337,7 @@ class App extends React.Component {
                   key={item.id}
                   href={`#${item.name}`}
                   onClick={this.handleDisplayScreen}
-                  to={item.path}
+                  to={item.path === "*" ? "/" : item.path}
                   activated={item.activated}
                   icon={item.icon}
                 >
@@ -333,6 +367,8 @@ App.defaultProps = {
   message: null,
   admin: null,
   appName: "",
+  appSubname: "",
+  instance: null,
   screens: [],
   design: { drawer: { type: "permanent" } },
   activeTab: 0,
@@ -345,6 +381,8 @@ App.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   admin: PropTypes.shape({}),
   appName: PropTypes.string,
+  appSubname: PropTypes.string,
+  instance: PropTypes.shape({}),
   message: PropTypes.string,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
   design: PropTypes.shape({
@@ -358,7 +396,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { admin, screens, name, design } = state.app;
+  const { admin, screens, name, subname, instance, design } = state.app;
   const { message } = state.message;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading =
@@ -373,6 +411,8 @@ const mapStateToProps = (state) => {
     titleName,
     screens,
     appName: name,
+    appSubname: subname,
+    instance,
     design,
     message,
   };

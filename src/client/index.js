@@ -25,6 +25,12 @@ const handleAction = () => {
 
 const app = {
   name: "Zoapp",
+  subname: "CE",
+  instance: {
+    name: "Dev",
+    color: "#f05545",
+    description: "A warning message",
+  },
   version: "0.1.0",
   design: {
     drawer: {

@@ -16,12 +16,19 @@ import {
 } from "zrmc";
 import { connect } from "react-redux";
 import { signIn } from "../actions/auth";
+import { appSetTitle } from "../actions/app";
 
 export class SignInFormBase extends Component {
   state = {
     username: "",
     password: "",
   };
+  constructor(props) {
+    super(props);
+
+    const { screen } = props;
+    props.appSetTitle(screen.name);
+  }
 
   handleSignIn = (e) => {
     e.preventDefault();
@@ -84,6 +91,8 @@ export class SignInFormBase extends Component {
 SignInFormBase.propTypes = {
   provider: PropTypes.string,
   signIn: PropTypes.func.isRequired,
+  screen: PropTypes.shape({}).isRequired,
+  appSetTitle: PropTypes.func.isRequired,
 };
 
 SignInFormBase.defaultProps = {
@@ -93,6 +102,9 @@ SignInFormBase.defaultProps = {
 const mapDispatchToProps = (dispatch) => ({
   signIn: (provider, username, password) => {
     dispatch(signIn({ provider, username, password }));
+  },
+  appSetTitle: (titleName) => {
+    dispatch(appSetTitle(titleName));
   },
 });
 
