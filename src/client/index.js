@@ -99,7 +99,6 @@ const app = {
   ],
 };
 /* eslint-disable no-undef */
-console.log("process.env", process.env.APP);
 const env = process.env.APP;
 /* eslint-enable no-undef */
 const front = new Front("app", app, config, env);
