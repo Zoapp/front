@@ -28,3 +28,15 @@
   height: 100%;
   width: 100%;
 }
+
+.mdc-drawer__footer {
+  position: relative;
+  margin-top: auto;
+  padding: 4px 16px;
+  background-color: rgba(51,51,51,0.3);
+}
+
+.mdc-drawer__footer-content {
+  color: rgba(255,255,255,0.8);
+  font-size: 14px;
+}

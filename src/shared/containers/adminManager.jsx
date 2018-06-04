@@ -8,7 +8,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Loading from "../components/loading";
-import SignInForm from "../containers/signInForm";
 
 import { appSetTitle } from "../actions/app";
 
@@ -24,9 +23,7 @@ class AdminManager extends Component {
       return null;
     }
 
-    if (!this.props.isSignedIn) {
-      return <SignInForm />;
-    } else if (this.props.isLoading) {
+    if (this.props.isLoading) {
       return <Loading />;
     }
 

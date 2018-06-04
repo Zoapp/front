@@ -27,6 +27,16 @@ module.exports = merge(commonConfig, {
       },
     ],
   },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    alias: {
+      react: path.resolve(path.join(__dirname, './node_modules/react')),
+      'babel-core': path.resolve(
+        path.join(__dirname, './node_modules/@babel/core'),
+      ),
+    },
+  },
+
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),

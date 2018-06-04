@@ -11,10 +11,10 @@
     "compile": "yarn compile:css && babel src/shared -d dist && cp -f ./package.json ./dist/package.json && cp -f ./LICENSE ./dist/LICENSE && cp -f ./README.md ./dist/README.md",
     "compile:css": "yarn clean-dist && cleancss -o dist/compressed.css node_modules/zrmc/compressed.css node_modules/zoapp-ui/compressed.css src/public/css/app.css",
     "compile:dev": "yarn compile:css && webpack --env=dev --progress --colors",
-    "dev": "yarn compile:dev && yarn start:dev",
+    "dev": "env-cmd .env yarn compile:dev && yarn start:dev",
     "lint": "eslint src/shared tests/ --ext=js --ext=jsx",
     "test": "jest",
-    "start:dev": "webpack-dev-server --env=dev",
+    "start:dev": "env-cmd .env webpack-dev-server --env=dev",
     "willPublish": "yarn run lint && yarn run test && yarn run compile",
     "distribute": "yarn willPublish && npm publish ./dist",
     "distribute:dev": "yarn compile && cd ./dist && yarn pack"
@@ -47,7 +47,7 @@
     "redux-saga": "0.16.0",
     "zoapp-common": "0.3.0",
     "zoapp-ui": "0.6.2",
-    "zrmc": "0.10.3"
+    "zrmc": "0.10.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -65,6 +65,7 @@
     "clean-css-cli": "^4.1.10",
     "copy-webpack-plugin": "4.3.0",
     "css-loader": "^0.28.7",
+    "env-cmd": "8.0.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.15.0",

@@ -14,7 +14,15 @@ import { SignInFormBase } from "shared/containers/signInForm";
 describe("containers/signInForm", () => {
   it("renders correctly", () => {
     const signInSpy = jest.fn();
-    const component = renderer.create(<SignInFormBase signIn={signInSpy} />);
+    const screenSpy = {};
+    const appSetTitleSpy = jest.fn();
+    const component = renderer.create(
+      <SignInFormBase
+        signIn={signInSpy}
+        screen={screenSpy}
+        appSetTitle={appSetTitleSpy}
+      />,
+    );
 
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
@@ -22,7 +30,15 @@ describe("containers/signInForm", () => {
 
   it("sign in with fullfilled form", () => {
     const signInSpy = jest.fn();
-    const wrapper = shallow(<SignInFormBase signIn={signInSpy} />);
+    const screenSpy = {};
+    const appSetTitleSpy = jest.fn();
+    const wrapper = shallow(
+      <SignInFormBase
+        signIn={signInSpy}
+        screen={screenSpy}
+        appSetTitle={appSetTitleSpy}
+      />,
+    );
 
     wrapper
       .find("#signin-form-username")
