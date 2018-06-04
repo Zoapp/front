@@ -14,6 +14,7 @@ import DrawerFooter from "ZoappContainers/drawerFooter";
 import Zrmc from "zrmc";
 import config from "../../config/default.json";
 import { setMessage } from "../shared/actions/message";
+import { appSetProject } from "../shared/actions/app";
 
 const handleAction = () => {
   Zrmc.showDialog({
@@ -33,6 +34,7 @@ const app = {
   },
   version: "0.1.0",
   design: {
+    minTitleName: true,
     drawer: {
       type: "persistent",
       themeDark: true,
@@ -85,6 +87,15 @@ const app = {
       access: "all",
       render: props => React.createElement(Screen, props, "Help"),
     },
+    {
+      id: "5",
+      isDrawerItem: true,
+      name: "Report an issue",
+      icon: "bug_report",
+      href: "https://github.com/zoapp/front/issues",
+      access: "all",
+      render: props => React.createElement(Screen, props, "Help"),
+    },
   ],
 };
 /* eslint-disable no-undef */
@@ -94,6 +105,7 @@ const env = process.env.APP;
 const front = new Front("app", app, config, env);
 
 front.start(true);
+front.store.dispatch(appSetProject({ name: "Project", index: 0, icon: "./images/default.png" }));
 front.store.dispatch(setMessage("Welcome Human !"));
 
 /* global module */

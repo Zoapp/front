@@ -298,6 +298,7 @@ class App extends React.Component {
           </span>
         );
       }
+      const { project } = this.props;
       return (
         <Content>
           <Toolbar fixed>
@@ -305,9 +306,13 @@ class App extends React.Component {
               <ToolbarSection align="start">
                 {icon}
                 <ToolbarTitle>
-                  <span style={{ fontWeight: "900" }}>
-                    {appName} {appSubname} {instance} /{" "}
-                  </span>
+                  {this.props.design.minTitleName ? (
+                    ""
+                  ) : (
+                    <span style={{ fontWeight: "900" }}>
+                      {appName} {appSubname} {instance} /{" "}
+                    </span>
+                  )}
                   <span style={{ color: "#ddd" }}>{titleName}</span>
                 </ToolbarTitle>
               </ToolbarSection>
@@ -325,25 +330,57 @@ class App extends React.Component {
           >
             <DrawerHeader
               style={{
-                backgroundColor: "var(--mdc-theme-secondary-dark, #004040)",
-                color: "var(--mdc-theme-text-primary-on-primary, white)",
+                backgroundColor: project.backgroundColor
+                  ? project.backgroundColor
+                  : "var(--mdc-theme-secondary-dark, #004040)",
+                color: project.color
+                  ? project.color
+                  : "var(--mdc-theme-text-primary-on-primary, white)",
               }}
             >
-              {appName}
+              {project.icon ? (
+                <img
+                  src={project.icon}
+                  style={{
+                    width: "48px",
+                    position: "absolute",
+                    right: "16px",
+                    top: "16px",
+                  }}
+                />
+              ) : (
+                ""
+              )}
+              {project.name}
             </DrawerHeader>
             <DrawerContent list>
-              {drawerContentItems.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`#${item.name}`}
-                  onClick={this.handleDisplayScreen}
-                  to={item.path === "*" ? "/" : item.path}
-                  activated={item.activated}
-                  icon={item.icon}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {drawerContentItems.map((item) => {
+                if (item.href) {
+                  return (
+                    <a
+                      key={item.id}
+                      href={item.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      icon={item.icon}
+                    >
+                      {item.name}
+                    </a>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.id}
+                    href={`#${item.name}`}
+                    onClick={this.handleDisplayScreen}
+                    to={item.path === "*" ? "/" : item.path}
+                    activated={item.activated}
+                    icon={item.icon}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
             </DrawerContent>
             {drawerFooter}
           </Drawer>
@@ -369,6 +406,7 @@ App.defaultProps = {
   appName: "",
   appSubname: "",
   instance: null,
+  project: {},
   screens: [],
   design: { drawer: { type: "permanent" } },
   activeTab: 0,
@@ -383,10 +421,12 @@ App.propTypes = {
   appName: PropTypes.string,
   appSubname: PropTypes.string,
   instance: PropTypes.shape({}),
+  project: PropTypes.shape({}),
   message: PropTypes.string,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
   design: PropTypes.shape({
     drawer: PropTypes.shape({ type: PropTypes.string }),
+    minTitleName: PropTypes.bool,
   }),
   initAuthSettings: PropTypes.func.isRequired,
   /* appSetTitle: PropTypes.func.isRequired, */
@@ -396,7 +436,15 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const { admin, screens, name, subname, instance, design } = state.app;
+  const {
+    admin,
+    screens,
+    name,
+    subname,
+    instance,
+    design,
+    project,
+  } = state.app;
   const { message } = state.message;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading =
@@ -415,6 +463,7 @@ const mapStateToProps = (state) => {
     instance,
     design,
     message,
+    project,
   };
 };
 

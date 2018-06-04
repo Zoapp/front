@@ -5,11 +5,18 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { APP_SETTITLE } from "./constants";
+import { APP_SETTITLE, APP_SETPROJECT } from "./constants";
 
 export function appSetTitle(titleName) {
   return {
     type: APP_SETTITLE,
     titleName,
+  };
+}
+
+export function appSetProject(project) {
+  return {
+    type: APP_SETPROJECT,
+    project,
   };
 }

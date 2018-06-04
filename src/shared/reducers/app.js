@@ -10,6 +10,7 @@ import {
   API_SETADMINPARAMETERS,
   API_GETADMINPARAMETERS,
   APP_SETTITLE,
+  APP_SETPROJECT,
   AUTH_SIGNOUT,
   FETCH_FAILURE,
   FETCH_REQUEST,
@@ -24,6 +25,12 @@ export const initialState = {
   error: null,
   loading: false,
   titleName: "",
+  project: {
+    name: "Project",
+    index: 0,
+    color: "white",
+    backgroundColor: "#004040",
+  },
   users: [],
 };
 
@@ -106,7 +113,10 @@ export const handlers = {
     ...state,
     titleName,
   }),
-
+  [APP_SETPROJECT]: (state, { project }) => ({
+    ...state,
+    project,
+  }),
   /* Auth section */
   [AUTH_SIGNOUT + FETCH_SUCCESS]: (state) => ({
     ...state,

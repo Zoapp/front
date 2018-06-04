@@ -33,6 +33,7 @@ export const API_GETADMINPARAMETERS = "API_GETADMINPARAMETERS";
 
 // App logic constants
 export const APP_SETTITLE = "APP_SETTITLE";
+export const APP_SETPROJECT = "APP_SETPROJECT";
 
 // Message logic constants
 export const MESSAGE_SETMESSAGE = "MESSAGE_SETMESSAGE";
