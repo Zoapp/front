@@ -15,6 +15,36 @@ import App from "./containers/app";
 import { initServices } from "./services";
 
 export default class Front {
+  static combinePropsEnv(properties, appEnv) {
+    const appProperties = { ...properties };
+    if (appEnv) {
+      if (appEnv.subname) {
+        appProperties.subname = appEnv.subname;
+      }
+      if (appEnv.version) {
+        appProperties.version = appEnv.version;
+      }
+      if (appEnv.build) {
+        appProperties.build = appEnv.build;
+      }
+      if (appEnv.instance) {
+        if (!appProperties.instance) {
+          appProperties.instance = {};
+        }
+        if (appEnv.instance.name) {
+          appProperties.instance.name = appEnv.instance.name;
+        }
+        if (appEnv.instance.color) {
+          appProperties.instance.color = appEnv.instance.color;
+        }
+        if (appEnv.instance.description) {
+          appProperties.instance.description = appEnv.instance.description;
+        }
+      }
+    }
+    return appProperties;
+  }
+
   constructor(
     tagId,
     appProperties,
@@ -22,32 +52,7 @@ export default class Front {
     appEnv,
     { store, reducers = {}, sagas = {} } = {},
   ) {
-    this.appProperties = { ...appProperties };
-    if (appEnv) {
-      if (appEnv.subname) {
-        this.appProperties.subname = appEnv.subname;
-      }
-      if (appEnv.version) {
-        this.appProperties.version = appEnv.version;
-      }
-      if (appEnv.build) {
-        this.appProperties.build = appEnv.build;
-      }
-      if (appEnv.instance) {
-        if (!this.appProperties.instance) {
-          this.appProperties.instance = {};
-        }
-        if (appEnv.instance.name) {
-          this.appProperties.instance.name = appEnv.instance.name;
-        }
-        if (appEnv.instance.color) {
-          this.appProperties.instance.color = appEnv.instance.color;
-        }
-        if (appEnv.instance.description) {
-          this.appProperties.instance.description = appEnv.instance.description;
-        }
-      }
-    }
+    this.appProperties = Front.combinePropsEnv(appProperties, appEnv);
     if (store) {
       this.store = store;
     } else {
