@@ -10,10 +10,10 @@ import Screen from "Zoapp/containers/screen";
 import AdminManager from "ZoappContainers/adminManager";
 import Advanced from "ZoappContainers/admin/advanced";
 import Users from "ZoappContainers/admin/users";
+import DrawerFooter from "ZoappContainers/drawerFooter";
 import Zrmc from "zrmc";
 import config from "../../config/default.json";
 import { setMessage } from "../shared/actions/message";
-
 
 const handleAction = () => {
   Zrmc.showDialog({
@@ -36,6 +36,7 @@ const app = {
     drawer: {
       type: "persistent",
       themeDark: true,
+      renderFooter: props => React.createElement(DrawerFooter, props),
     },
   },
   screens: [
@@ -86,8 +87,11 @@ const app = {
     },
   ],
 };
-
-const front = new Front("app", app, config);
+/* eslint-disable no-undef */
+console.log("process.env", process.env.APP);
+const env = process.env.APP;
+/* eslint-enable no-undef */
+const front = new Front("app", app, config, env);
 
 front.start(true);
 front.store.dispatch(setMessage("Welcome Human !"));

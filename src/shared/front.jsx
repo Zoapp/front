@@ -19,14 +19,39 @@ export default class Front {
     tagId,
     appProperties,
     appConfig,
+    appEnv,
     { store, reducers = {}, sagas = {} } = {},
   ) {
-    this.appProperties = appProperties;
-
+    this.appProperties = { ...appProperties };
+    if (appEnv) {
+      if (appEnv.subname) {
+        this.appProperties.subname = appEnv.subname;
+      }
+      if (appEnv.version) {
+        this.appProperties.version = appEnv.version;
+      }
+      if (appEnv.build) {
+        this.appProperties.build = appEnv.build;
+      }
+      if (appEnv.instance) {
+        if (!this.appProperties.instance) {
+          this.appProperties.instance = {};
+        }
+        if (appEnv.instance.name) {
+          this.appProperties.instance.name = appEnv.instance.name;
+        }
+        if (appEnv.instance.color) {
+          this.appProperties.instance.color = appEnv.instance.color;
+        }
+        if (appEnv.instance.description) {
+          this.appProperties.instance.description = appEnv.instance.description;
+        }
+      }
+    }
     if (store) {
       this.store = store;
     } else {
-      this.store = configureStore(reducers, sagas, { app: appProperties });
+      this.store = configureStore(reducers, sagas, { app: this.appProperties });
     }
 
     initServices(appConfig);
