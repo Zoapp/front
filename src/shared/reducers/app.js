@@ -9,6 +9,7 @@ import {
   API_ADMIN,
   API_SETADMINPARAMETERS,
   API_GETADMINPARAMETERS,
+  APP_SETPROPERTIES,
   APP_SETTITLE,
   APP_SETPROJECT,
   AUTH_SIGNOUT,
@@ -109,6 +110,10 @@ export const handlers = {
   }),
 
   /* APP section */
+  [APP_SETPROPERTIES]: (state, { properties }) => ({
+    ...state,
+    ...properties,
+  }),
   [APP_SETTITLE]: (state, { titleName }) => ({
     ...state,
     titleName,

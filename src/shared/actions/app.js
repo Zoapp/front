@@ -5,7 +5,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { APP_SETTITLE, APP_SETPROJECT } from "./constants";
+import { APP_SETPROPERTIES, APP_SETTITLE, APP_SETPROJECT } from "./constants";
+
+export function appSetProperties(properties) {
+  return {
+    type: APP_SETPROPERTIES,
+    properties,
+  };
+}
 
 export function appSetTitle(titleName) {
   return {
