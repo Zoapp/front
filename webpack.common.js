@@ -62,7 +62,6 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'Dev'),
         APP: {
           subname: JSON.stringify(process.env.APP_SUBNAME),
           version: JSON.stringify(process.env.APP_VERSION),
@@ -75,5 +74,5 @@ module.exports = {
         },
       },
     }),
-  ]
+  ],
 };
