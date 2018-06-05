@@ -61,6 +61,7 @@ module.exports = {
       template: "./public/index.html",
     }),
     new webpack.DefinePlugin({
+      "process.env": {
         APP: {
           subname: JSON.stringify(process.env.APP_SUBNAME),
           version: JSON.stringify(process.env.APP_VERSION),
@@ -73,5 +74,5 @@ module.exports = {
         },
       },
     }),
-  ]
+  ],
 };
