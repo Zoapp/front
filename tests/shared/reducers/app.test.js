@@ -110,6 +110,21 @@ describe("reducers/app", () => {
     });
   });
 
+  it("stores the app properties", () => {
+    const properties = {
+      name: "Zoapp",
+      subname: "CE",
+    };
+    const prevState = reducer(undefined, {});
+    expect(prevState).toEqual(initialState);
+
+    const state = reducer(prevState, actions.appSetProperties(properties));
+    expect(state).toEqual({
+      ...prevState,
+      ...properties,
+    });
+  });
+
   it("sets the application title", () => {
     const title = "app title";
 

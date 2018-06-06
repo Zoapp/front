@@ -13,6 +13,7 @@ import { BrowserRouter } from "react-router-dom";
 import configureStore from "./store";
 import App from "./containers/app";
 import { initServices } from "./services";
+import { appSetProperties } from "../shared/actions/app";
 
 export default class Front {
   static combinePropsEnv(properties, appEnv) {
@@ -56,7 +57,7 @@ export default class Front {
     if (store) {
       this.store = store;
     } else {
-      this.store = configureStore(reducers, sagas, { app: this.appProperties });
+      this.store = configureStore(reducers, sagas);
     }
 
     initServices(appConfig);
@@ -80,6 +81,7 @@ export default class Front {
   }
 
   start() {
+    this.store.dispatch(appSetProperties(this.appProperties));
     this.renderApp(App);
   }
 }

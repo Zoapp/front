@@ -102,7 +102,6 @@ const app = {
 const env = process.env.APP;
 /* eslint-enable no-undef */
 const front = new Front("app", app, config, env);
-
 front.start(true);
 front.store.dispatch(appSetProject({ name: "Project", index: 0, icon: "./images/default.png" }));
 front.store.dispatch(setMessage("Welcome Human !"));
