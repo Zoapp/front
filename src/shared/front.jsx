@@ -9,11 +9,11 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { appSetProperties } from "./actions/app";
 
 import configureStore from "./store";
 import App from "./containers/app";
 import { initServices } from "./services";
-import { appSetProperties } from "../shared/actions/app";
 
 export default class Front {
   static combinePropsEnv(properties, appEnv) {
