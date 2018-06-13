@@ -43,12 +43,14 @@ class App extends React.Component {
       above: aboveToolbar,
       themeDark: drawerThemeDark,
     } = props.design.drawer;
+    const { theme: toolbarTheme } = props.design.toolbar;
     this.state = {
       needUpdate: true,
       activeTab: props.activeTab,
       drawer,
       drawerOpen: false,
       drawerThemeDark,
+      toolbarTheme,
       aboveToolbar,
     };
   }
@@ -187,8 +189,12 @@ class App extends React.Component {
       }
       if (isSignedIn || currentScreen.access !== "auth") {
         if (currentScreen.panels) {
-          const ac = "var(--mdc-theme-text-primary-on-primary, white)";
-          const c = "rgba(255, 255, 255, 0.54)";
+          let ac = "var(--mdc-theme-text-primary-on-primary, white)";
+          let c = "rgba(255, 255, 255, 0.54)";
+          if (this.state.toolbarTheme === "white") {
+            ac = "#757575";
+            c = "rgba(221, 221, 221)";
+          }
           tabbar = (
             <ToolbarSection>
               <Tabbar
@@ -301,7 +307,10 @@ class App extends React.Component {
       const { project } = this.props;
       return (
         <Content>
-          <Toolbar fixed>
+          <Toolbar
+            className={`mdc-toolbar--theme-${this.state.toolbarTheme}`}
+            fixed
+          >
             <ToolbarRow>
               <ToolbarSection align="start">
                 {icon}
@@ -313,7 +322,7 @@ class App extends React.Component {
                       {appName} {appSubname} {instance} /{" "}
                     </span>
                   )}
-                  <span style={{ color: "#ddd" }}>{titleName}</span>
+                  <span>{titleName}</span>
                 </ToolbarTitle>
               </ToolbarSection>
               {tabbar}
@@ -427,6 +436,7 @@ App.propTypes = {
   design: PropTypes.shape({
     drawer: PropTypes.shape({ type: PropTypes.string }),
     minTitleName: PropTypes.bool,
+    toolbar: PropTypes.shape({ theme: PropTypes.string }),
   }),
   initAuthSettings: PropTypes.func.isRequired,
   /* appSetTitle: PropTypes.func.isRequired, */
