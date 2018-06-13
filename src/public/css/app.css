@@ -15,7 +15,7 @@
 
 .app {
   height: 100%;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .mdc-toolbar-fixed-adjust {
@@ -27,6 +27,31 @@
 .mdl-layout__content {
   height: 100%;
   width: 100%;
+}
+
+.mdc-drawer--theme-dark .mdc-drawer__drawer,
+.mdc-drawer--theme-dark .mdc-drawer__drawer > :not(header)
+{
+  background-color: #263238;
+}
+
+.mdc-drawer--theme-dark .mdc-list-item,
+.mdc-drawer--theme-dark .mdc-list-item *
+{
+  color: rgba(255,255,255,0.7);
+}
+
+.mdc-drawer--theme-dark .mdc-list-item--activated,
+.mdc-drawer--theme-dark .mdc-list-item--activated *
+{
+  background-color: #000;
+  color: white;
+}
+
+.mdc-drawer--theme-dark .mdc-list-item--activated::after,
+.mdc-drawer--theme-dark .mdc-list-item--activated::before
+{
+  background-color: black;
 }
 
 .mdc-drawer__footer {
