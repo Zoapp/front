@@ -35,6 +35,9 @@ const app = {
   version: "0.1.0",
   design: {
     minTitleName: true,
+    toolbar: {
+      theme: "white",
+    },
     drawer: {
       type: "persistent",
       themeDark: true,

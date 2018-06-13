@@ -29,6 +29,20 @@
   width: 100%;
 }
 
+.mdc-toolbar__title {
+  color: #ddd;
+}
+
+.mdc-toolbar--theme-white {
+  color: #757575;
+  background-color: #fff;
+}
+
+.mdc-toolbar--theme-white .mdc-toolbar__title,
+.mdc-toolbar--theme-white .mdc-toolbar__icon {
+  color: #212121;
+}
+
 .mdc-drawer--theme-dark .mdc-drawer__drawer,
 .mdc-drawer--theme-dark .mdc-drawer__drawer > :not(header)
 {
