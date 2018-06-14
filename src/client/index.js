@@ -39,7 +39,7 @@ const app = {
       theme: "white",
     },
     drawer: {
-      type: "persistent",
+      type: "temporary",
       themeDark: true,
       renderFooter: props => React.createElement(DrawerFooter, props),
     },
