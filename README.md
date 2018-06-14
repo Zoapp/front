@@ -38,6 +38,9 @@ available at: `127.0.0.1:8081`.
      name: "Zoapp",
      version: "0.1.0",
      design: {
+       toolbar: {
+         theme: "white",
+       },
        drawer: {
          type: "persistent",
          themeDark: true,
