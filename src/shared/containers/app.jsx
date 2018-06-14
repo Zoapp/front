@@ -97,6 +97,12 @@ class App extends React.Component {
     // console.log("activeTab", this.state.activeTab);
   };
 
+  handleDrawerItemClick = () => {
+    if (this.state.drawer === "temporary") {
+      this.toggleDrawer();
+    }
+  };
+
   toggleDrawer = () => {
     const open = !this.state.drawerOpen;
     this.setState({ drawerOpen: open });
@@ -369,6 +375,7 @@ class App extends React.Component {
                     <a
                       key={item.id}
                       href={item.href}
+                      onClick={this.handleDrawerItemClick}
                       target="_blank"
                       rel="noreferrer noopener"
                       icon={item.icon}
@@ -381,7 +388,10 @@ class App extends React.Component {
                   <Link
                     key={item.id}
                     href={`#${item.name}`}
-                    onClick={this.handleDisplayScreen}
+                    onClick={() => {
+                      this.handleDrawerItemClick();
+                      this.handleDisplayScreen();
+                    }}
                     to={item.path === "*" ? "/" : item.path}
                     activated={item.activated}
                     icon={item.icon}
