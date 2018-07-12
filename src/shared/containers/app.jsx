@@ -236,8 +236,10 @@ class App extends React.Component {
                     key={k}
                     style={{
                       margin: "auto 48px auto auto",
-                      backgroundColor: "var(--mdc-theme-secondary, #018786)",
-                      color: "#000",
+                      backgroundColor: p.backgroundColor
+                        ? p.backgroundColor
+                        : "var(--mdc-theme-secondary, #018786)",
+                      color: p.color ? p.color : "#000",
                     }}
                     onClick={(e) => {
                       e.preventDefault();

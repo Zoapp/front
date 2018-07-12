@@ -41,7 +41,7 @@ const app = {
     drawer: {
       type: "temporary",
       themeDark: true,
-      renderFooter: props => React.createElement(DrawerFooter, props),
+      renderFooter: (props) => React.createElement(DrawerFooter, props),
     },
   },
   screens: [
@@ -53,9 +53,16 @@ const app = {
       access: "auth",
       path: "/",
       panels: ["Panel 1", "Panel 2"],
-      toolbox: [{ title: "todo", onAction: handleAction }],
+      toolbox: [
+        {
+          title: "todo",
+          onAction: handleAction,
+          color: "var(--mdc-theme-text-primary-on-primary,#fff)",
+          backgroundColor: "var(--mdc-theme-primary,#6200ee)",
+        },
+      ],
       fab: { icon: "favorite", onAction: handleAction },
-      render: props => React.createElement(Screen, props, "Dashboard"),
+      render: (props) => React.createElement(Screen, props, "Dashboard"),
     },
     {
       id: "2",
@@ -65,12 +72,12 @@ const app = {
       path: "/admin",
       access: "auth",
       panels: ["Users", "Advanced"],
-      render: props => <AdminManager {...props } tabs={
-          [
-            <Users key="users" />,
-            <Advanced key="advanced" />,
-          ]
-      } />,
+      render: (props) => (
+        <AdminManager
+          {...props}
+          tabs={[<Users key="users" />, <Advanced key="advanced" />]}
+        />
+      ),
     },
     {
       id: "3",
@@ -79,7 +86,7 @@ const app = {
       name: "Home",
       path: "*",
       access: "public",
-      render: props => React.createElement(Screen, props, "Home"),
+      render: (props) => React.createElement(Screen, props, "Home"),
     },
     {
       id: "4",
@@ -88,7 +95,7 @@ const app = {
       icon: "help",
       path: "/help",
       access: "all",
-      render: props => React.createElement(Screen, props, "Help"),
+      render: (props) => React.createElement(Screen, props, "Help"),
     },
     {
       id: "5",
@@ -97,7 +104,7 @@ const app = {
       icon: "bug_report",
       href: "https://github.com/zoapp/front/issues",
       access: "all",
-      render: props => React.createElement(Screen, props, "Help"),
+      render: (props) => React.createElement(Screen, props, "Help"),
     },
   ],
 };
@@ -106,7 +113,9 @@ const env = process.env.APP;
 /* eslint-enable no-undef */
 const front = new Front("app", app, config, env);
 front.start(true);
-front.store.dispatch(appSetProject({ name: "Project", index: 0, icon: "./images/default.png" }));
+front.store.dispatch(
+  appSetProject({ name: "Project", index: 0, icon: "./images/default.png" }),
+);
 front.store.dispatch(setMessage("Welcome Human !"));
 
 /* global module */

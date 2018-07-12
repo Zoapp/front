@@ -38,8 +38,15 @@
   background-color: #fff;
 }
 
-.mdc-toolbar--theme-white .mdc-toolbar__title,
+.mdc-toolbar--theme-white .mdc-toolbar__title {
+  color: #212121;
+}
+
 .mdc-toolbar--theme-white .mdc-toolbar__icon {
+  color: #888;
+}
+
+.mdc-toolbar--theme-white .mdc-toolbar__icon:hover {
   color: #212121;
 }
 
@@ -78,4 +85,13 @@
 .mdc-drawer__footer-content {
   color: rgba(255,255,255,0.8);
   font-size: 14px;
+}
+
+.mdc-toolbar .mdc-toolbar__icon {
+  font-size: 42px;
+  width: 42px;
+  height: 42px;
+  padding: 2px 0px;
+  margin-right: 16px;
+
 }
