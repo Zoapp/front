@@ -199,7 +199,7 @@ class App extends React.Component {
           let c = "rgba(255, 255, 255, 0.54)";
           if (this.state.toolbarTheme === "white") {
             ac = "#757575";
-            c = "rgba(221, 221, 221)";
+            c = "rgba(170, 170, 170)";
           }
           tabbar = (
             <ToolbarSection>
