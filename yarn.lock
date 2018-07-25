@@ -6240,15 +6240,6 @@ react@16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react@^16.2.0:
-  version "16.4.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.4.0.tgz#402c2db83335336fba1962c08b98c6272617d585"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
-
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz#9d63c13276c065918d57f002a57f40a1b643fb02"
@@ -7983,9 +7974,9 @@ zoapp-common@0.3.0:
     whatwg-fetch "^2.0.4"
     winston "2.4.0"
 
-zoapp-ui@0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.6.6.tgz#747e053a6b8f7dcd020b8bfead22e4ef00595298"
+zoapp-ui@0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.6.7.tgz#db510294b210e6e52de421f9d67db122eadb94cd"
   dependencies:
     prop-types "15.6.0"
     react "16.2.0"
