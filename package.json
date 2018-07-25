@@ -46,7 +46,7 @@
     "redux": "3.7.2",
     "redux-saga": "0.16.0",
     "zoapp-common": "0.3.0",
-    "zoapp-ui": "0.6.6",
+    "zoapp-ui": "0.6.7",
     "zrmc": "0.10.6"
   },
   "devDependencies": {
