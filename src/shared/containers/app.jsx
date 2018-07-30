@@ -199,8 +199,8 @@ class App extends React.Component {
           let ac = "var(--mdc-theme-text-primary-on-primary, white)";
           let c = "rgba(255, 255, 255, 0.54)";
           if (this.state.toolbarTheme === "white") {
-            ac = "#757575";
-            c = "rgba(221, 221, 221)";
+            ac = "var(--mdc-theme-secondary, #018786)";
+            c = "rgba(2, 206, 204, 0.54)";
           }
           tabbar = (
             <ToolbarSection>

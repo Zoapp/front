@@ -12,6 +12,7 @@ import Zrmc, {
   ToolbarIcon,
   Menu,
   MenuItem,
+  Icon,
 } from "zrmc";
 import { connect } from "react-redux";
 import { apiUserProfileRequest } from "../actions/user";
@@ -49,18 +50,21 @@ class UserBox extends Component {
       return (
         <ToolbarSection align="end" shrinkToFit>
           <div style={{ margin: "auto 24px auto 12px" }}>{username}</div>
-          <ToolbarIcon
-            name={avatar}
-            menu={
-              <Menu anchorMargin={{ bottom: "4px" }} role="menu">
-                <MenuItem disabled>Profile</MenuItem>
-                <MenuItem disabled>Settings</MenuItem>
-                <MenuItem onSelected={this.handleOpenSignOutDialog}>
-                  Sign out
-                </MenuItem>
-              </Menu>
-            }
-          />
+          <div className="userbox_right">
+            <ToolbarIcon
+              name={avatar}
+              menu={
+                <Menu anchorMargin={{ bottom: "4px" }} role="menu">
+                  <MenuItem disabled>Profile</MenuItem>
+                  <MenuItem disabled>Settings</MenuItem>
+                  <MenuItem onSelected={this.handleOpenSignOutDialog}>
+                    Sign out
+                  </MenuItem>
+                </Menu>
+              }
+            />
+            <Icon name="keyboard_arrow_down" />
+          </div>
         </ToolbarSection>
       );
     }

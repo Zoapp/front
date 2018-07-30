@@ -16,6 +16,10 @@
   overflow: hidden;
 }
 
+.mdc-tab-bar__indicator {
+  background-color: var(--mdc-theme-secondary, #018786);
+}
+
 .mdc-toolbar-fixed-adjust {
   overflow: auto;
   height: calc(100vh - 64px);
@@ -44,11 +48,6 @@
   color: #888;
 }
 
-.mdc-toolbar--theme-white .mdc-toolbar__icon:hover {
-  color: #212121;
-}
-
-
 .mdc-toolbar__menu-icon {
   color: var(--mdc-theme-primary,#6200ee);
 }
@@ -71,6 +70,20 @@
   position: absolute;
   left: 16px;
   top: 16px;
+}
+
+.userbox_right {
+  display: "flex";
+}
+
+.userbox_right > i {
+  margin-top: 8px;
+  cursor: pointer;
+  color: var(--mdc-theme-text-hint-on-background,rgba(0,0,0,.38));
+}
+
+.userbox_right:hover > i {
+  color: rgba(85,38,130);
 }
 
 .mdc-drawer--theme-dark .mdc-list-item,
@@ -116,6 +129,4 @@
   width: 42px;
   height: 42px;
   padding: 2px 0px;
-  margin-right: 16px;
-
 }
