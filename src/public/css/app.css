@@ -9,8 +9,6 @@
   height: 100%;
   overflow: hidden;
   margin: 0;
-  --mdc-theme-primary: var(--material-color-deeppurple-500, #673ab7);
-  --mdc-theme-secondary: var(--material-color-yellow-500, #ffeb3b);
 }
 
 .app {
@@ -50,29 +48,55 @@
   color: #212121;
 }
 
+
+.mdc-toolbar__menu-icon {
+  color: var(--mdc-theme-primary,#6200ee);
+}
+
 .mdc-drawer--theme-dark .mdc-drawer__drawer,
-.mdc-drawer--theme-dark .mdc-drawer__drawer > :not(header)
+.mdc-drawer--theme-dark .mdc-drawer__drawer > :not(header):not(footer)
 {
-  background-color: #263238;
+  background-color: var(--mdc-theme-secondary-dark, #004040);
+  color: var(--mdc-theme-text-primary-on-primary, white);
+}
+
+.mdc-drawer--theme-dark .mdc-drawer__drawer > header
+{
+  background-color: rgba(0,0,0,.27);
+}
+
+.mdc-drawer__drawer_header_icon
+{
+  width: 48px;
+  position: absolute;
+  left: 16px;
+  top: 16px;
 }
 
 .mdc-drawer--theme-dark .mdc-list-item,
 .mdc-drawer--theme-dark .mdc-list-item *
 {
-  color: rgba(255,255,255,0.7);
+  color: var(--mdc-theme-text-disabled-on-dark, rgba(255,255,255,0.5));
 }
+
 
 .mdc-drawer--theme-dark .mdc-list-item--activated,
 .mdc-drawer--theme-dark .mdc-list-item--activated *
 {
-  background-color: #000;
-  color: white;
+  color: var(--mdc-theme-secondary-light, #02cecc);
+  background-color: var(--mdc-theme-secondary-dark, #004040);
 }
 
 .mdc-drawer--theme-dark .mdc-list-item--activated::after,
 .mdc-drawer--theme-dark .mdc-list-item--activated::before
 {
   background-color: black;
+}
+
+.mdc-drawer--theme-dark .mdc-list-item:hover,
+.mdc-drawer--theme-dark .mdc-list-item:hover * {
+  color: var(--mdc-theme-secondary-light, #02cecc);
+  background: var(--mdc-theme-secondary-dark, #004040);
 }
 
 .mdc-drawer__footer {
@@ -83,7 +107,7 @@
 }
 
 .mdc-drawer__footer-content {
-  color: rgba(255,255,255,0.8);
+  color: var(--mdc-theme-text-disabled-on-dark, rgba(255,255,255,0.5));
   font-size: 14px;
 }
 

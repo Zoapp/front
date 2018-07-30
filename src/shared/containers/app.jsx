@@ -9,6 +9,7 @@ import Zrmc, {
   Button,
   Content,
   Fab,
+  Icon,
   Snackbar,
   Tabbar,
   Tab,
@@ -313,6 +314,9 @@ class App extends React.Component {
         );
       }
       const { project } = this.props;
+      const projectname = isSignedIn && project.name ? project.name : appName;
+      const subinfo = "";
+      const projecticon = project.icon || "./images/default.png";
       return (
         <Content>
           <Toolbar
@@ -349,26 +353,16 @@ class App extends React.Component {
               style={{
                 backgroundColor: project.backgroundColor
                   ? project.backgroundColor
-                  : "var(--mdc-theme-secondary-dark, #004040)",
-                color: project.color
-                  ? project.color
-                  : "var(--mdc-theme-text-primary-on-primary, white)",
+                  : null,
+                color: project.color ? project.color : null,
               }}
             >
-              {project.icon ? (
-                <img
-                  src={project.icon}
-                  style={{
-                    width: "48px",
-                    position: "absolute",
-                    right: "16px",
-                    top: "16px",
-                  }}
-                />
-              ) : (
-                ""
-              )}
-              {project.name}
+              <img
+                src={projecticon}
+                className="mdc-drawer__drawer_header_icon"
+              />{" "}
+              <div>{projectname}</div>
+              <div>{subinfo}</div>
             </DrawerHeader>
             <DrawerContent list>
               {drawerContentItems.map((item) => {
@@ -383,6 +377,14 @@ class App extends React.Component {
                       icon={item.icon}
                     >
                       {item.name}
+                      <Icon
+                        name="launch"
+                        style={{
+                          paddingLeft: "8px",
+                          fontSize: "18px",
+                          opacity: "0.6",
+                        }}
+                      />
                     </a>
                   );
                 }

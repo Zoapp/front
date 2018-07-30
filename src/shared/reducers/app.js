@@ -27,10 +27,11 @@ export const initialState = {
   loading: false,
   titleName: "",
   project: {
-    name: "Project",
+    name: null,
     index: 0,
-    color: "white",
-    backgroundColor: "#004040",
+    color: null,
+    backgroundColor: null,
+    icon: null,
   },
   users: [],
 };
