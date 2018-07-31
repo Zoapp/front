@@ -130,3 +130,29 @@
   height: 42px;
   padding: 2px 0px;
 }
+
+.zap-panel {
+  padding: 24px;
+}
+
+.zap-panel_title {
+  font-size: 15px;
+  font-weight: 900;
+  color: rgba(0,0,0,.87);
+  line-height: 1.1;
+  line-height: 36px;
+  height: 36px;
+}
+
+.zap-panel_title button {
+  float: right;
+  margin-bottom: 24px;
+}
+
+.zap-panel_form {
+  font-size: 14px;
+}
+
+.zap-panel_form .mdc-text-field {
+  width: 100%;
+}

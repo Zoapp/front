@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import { Grid, Inner, Cell, Button } from "zrmc";
 import { connect } from "react-redux";
 import { TableComponent } from "zoapp-ui";
-import { infoStyleD } from "./styles";
 import { apiGetUsersRequest } from "../../actions/api";
 
 class Users extends Component {
@@ -40,11 +39,9 @@ class Users extends Component {
 
     const headers = ["", "username", "email", "role", "status"];
     const title = (
-      <div style={infoStyleD}>
+      <div className="zap-panel_title">
         You could give an access to your collaborators here.
-        <Button raised style={{ float: "right", marginBottom: "24px" }}>
-          ADD
-        </Button>
+        <Button>ADD</Button>
       </div>
     );
 
@@ -52,7 +49,7 @@ class Users extends Component {
       <Grid>
         <Inner>
           <Cell className="mdl-color--white" span={12}>
-            <div>
+            <div className="zap-panel">
               <TableComponent
                 title={title}
                 headers={headers}
