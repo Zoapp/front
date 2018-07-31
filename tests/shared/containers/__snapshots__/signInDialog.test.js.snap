@@ -120,17 +120,7 @@ exports[`containers/signInDialog renders correctly 1`] = `
         className="mdc-dialog__footer"
       >
         <button
-          className="mdc-dialog__footer__button mdc-dialog__footer__button--cancel mdc-button"
-          disabled={false}
-          id="signin-dialog-cancel-button"
-          onClick={[Function]}
-          type="button"
-        >
-          
-          Cancel
-        </button>
-        <button
-          className="mdc-dialog__footer__button mdc-dialog__footer__button--cancel mdc-button"
+          className="mdc-dialog__footer__button mdc-button"
           disabled={false}
           id={null}
           onClick={null}
@@ -138,6 +128,16 @@ exports[`containers/signInDialog renders correctly 1`] = `
         >
           
           Sign in
+        </button>
+        <button
+          className="mdc-dialog__footer__button mdc-button"
+          disabled={false}
+          id="signin-dialog-cancel-button"
+          onClick={[Function]}
+          type="button"
+        >
+          
+          Cancel
         </button>
       </footer>
     </div>

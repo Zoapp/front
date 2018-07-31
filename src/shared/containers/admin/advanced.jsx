@@ -13,7 +13,6 @@ import {
   apiAdminUpdateRequest,
 } from "../../actions/api";
 import TunnelBox from "../../components/tunnelBox";
-import { infoStyleD, FORM_WIDTH } from "./styles";
 
 class Advanced extends Component {
   constructor(props) {
@@ -94,15 +93,19 @@ class Advanced extends Component {
     }));
   };
 
-  onSaveEmailParams = () => {
+  isEmailParams = () => {
     const params = this.state.emailServerParams;
-
-    if (
+    return (
       params.host.length === 0 ||
       params.port.length === 0 ||
       params.username.length === 0 ||
       params.password.length === 0
-    ) {
+    );
+  };
+
+  onSaveEmailParams = () => {
+    const params = this.state.emailServerParams;
+    if (this.isEmailParams()) {
       Zrmc.showDialog({
         header: "email settings",
         body: "all parameters are mandatory",
@@ -131,12 +134,10 @@ class Advanced extends Component {
     const publicApiUrlDisabled = user.attributes.scope === "owner";
     const backendConfig = (
       <Inner>
-        <Cell className="mdl-color--white" span={12}>
-          <div style={infoStyleD}>
+        <Cell className="zap-panel mdl-color--white" span={12}>
+          <div className="zap-panel_title">
             Backend configuration
             <Button
-              raised
-              style={{ float: "right" }}
               onClick={(e) => {
                 e.preventDefault();
                 this.onSaveBackend();
@@ -145,13 +146,12 @@ class Advanced extends Component {
               SAVE
             </Button>
           </div>
-          <form style={infoStyleD}>
+          <form className="zap-panel_form">
             <div style={{ width: "520px" }}>
               <TextField
                 onChange={() => {}}
                 label="Public Api url"
                 disabled={publicApiUrlDisabled}
-                style={{ width: FORM_WIDTH }}
                 defaultValue={backend.publicUrl}
                 trailingIcon="link"
                 onClickTI={this.displayTunnelDialog}
@@ -162,7 +162,6 @@ class Advanced extends Component {
                 onChange={() => {}}
                 label="Api url"
                 disabled
-                style={{ width: FORM_WIDTH }}
                 defaultValue={backend.apiUrl}
               />
             </div>
@@ -171,7 +170,6 @@ class Advanced extends Component {
                 onChange={() => {}}
                 label="Auth url"
                 disabled
-                style={{ width: FORM_WIDTH }}
                 defaultValue={backend.authUrl}
               />
             </div>
@@ -180,7 +178,6 @@ class Advanced extends Component {
                 onChange={() => {}}
                 label="AppId"
                 disabled
-                style={{ width: FORM_WIDTH }}
                 defaultValue={backend.clientId}
               />
             </div>
@@ -189,7 +186,6 @@ class Advanced extends Component {
                 onChange={() => {}}
                 label="Secret"
                 disabled
-                style={{ width: FORM_WIDTH }}
                 defaultValue={backend.clientSecret}
               />
             </div>
@@ -203,12 +199,10 @@ class Advanced extends Component {
     if (user.attributes.scope === "admin") {
       emailConfig = (
         <Inner>
-          <Cell className="mdl-color--white" span={12}>
-            <div style={infoStyleD}>
+          <Cell className="zap-panel mdl-color--white" span={12}>
+            <div className="zap-panel_title">
               Email server configuration
               <Button
-                raised
-                style={{ float: "right" }}
                 onClick={(e) => {
                   e.preventDefault();
                   this.onSaveEmailParams();
@@ -217,7 +211,7 @@ class Advanced extends Component {
                 SAVE
               </Button>
             </div>
-            <form style={infoStyleD} autoComplete="nope">
+            <form className="zap-panel_form" autoComplete="nope">
               <div>
                 <TextField
                   onChange={(e) => this.onEmailParamsChange("host", e)}
@@ -226,7 +220,6 @@ class Advanced extends Component {
                       ? "Server address"
                       : "Server address (e.g.: smtp.example.com)"
                   }
-                  style={{ width: FORM_WIDTH }}
                   defaultValue={emailServer.host}
                 />
               </div>
@@ -236,7 +229,6 @@ class Advanced extends Component {
                   label={
                     emailServer.port ? "Server port" : "Server port (e.g.: 587)"
                   }
-                  style={{ width: FORM_WIDTH }}
                   defaultValue={emailServer.port}
                 />
               </div>
@@ -245,7 +237,6 @@ class Advanced extends Component {
                   onChange={(e) => this.onEmailParamsChange("username", e)}
                   label="Username"
                   autoComplete="new-password"
-                  style={{ width: FORM_WIDTH }}
                   defaultValue={emailServer.username}
                 />
               </div>
@@ -255,7 +246,6 @@ class Advanced extends Component {
                   label="Password"
                   autoComplete="new-password"
                   type="password"
-                  style={{ width: FORM_WIDTH }}
                 />
               </div>
             </form>
