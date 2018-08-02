@@ -6,7 +6,7 @@ exports[`containers/signInDialog renders correctly 1`] = `
   onSubmit={[Function]}
 >
   <dialog
-    className="rmdc-dialog mdc-dialog mdc-dialog--open"
+    className="zrmc-dialog mdc-dialog mdc-dialog--open"
     onClick={[Function]}
     onKeyUp={[Function]}
     role="presentation"

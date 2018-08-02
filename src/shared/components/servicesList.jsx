@@ -9,11 +9,11 @@ import PropTypes from "prop-types";
 import { List, ListItem, ListItemMeta, Button } from "zrmc";
 
 const ServicesList = ({ name, items, onSelect, addDisabled }) => (
-  <div className="mrb-sublist">
-    <div className="mrb-subheader">
+  <div className="zui-sublist">
+    <div className="zui-subheader">
       <Button
         raised
-        className="mrb-subheader-right"
+        className="zui-subheader-right"
         disabled={!!addDisabled}
         onClick={(e) => {
           e.preventDefault();
