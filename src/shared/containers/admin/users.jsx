@@ -48,7 +48,7 @@ class Users extends Component {
     return (
       <Grid>
         <Inner>
-          <Cell className="mdl-color--white" span={12}>
+          <Cell className="zui-color--white" span={12}>
             <div className="zap-panel">
               <TableComponent
                 title={title}

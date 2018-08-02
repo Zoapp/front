@@ -16,7 +16,6 @@ module.exports = {
       ZoappPlugins: path.resolve(__dirname, "./src/plugins/"),
       Zoapp: path.resolve(__dirname, "./src/shared/"),
       ZoappContainers: path.resolve(__dirname, "./src/shared/containers/"),
-      MdlExt: path.resolve(__dirname, "./src/shared/components/mdl/"),
       shared: path.resolve(__dirname, "./src/shared/")
     },
     modules: [path.join(__dirname, "src"), "node_modules"]

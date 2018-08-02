@@ -134,7 +134,7 @@ class Advanced extends Component {
     const publicApiUrlDisabled = user.attributes.scope === "owner";
     const backendConfig = (
       <Inner>
-        <Cell className="zap-panel mdl-color--white" span={12}>
+        <Cell className="zap-panel zui-color--white" span={12}>
           <div className="zap-panel_title">
             Backend configuration
             <Button
@@ -199,7 +199,7 @@ class Advanced extends Component {
     if (user.attributes.scope === "admin") {
       emailConfig = (
         <Inner>
-          <Cell className="zap-panel mdl-color--white" span={12}>
+          <Cell className="zap-panel zui-color--white" span={12}>
             <div className="zap-panel_title">
               Email server configuration
               <Button

@@ -34,7 +34,7 @@ class AdminManager extends Component {
     }
 
     return (
-      <div className="mdl-layout__content mdl-color--grey-100">
+      <div className="zui-layout__content zui-color--grey-100">
         <section>{this.props.tabs[active]}</section>
       </div>
     );

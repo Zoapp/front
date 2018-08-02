@@ -26,7 +26,7 @@
   width: 100%;
 }
 
-.mdl-layout__content {
+.zui-layout__content {
   height: 100%;
   width: 100%;
 }
@@ -92,7 +92,6 @@
   color: var(--mdc-theme-text-disabled-on-dark, rgba(255,255,255,0.5));
 }
 
-
 .mdc-drawer--theme-dark .mdc-list-item--activated,
 .mdc-drawer--theme-dark .mdc-list-item--activated *
 {
@@ -129,6 +128,22 @@
   width: 42px;
   height: 42px;
   padding: 2px 0px;
+}
+
+.zui-subheader {
+  text-transform: capitalize;
+  height: 48px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.zui-subheader-right {
+  font-size: .875rem;
+  float: right;
+  margin-right: 16px;
+  margin-top: 4px;
+  color: rgba(0,0,0,.54);
+  cursor: pointer;
 }
 
 .zap-panel {
