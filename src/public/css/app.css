@@ -16,7 +16,37 @@
   overflow: hidden;
 }
 
-.mdc-tab-bar__indicator {
+.mdc-toolbar__section-tab-bar {
+  padding: 0px;
+}
+
+.mdc-toolbar__section .mdc-tab-bar {
+  margin: 0 auto;
+}
+
+.mdc-toolbar__section  .mdc-tab-scroller__scroll-area--scroll {
+  overflow: hidden;
+}
+
+.mdc-toolbar__section  .mdc-tab-bar button {
+  height: 64px;
+}
+
+@media(max-width: 959px) and (orientation: landscape) {
+  .mdc-toolbar__section  .mdc-tab-bar button {
+    height: 48px;
+  }
+}
+
+.mdc-tab .mdc-tab__text-label {
+  color: rgba(2, 206, 204, 0.54);
+}
+
+.mdc-tab--active .mdc-tab__text-label {
+  color: var(--mdc-theme-secondary, #018786);
+}
+
+.mdc-tab-indicator > .mdc-tab-indicator__content--underline {
   background-color: var(--mdc-theme-secondary, #018786);
 }
 

@@ -203,7 +203,7 @@ class App extends React.Component {
             c = "rgba(2, 206, 204, 0.54)";
           }
           tabbar = (
-            <ToolbarSection>
+            <ToolbarSection style={{ padding: "0" }}>
               <Tabbar
                 onChange={this.handleToolbarTabChange}
                 activeTab={activeTab}
