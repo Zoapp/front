@@ -35,7 +35,7 @@ class Advanced extends Component {
     this.state = {
       tunnelParams: null,
       backendParams: {
-        publicUrl: "",
+        publicUrl: backend.publicUrl || "",
         apiUrl: backend.apiUrl || "",
         authUrl: backend.authUrl || "",
         clientId: backend.clientId || "",
@@ -131,7 +131,8 @@ class Advanced extends Component {
     const { user } = this.props;
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
     /* const hasTunnelParams = !!this.state.tunnelParams; */
-    const publicApiUrlDisabled = user.attributes.scope === "owner";
+    // const publicApiUrlDisabled = user.attributes.scope === "owner";
+    const publicApiUrlDisabled = true; // Will make this editable when we need.
     const backendConfig = (
       <Inner>
         <Cell className="zap-panel zui-color--white" span={12}>
