@@ -31,7 +31,7 @@ import { hot } from "react-hot-loader";
 import Screen from "./screen";
 import UserBox from "./userBox";
 import SignInForm from "./signInForm";
-import { appSetTitle } from "../actions/app";
+import { appSetScreen } from "../actions/app";
 import { removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest } from "../actions/api";
@@ -133,7 +133,7 @@ class App extends React.Component {
     const {
       design,
       screens,
-      titleName,
+      activeScreen,
       appName,
       appSubname,
       isSignedIn,
@@ -141,6 +141,7 @@ class App extends React.Component {
     if (!isLoading && !this.props.admin && isSignedIn) {
       isLoading = true;
     }
+    const { title, name } = activeScreen;
     const drawerContentItems = [];
     const routes = [];
     let currentScreen = null;
@@ -154,7 +155,7 @@ class App extends React.Component {
           (!isSignedIn && screen.access === "public"))
       ) {
         let activated = false;
-        if (titleName === screen.name) {
+        if (name === screen.name) {
           activated = true;
         }
         drawerContentItems.push({
@@ -162,7 +163,7 @@ class App extends React.Component {
           ...screen,
         });
       }
-      if (titleName === screen.name) {
+      if (name === screen.name) {
         currentScreen = screen;
       }
       if (screen.path) {
@@ -211,7 +212,7 @@ class App extends React.Component {
                 activeColor={ac}
               >
                 {currentScreen.panels.map((p, index) => {
-                  const k = `t_${titleName}_${index}`;
+                  const k = `t_${title}_${index}`;
                   return (
                     <Tab
                       key={k}
@@ -334,7 +335,7 @@ class App extends React.Component {
                       {appName} {appSubname} {instance} /{" "}
                     </span>
                   )}
-                  <span>{titleName}</span>
+                  <span>{title}</span>
                 </ToolbarTitle>
               </ToolbarSection>
               {tabbar}
@@ -438,7 +439,10 @@ App.defaultProps = {
 App.propTypes = {
   store: PropTypes.shape({}).isRequired,
   isSignedIn: PropTypes.bool.isRequired,
-  titleName: PropTypes.string.isRequired,
+  activeScreen: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }),
   isLoading: PropTypes.bool.isRequired,
   admin: PropTypes.shape({}),
   appName: PropTypes.string,
@@ -453,7 +457,6 @@ App.propTypes = {
     toolbar: PropTypes.shape({ theme: PropTypes.string }),
   }),
   initAuthSettings: PropTypes.func.isRequired,
-  /* appSetTitle: PropTypes.func.isRequired, */
   apiAdminRequest: PropTypes.func.isRequired,
   removeMessage: PropTypes.func.isRequired,
   activeTab: PropTypes.number,
@@ -475,12 +478,15 @@ const mapStateToProps = (state) => {
     (state.app && state.app.loading) ||
     (state.auth && state.auth.loading) ||
     (state.user && state.user.loading);
-  const titleName = state.app.titleName ? state.app.titleName : "";
+  const activeScreen = {
+    title: state.app.activeScreen.title ? state.app.activeScreen.title : "",
+    name: state.app.activeScreen.name ? state.app.activeScreen.name : "",
+  };
   return {
     admin,
     isLoading,
     isSignedIn,
-    titleName,
+    activeScreen,
     screens,
     appName: name,
     appSubname: subname,
@@ -492,8 +498,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  appSetTitle: (titleName) => {
-    dispatch(appSetTitle(titleName));
+  appSetScreen: (screen) => {
+    dispatch(appSetScreen(screen));
   },
   removeMessage: () => {
     dispatch(removeMessage());

@@ -15,12 +15,12 @@ describe("containers/signInForm", () => {
   it("renders correctly", () => {
     const signInSpy = jest.fn();
     const screenSpy = {};
-    const appSetTitleSpy = jest.fn();
+    const appSetTitleNameSpy = jest.fn();
     const component = renderer.create(
       <SignInFormBase
         signIn={signInSpy}
         screen={screenSpy}
-        appSetTitle={appSetTitleSpy}
+        appSetTitleName={appSetTitleNameSpy}
       />,
     );
 
@@ -31,12 +31,12 @@ describe("containers/signInForm", () => {
   it("sign in with fullfilled form", () => {
     const signInSpy = jest.fn();
     const screenSpy = {};
-    const appSetTitleSpy = jest.fn();
+    const appSetTitleNameSpy = jest.fn();
     const wrapper = shallow(
       <SignInFormBase
         signIn={signInSpy}
         screen={screenSpy}
-        appSetTitle={appSetTitleSpy}
+        appSetTitleName={appSetTitleNameSpy}
       />,
     );
 
