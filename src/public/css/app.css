@@ -30,6 +30,9 @@
 
 .mdc-toolbar__section  .mdc-tab-bar button {
   height: 64px;
+  min-width: 80px;
+  flex: none;
+  color: rgba(2, 206, 204, 0.54);
 }
 
 @media(max-width: 959px) and (orientation: landscape) {
@@ -63,6 +66,8 @@
 
 .mdc-toolbar__title {
   color: #ddd;
+  padding-right: 48px;
+  max-width: 280px;
 }
 
 .mdc-toolbar--theme-white {
@@ -113,7 +118,7 @@
 }
 
 .userbox_right:hover > i {
-  color: rgba(85,38,130);
+  color: rgb(85,38,130);
 }
 
 .mdc-drawer--theme-dark .mdc-list-item,

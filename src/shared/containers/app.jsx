@@ -197,29 +197,22 @@ class App extends React.Component {
       }
       if (isSignedIn || currentScreen.access !== "auth") {
         if (currentScreen.panels) {
-          let ac = "var(--mdc-theme-text-primary-on-primary, white)";
+          /* let ac = "var(--mdc-theme-text-primary-on-primary, white)";
           let c = "rgba(255, 255, 255, 0.54)";
           if (this.state.toolbarTheme === "white") {
             ac = "var(--mdc-theme-secondary, #018786)";
             c = "rgba(2, 206, 204, 0.54)";
-          }
+          } */
           tabbar = (
             <ToolbarSection style={{ padding: "0" }}>
               <Tabbar
                 onChange={this.handleToolbarTabChange}
                 activeTab={activeTab}
-                color={c}
-                activeColor={ac}
               >
                 {currentScreen.panels.map((p, index) => {
                   const k = `t_${title}_${index}`;
                   return (
-                    <Tab
-                      key={k}
-                      className={k}
-                      style={{ minWidth: "80px", width: "80px" }}
-                      ripple
-                    >
+                    <Tab key={k} className={k} ripple>
                       {p}
                     </Tab>
                   );
@@ -325,7 +318,7 @@ class App extends React.Component {
             fixed
           >
             <ToolbarRow>
-              <ToolbarSection align="start">
+              <ToolbarSection align="start" shrinkToFit>
                 {icon}
                 <ToolbarTitle>
                   {this.props.design.minTitleName ? (
