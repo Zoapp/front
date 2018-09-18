@@ -134,7 +134,7 @@ describe("reducers/app", () => {
     const state = reducer(prevState, actions.appSetScreen(screen));
     expect(state).toEqual({
       ...prevState,
-      currentScreen: screen,
+      activeScreen: screen,
     });
   });
 
@@ -144,7 +144,7 @@ describe("reducers/app", () => {
     const prevState = reducer(undefined, actions.appSetScreen(screen));
     expect(prevState).toEqual({
       ...initialState,
-      currentScreen: screen,
+      activeScreen: screen,
     });
 
     const state = reducer(prevState, authActions.signOutComplete({}));
