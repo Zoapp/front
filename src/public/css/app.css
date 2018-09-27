@@ -107,13 +107,23 @@
   top: 16px;
 }
 
+.userbox {
+  display: flex;
+}
+
 .userbox_right {
   display: "flex";
+  cursor: pointer;
+}
+
+.userbox_name {
+  margin: auto 24px auto 12px;
+  cursor: pointer;
 }
 
 .userbox_right > i {
-  margin-top: 8px;
-  cursor: pointer;
+  margin-top: 12px;
+  height: 24px;
   color: var(--mdc-theme-text-hint-on-background,rgba(0,0,0,.38));
 }
 
@@ -185,18 +195,41 @@
   padding: 24px;
 }
 
+.zap-panel_header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .zap-panel_title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   font-size: 15px;
   font-weight: 900;
   color: rgba(0,0,0,.87);
-  line-height: 1.1;
-  line-height: 36px;
-  height: 36px;
+  line-height: 32px;
+  height: 32px;
+  display: flex;
+}
+
+.zap-panel_icon {
+  line-height: 32px;
+  height: 32px;
+  padding: 0px;
+}
+.zap-panel_icon > * {
+  padding-top: 4px;
 }
 
 .zap-panel_title button {
   float: right;
-  margin-bottom: 24px;
+}
+
+.zap-panel_desc {
+  color: rgba(0, 0, 0, 0.26);
+  font-size: 13px;
+  padding-bottom: 36px;
 }
 
 .zap-panel_form {

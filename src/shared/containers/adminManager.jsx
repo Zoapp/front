@@ -34,7 +34,7 @@ class AdminManager extends Component {
     }
 
     return (
-      <div className="zui-layout__content zui-color--grey-100">
+      <div className="zap-admin zui-layout__content">
         <section>{this.props.tabs[active]}</section>
       </div>
     );

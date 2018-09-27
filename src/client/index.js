@@ -9,7 +9,7 @@ import Front from "Zoapp/front";
 import Screen from "Zoapp/containers/screen";
 import AdminManager from "ZoappContainers/adminManager";
 import Advanced from "ZoappContainers/admin/advanced";
-import Users from "ZoappContainers/admin/users";
+import Team from "ZoappContainers/admin/team";
 import DrawerFooter from "ZoappContainers/drawerFooter";
 import Zrmc from "zrmc";
 import config from "../../config/default.json";
@@ -71,11 +71,11 @@ const app = {
       name: "Admin",
       path: "/admin",
       access: "auth",
-      panels: ["Users", "Advanced"],
+      panels: ["Team", "Advanced"],
       render: (props) => (
         <AdminManager
           {...props}
-          tabs={[<Users key="users" />, <Advanced key="advanced" />]}
+          tabs={[<Team key="team" />, <Advanced key="advanced" />]}
         />
       ),
     },
@@ -89,20 +89,20 @@ const app = {
       render: (props) => React.createElement(Screen, props, "Home"),
     },
     {
-      id: "4",
-      isDrawerItem: true,
-      name: "Help",
-      icon: "help",
-      path: "/help",
-      access: "all",
-      render: (props) => React.createElement(Screen, props, "Help"),
-    },
-    {
       id: "5",
       isDrawerItem: true,
       name: "Report an issue",
       icon: "bug_report",
       href: "https://github.com/zoapp/front/issues",
+      access: "all",
+      render: (props) => React.createElement(Screen, props, "Help"),
+    },
+    {
+      id: "4",
+      isDrawerItem: true,
+      name: "Help",
+      icon: "help",
+      path: "/help",
       access: "all",
       render: (props) => React.createElement(Screen, props, "Help"),
     },

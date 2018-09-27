@@ -318,7 +318,7 @@ class App extends React.Component {
             fixed
           >
             <ToolbarRow>
-              <ToolbarSection align="start" shrinkToFit>
+              <ToolbarSection align="start" shrinkToFit={!!tabbar}>
                 {icon}
                 <ToolbarTitle>
                   {this.props.design.minTitleName ? (
@@ -360,6 +360,7 @@ class App extends React.Component {
             </DrawerHeader>
             <DrawerContent list>
               {drawerContentItems.map((item) => {
+                const n = item.title || item.name;
                 if (item.href) {
                   return (
                     <a
@@ -370,15 +371,23 @@ class App extends React.Component {
                       rel="noreferrer noopener"
                       icon={item.icon}
                     >
-                      {item.name}
-                      <Icon
-                        name="launch"
+                      <div
                         style={{
-                          paddingLeft: "8px",
-                          fontSize: "18px",
-                          opacity: "0.6",
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "space-between",
                         }}
-                      />
+                      >
+                        {n}
+                        <Icon
+                          name="launch"
+                          style={{
+                            lineHeight: "22px",
+                            fontSize: "18px",
+                            opacity: "0.6",
+                          }}
+                        />
+                      </div>
                     </a>
                   );
                 }
@@ -394,7 +403,7 @@ class App extends React.Component {
                     activated={item.activated}
                     icon={item.icon}
                   >
-                    {item.name}
+                    {n}
                   </Link>
                 );
               })}
