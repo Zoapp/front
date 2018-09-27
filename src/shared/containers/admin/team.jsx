@@ -52,7 +52,7 @@ class Users extends Component {
               action="Add"
               description="Manage user's access, rights, role. Add new one or delete/revoke another."
             >
-              <div style={{ overflow: "hidden auto", maxHeight: "60vh" }}>
+              <div className="zap-panel_scroll">
                 <TableComponent
                   items={items}
                   selectedItem={-1}

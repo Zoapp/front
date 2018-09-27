@@ -216,8 +216,10 @@
 .zap-panel_icon {
   line-height: 32px;
   height: 32px;
+  width: 32px;
   padding: 0px;
 }
+
 .zap-panel_icon > * {
   padding-top: 4px;
 }
@@ -228,14 +230,20 @@
 
 .zap-panel_desc {
   color: rgba(0, 0, 0, 0.26);
-  font-size: 13px;
+  font-size: 14px;
   padding-bottom: 36px;
+}
+
+.zap-panel_scroll {
+  overflow: hidden auto;
+  height: calc(100vh - 245px);
 }
 
 .zap-panel_form {
   font-size: 14px;
+  margin-bottom: 56px;
 }
 
 .zap-panel_form .mdc-text-field {
-  width: 100%;
+  width: 600px;
 }

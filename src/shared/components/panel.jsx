@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Icon } from "zrmc";
 import PropTypes from "prop-types";
 
-const Panel = ({ children, icon, title, action, description }) => (
+const Panel = ({ children, icon, title, action, description, onAction }) => (
   <div className="zap-panel">
     <div className="zap-panel_header">
       <div className="zap-panel_title">
@@ -10,7 +10,16 @@ const Panel = ({ children, icon, title, action, description }) => (
         <div>{title}</div>
       </div>
       {action ? (
-        <Button raised dense>
+        <Button
+          raised
+          dense
+          onClick={(e) => {
+            e.preventDefault();
+            if (onAction) {
+              onAction();
+            }
+          }}
+        >
           {action}
         </Button>
       ) : (
@@ -28,6 +37,7 @@ Panel.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
   action: PropTypes.string,
+  onAction: PropTypes.func,
 };
 
 export default Panel;
