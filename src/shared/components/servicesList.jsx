@@ -30,7 +30,7 @@ const ServicesList = ({
       }
     }}
   >
-    <List>
+    <List className={"zap-service__list"}>
       {items.map((item, index) => {
         /* const i = item.icon;
           item.status === "start"
@@ -80,15 +80,19 @@ const ServicesList = ({
             }}
           >
             <div>{item.title || item.name}</div>
-            <ListItemMeta
-              icon="remove"
-              onClick={(e) => {
-                e.preventDefault();
-                if (onSelect) {
-                  onSelect({ name, state: "delete", index });
-                }
-              }}
-            />
+            {item.system ? (
+              ""
+            ) : (
+              <ListItemMeta
+                icon="remove"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onSelect) {
+                    onSelect({ name, state: "delete", index });
+                  }
+                }}
+              />
+            )}
           </ListItem>
         );
       })}
@@ -102,7 +106,7 @@ ServicesList.defaultProps = {
 
 ServicesList.propTypes = {
   name: PropTypes.string.isRequired,
-  icon: PropTypes.string,
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   defaultIcon: PropTypes.string,
   description: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
