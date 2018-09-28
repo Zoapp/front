@@ -247,3 +247,19 @@
 .zap-panel_form .mdc-text-field {
   width: 600px;
 }
+
+.zap-service_item .mdc-list-item__graphic {
+  color: #000000;
+}
+
+.zap-service_start div {
+  color: green;
+}
+
+.zap-service_stop div {
+  color: rgb(117,117,117);
+}
+
+.zap-service_error div {
+  color: #b71c1c;
+}
