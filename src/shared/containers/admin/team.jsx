@@ -20,7 +20,7 @@ class Users extends Component {
   render() {
     const items = [];
     const status = "you";
-    const { user, profile, users } = this.props;
+    const { user, profile, users, menu, onSelect } = this.props;
 
     const values = [];
     values.push(profile.username);
@@ -56,7 +56,8 @@ class Users extends Component {
                 <TableComponent
                   items={items}
                   selectedItem={-1}
-                  onSelect={() => {}}
+                  onSelect={onSelect}
+                  menu={menu}
                 />
               </div>
             </Panel>
@@ -71,6 +72,7 @@ Users.defaultProps = {
   profile: {},
   user: null,
   users: [],
+  onSelect: () => {},
 };
 
 Users.propTypes = {
@@ -78,6 +80,8 @@ Users.propTypes = {
   user: PropTypes.shape({}),
   users: PropTypes.array,
   apiGetUsersRequest: PropTypes.func,
+  menu: PropTypes.arrayOf(PropTypes.shape({})),
+  onSelect: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
