@@ -137,6 +137,7 @@ class App extends React.Component {
       appName,
       appSubname,
       isSignedIn,
+      store,
     } = this.props;
     if (!isLoading && !this.props.admin && isSignedIn) {
       isLoading = true;
@@ -278,10 +279,11 @@ class App extends React.Component {
             <Route
               key={screen.id}
               path={screen.path}
-              render={(props) => {
+              render={(p) => {
                 if (!isSignedIn && screen.access === "auth") {
                   return <SignInForm screen={screen} />;
                 } else if (screen.render) {
+                  const props = { ...p, store };
                   return screen.render({
                     ...props,
                     screen,
