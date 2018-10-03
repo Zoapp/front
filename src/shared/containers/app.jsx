@@ -136,6 +136,7 @@ class App extends React.Component {
       activeScreen,
       appName,
       appSubname,
+      appIcon,
       isSignedIn,
       store,
     } = this.props;
@@ -312,7 +313,29 @@ class App extends React.Component {
       const { project } = this.props;
       const projectname = isSignedIn && project.name ? project.name : appName;
       const subinfo = "";
-      const projecticon = project.icon || "./images/default.png";
+      const projecticon = project.icon || appIcon;
+      let header;
+      if (
+        this.props.design.drawer &&
+        this.props.design.drawer.header &&
+        this.props.design.drawer.header.href
+      ) {
+        header = (
+          <a href={this.props.design.drawer.header.href}>
+            <img src={projecticon} className="mdc-drawer__drawer_header_icon" />{" "}
+            <div>{projectname}</div>
+            <div>{subinfo}</div>
+          </a>
+        );
+      } else {
+        header = (
+          <div>
+            <img src={projecticon} className="mdc-drawer__drawer_header_icon" />{" "}
+            <div>{projectname}</div>
+            <div>{subinfo}</div>
+          </div>
+        );
+      }
       return (
         <Content>
           <Toolbar
@@ -353,12 +376,7 @@ class App extends React.Component {
                 color: project.color ? project.color : null,
               }}
             >
-              <img
-                src={projecticon}
-                className="mdc-drawer__drawer_header_icon"
-              />{" "}
-              <div>{projectname}</div>
-              <div>{subinfo}</div>
+              {header}
             </DrawerHeader>
             <DrawerContent list>
               {drawerContentItems.map((item) => {
@@ -433,6 +451,7 @@ App.defaultProps = {
   admin: null,
   appName: "",
   appSubname: "",
+  appIcon: "images/default.png",
   instance: null,
   project: {},
   screens: [],
@@ -451,12 +470,16 @@ App.propTypes = {
   admin: PropTypes.shape({}),
   appName: PropTypes.string,
   appSubname: PropTypes.string,
+  appIcon: PropTypes.string,
   instance: PropTypes.shape({}),
   project: PropTypes.shape({}),
   message: PropTypes.string,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
   design: PropTypes.shape({
-    drawer: PropTypes.shape({ type: PropTypes.string }),
+    drawer: PropTypes.shape({
+      type: PropTypes.string,
+      header: PropTypes.shape({ href: PropTypes.string }),
+    }),
     minTitleName: PropTypes.bool,
     toolbar: PropTypes.shape({ theme: PropTypes.string }),
   }),
@@ -472,6 +495,7 @@ const mapStateToProps = (state) => {
     screens,
     name,
     subname,
+    icon,
     instance,
     design,
     project,
@@ -494,6 +518,7 @@ const mapStateToProps = (state) => {
     screens,
     appName: name,
     appSubname: subname,
+    appIcon: icon,
     instance,
     design,
     message,
