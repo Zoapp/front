@@ -9,13 +9,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Loading from "../components/loading";
 
-import { appSetTitle } from "../actions/app";
+import { appSetTitleName } from "../actions/app";
 
 class AdminManager extends Component {
   constructor(props) {
     super(props);
 
-    this.props.appSetTitle("Admin");
+    this.props.appSetTitleName("Admin");
   }
 
   render() {
@@ -34,7 +34,7 @@ class AdminManager extends Component {
     }
 
     return (
-      <div className="zui-layout__content zui-color--grey-100">
+      <div className="zap-admin zui-layout__content">
         <section>{this.props.tabs[active]}</section>
       </div>
     );
@@ -51,7 +51,7 @@ AdminManager.propTypes = {
   activeTab: PropTypes.number,
   isLoading: PropTypes.bool,
   isSignedIn: PropTypes.bool,
-  appSetTitle: PropTypes.func.isRequired,
+  appSetTitleName: PropTypes.func.isRequired,
   tabs: PropTypes.array.isRequired,
 };
 
@@ -66,8 +66,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  appSetTitle: (titleName) => {
-    dispatch(appSetTitle(titleName));
+  appSetTitleName: (title) => {
+    dispatch(appSetTitleName(title));
   },
 });
 

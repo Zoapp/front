@@ -126,25 +126,25 @@ describe("reducers/app", () => {
   });
 
   it("sets the application title", () => {
-    const title = "app title";
+    const screen = { title: "app title", name: "app name" };
 
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.appSetTitle(title));
+    const state = reducer(prevState, actions.appSetScreen(screen));
     expect(state).toEqual({
       ...prevState,
-      titleName: title,
+      activeScreen: screen,
     });
   });
 
   it("resets the state when user signs out", () => {
-    const title = "some title";
+    const screen = { title: "app title", name: "app name" };
 
-    const prevState = reducer(undefined, actions.appSetTitle(title));
+    const prevState = reducer(undefined, actions.appSetScreen(screen));
     expect(prevState).toEqual({
       ...initialState,
-      titleName: title,
+      activeScreen: screen,
     });
 
     const state = reducer(prevState, authActions.signOutComplete({}));

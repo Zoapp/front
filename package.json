@@ -46,8 +46,8 @@
     "redux": "3.7.2",
     "redux-saga": "0.16.0",
     "zoapp-common": "0.3.0",
-    "zoapp-ui": "0.7.2",
-    "zrmc": "0.11.0"
+    "zoapp-ui": "0.8.0",
+    "zrmc": "0.12.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

@@ -7,14 +7,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { appSetTitle } from "../actions/app";
+import { appSetTitleName } from "../actions/app";
 
 class Screen extends Component {
   constructor(props) {
     super(props);
 
     const { screen } = props;
-    props.appSetTitle(screen.name);
+    props.appSetTitleName(screen.name);
   }
 
   render() {
@@ -33,7 +33,7 @@ Screen.defaultProps = {
 
 Screen.propTypes = {
   children: PropTypes.node.isRequired,
-  appSetTitle: PropTypes.func.isRequired,
+  appSetTitleName: PropTypes.func.isRequired,
   screen: PropTypes.shape({}).isRequired,
   activeTab: PropTypes.number,
 };
@@ -48,8 +48,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  appSetTitle: (titleName) => {
-    dispatch(appSetTitle(titleName));
+  appSetTitleName: (screen) => {
+    dispatch(appSetTitleName(screen));
   },
 });
 

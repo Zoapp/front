@@ -6,12 +6,13 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Zrmc, { Grid, Inner, Cell, Button, TextField } from "zrmc";
+import Zrmc, { Grid, Inner, Cell, TextField } from "zrmc";
 import { connect } from "react-redux";
 import {
   apiSetAdminParametersRequest,
   apiAdminUpdateRequest,
 } from "../../actions/api";
+import Panel from "../../components/panel";
 import TunnelBox from "../../components/tunnelBox";
 
 class Advanced extends Component {
@@ -135,63 +136,66 @@ class Advanced extends Component {
     const publicApiUrlDisabled = true; // Will make this editable when we need.
     const backendConfig = (
       <Inner>
-        <Cell className="zap-panel zui-color--white" span={12}>
-          <div className="zap-panel_title">
-            Backend configuration
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                this.onSaveBackend();
-              }}
-            >
-              SAVE
-            </Button>
-          </div>
-          <form className="zap-panel_form">
-            <div style={{ width: "520px" }}>
-              <TextField
-                onChange={() => {}}
-                label="Public Api url"
-                disabled={publicApiUrlDisabled}
-                defaultValue={backend.publicUrl}
-                trailingIcon="link"
-                onClickTI={this.displayTunnelDialog}
-              />
-            </div>
-            <div>
-              <TextField
-                onChange={() => {}}
-                label="Api url"
-                disabled
-                defaultValue={backend.apiUrl}
-              />
-            </div>
-            <div>
-              <TextField
-                onChange={() => {}}
-                label="Auth url"
-                disabled
-                defaultValue={backend.authUrl}
-              />
-            </div>
-            <div>
-              <TextField
-                onChange={() => {}}
-                label="AppId"
-                disabled
-                defaultValue={backend.clientId}
-              />
-            </div>
-            <div>
-              <TextField
-                onChange={() => {}}
-                label="Secret"
-                disabled
-                defaultValue={backend.clientSecret}
-              />
-            </div>
-          </form>
-          <div />
+        <Cell span={12}>
+          <Panel
+            icon={
+              <svg viewBox="0 0 24 24">
+                <path
+                  fill="#000000"
+                  d="M4,1H20A1,1 0 0,1 21,2V6A1,1 0 0,1 20,7H4A1,1 0 0,1 3,6V2A1,1 0 0,1 4,1M4,9H20A1,1 0 0,1 21,10V14A1,1 0 0,1 20,15H4A1,1 0 0,1 3,14V10A1,1 0 0,1 4,9M4,17H20A1,1 0 0,1 21,18V22A1,1 0 0,1 20,23H4A1,1 0 0,1 3,22V18A1,1 0 0,1 4,17M9,5H10V3H9V5M9,13H10V11H9V13M9,21H10V19H9V21M5,3V5H7V3H5M5,11V13H7V11H5M5,19V21H7V19H5Z"
+                />
+              </svg>
+            }
+            title="Backend configuration"
+            action="Save"
+            onAction={this.onSaveBackend}
+            description="Informations about Api and Authentification"
+          >
+            <form className="zap-panel_form">
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="Public Api url"
+                  disabled={publicApiUrlDisabled}
+                  defaultValue={backend.publicUrl}
+                  trailingIcon="link"
+                  onClickTI={this.displayTunnelDialog}
+                />
+              </div>
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="Api url"
+                  disabled
+                  defaultValue={backend.apiUrl}
+                />
+              </div>
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="Auth url"
+                  disabled
+                  defaultValue={backend.authUrl}
+                />
+              </div>
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="AppId"
+                  disabled
+                  defaultValue={backend.clientId}
+                />
+              </div>
+              <div>
+                <TextField
+                  onChange={() => {}}
+                  label="Secret"
+                  disabled
+                  defaultValue={backend.clientSecret}
+                />
+              </div>
+            </form>
+          </Panel>
         </Cell>
       </Inner>
     );
@@ -200,57 +204,62 @@ class Advanced extends Component {
     if (user.attributes.scope === "admin") {
       emailConfig = (
         <Inner>
-          <Cell className="zap-panel zui-color--white" span={12}>
-            <div className="zap-panel_title">
-              Email server configuration
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  this.onSaveEmailParams();
-                }}
-              >
-                SAVE
-              </Button>
-            </div>
-            <form className="zap-panel_form" autoComplete="nope">
-              <div>
-                <TextField
-                  onChange={(e) => this.onEmailParamsChange("host", e)}
-                  label={
-                    emailServer.address
-                      ? "Server address"
-                      : "Server address (e.g.: smtp.example.com)"
-                  }
-                  defaultValue={emailServer.host}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={(e) => this.onEmailParamsChange("port", e)}
-                  label={
-                    emailServer.port ? "Server port" : "Server port (e.g.: 587)"
-                  }
-                  defaultValue={emailServer.port}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={(e) => this.onEmailParamsChange("username", e)}
-                  label="Username"
-                  autoComplete="new-password"
-                  defaultValue={emailServer.username}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={(e) => this.onEmailParamsChange("password", e)}
-                  label="Password"
-                  autoComplete="new-password"
-                  type="password"
-                />
-              </div>
-            </form>
-            <div />
+          <Cell span={12}>
+            <Panel
+              icon={
+                <svg viewBox="0 0 24 24">
+                  <path
+                    fill="#000000"
+                    d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"
+                  />
+                </svg>
+              }
+              title="Email server configuration"
+              action="Save"
+              onAction={this.onSaveEmailParams}
+              description="Setup the SMTP server"
+            >
+              <form className="zap-panel_form" autoComplete="nope">
+                <div>
+                  <TextField
+                    onChange={(e) => this.onEmailParamsChange("host", e)}
+                    label={
+                      emailServer.address
+                        ? "Server address"
+                        : "Server address (e.g.: smtp.example.com)"
+                    }
+                    defaultValue={emailServer.host}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    onChange={(e) => this.onEmailParamsChange("port", e)}
+                    label={
+                      emailServer.port
+                        ? "Server port"
+                        : "Server port (e.g.: 587)"
+                    }
+                    defaultValue={emailServer.port}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    onChange={(e) => this.onEmailParamsChange("username", e)}
+                    label="Username"
+                    autoComplete="new-password"
+                    defaultValue={emailServer.username}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    onChange={(e) => this.onEmailParamsChange("password", e)}
+                    label="Password"
+                    autoComplete="new-password"
+                    type="password"
+                  />
+                </div>
+              </form>
+            </Panel>
           </Cell>
         </Inner>
       );

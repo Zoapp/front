@@ -31,7 +31,7 @@ import { hot } from "react-hot-loader";
 import Screen from "./screen";
 import UserBox from "./userBox";
 import SignInForm from "./signInForm";
-import { appSetTitle } from "../actions/app";
+import { appSetScreen } from "../actions/app";
 import { removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest } from "../actions/api";
@@ -133,14 +133,17 @@ class App extends React.Component {
     const {
       design,
       screens,
-      titleName,
+      activeScreen,
       appName,
       appSubname,
+      appIcon,
       isSignedIn,
+      store,
     } = this.props;
     if (!isLoading && !this.props.admin && isSignedIn) {
       isLoading = true;
     }
+    const { title, name } = activeScreen;
     const drawerContentItems = [];
     const routes = [];
     let currentScreen = null;
@@ -154,7 +157,7 @@ class App extends React.Component {
           (!isSignedIn && screen.access === "public"))
       ) {
         let activated = false;
-        if (titleName === screen.name) {
+        if (name === screen.name) {
           activated = true;
         }
         drawerContentItems.push({
@@ -162,7 +165,7 @@ class App extends React.Component {
           ...screen,
         });
       }
-      if (titleName === screen.name) {
+      if (name === screen.name) {
         currentScreen = screen;
       }
       if (screen.path) {
@@ -196,29 +199,22 @@ class App extends React.Component {
       }
       if (isSignedIn || currentScreen.access !== "auth") {
         if (currentScreen.panels) {
-          let ac = "var(--mdc-theme-text-primary-on-primary, white)";
+          /* let ac = "var(--mdc-theme-text-primary-on-primary, white)";
           let c = "rgba(255, 255, 255, 0.54)";
           if (this.state.toolbarTheme === "white") {
             ac = "var(--mdc-theme-secondary, #018786)";
             c = "rgba(2, 206, 204, 0.54)";
-          }
+          } */
           tabbar = (
             <ToolbarSection style={{ padding: "0" }}>
               <Tabbar
                 onChange={this.handleToolbarTabChange}
                 activeTab={activeTab}
-                color={c}
-                activeColor={ac}
               >
                 {currentScreen.panels.map((p, index) => {
-                  const k = `t_${titleName}_${index}`;
+                  const k = `t_${title}_${index}`;
                   return (
-                    <Tab
-                      key={k}
-                      className={k}
-                      style={{ minWidth: "80px", width: "80px" }}
-                      ripple
-                    >
+                    <Tab key={k} className={k} ripple>
                       {p}
                     </Tab>
                   );
@@ -284,10 +280,11 @@ class App extends React.Component {
             <Route
               key={screen.id}
               path={screen.path}
-              render={(props) => {
+              render={(p) => {
                 if (!isSignedIn && screen.access === "auth") {
                   return <SignInForm screen={screen} />;
                 } else if (screen.render) {
+                  const props = { ...p, store };
                   return screen.render({
                     ...props,
                     screen,
@@ -316,7 +313,29 @@ class App extends React.Component {
       const { project } = this.props;
       const projectname = isSignedIn && project.name ? project.name : appName;
       const subinfo = "";
-      const projecticon = project.icon || "./images/default.png";
+      const projecticon = project.icon || appIcon;
+      let header;
+      if (
+        this.props.design.drawer &&
+        this.props.design.drawer.header &&
+        this.props.design.drawer.header.href
+      ) {
+        header = (
+          <a href={this.props.design.drawer.header.href}>
+            <img src={projecticon} className="mdc-drawer__drawer_header_icon" />{" "}
+            <div>{projectname}</div>
+            <div>{subinfo}</div>
+          </a>
+        );
+      } else {
+        header = (
+          <div>
+            <img src={projecticon} className="mdc-drawer__drawer_header_icon" />{" "}
+            <div>{projectname}</div>
+            <div>{subinfo}</div>
+          </div>
+        );
+      }
       return (
         <Content>
           <Toolbar
@@ -324,7 +343,7 @@ class App extends React.Component {
             fixed
           >
             <ToolbarRow>
-              <ToolbarSection align="start">
+              <ToolbarSection align="start" shrinkToFit={!!tabbar}>
                 {icon}
                 <ToolbarTitle>
                   {this.props.design.minTitleName ? (
@@ -334,7 +353,7 @@ class App extends React.Component {
                       {appName} {appSubname} {instance} /{" "}
                     </span>
                   )}
-                  <span>{titleName}</span>
+                  <span>{title}</span>
                 </ToolbarTitle>
               </ToolbarSection>
               {tabbar}
@@ -357,15 +376,11 @@ class App extends React.Component {
                 color: project.color ? project.color : null,
               }}
             >
-              <img
-                src={projecticon}
-                className="mdc-drawer__drawer_header_icon"
-              />{" "}
-              <div>{projectname}</div>
-              <div>{subinfo}</div>
+              {header}
             </DrawerHeader>
             <DrawerContent list>
               {drawerContentItems.map((item) => {
+                const n = item.title || item.name;
                 if (item.href) {
                   return (
                     <a
@@ -376,15 +391,23 @@ class App extends React.Component {
                       rel="noreferrer noopener"
                       icon={item.icon}
                     >
-                      {item.name}
-                      <Icon
-                        name="launch"
+                      <div
                         style={{
-                          paddingLeft: "8px",
-                          fontSize: "18px",
-                          opacity: "0.6",
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "space-between",
                         }}
-                      />
+                      >
+                        {n}
+                        <Icon
+                          name="launch"
+                          style={{
+                            lineHeight: "22px",
+                            fontSize: "18px",
+                            opacity: "0.6",
+                          }}
+                        />
+                      </div>
                     </a>
                   );
                 }
@@ -400,7 +423,7 @@ class App extends React.Component {
                     activated={item.activated}
                     icon={item.icon}
                   >
-                    {item.name}
+                    {n}
                   </Link>
                 );
               })}
@@ -428,6 +451,7 @@ App.defaultProps = {
   admin: null,
   appName: "",
   appSubname: "",
+  appIcon: "images/default.png",
   instance: null,
   project: {},
   screens: [],
@@ -438,22 +462,28 @@ App.defaultProps = {
 App.propTypes = {
   store: PropTypes.shape({}).isRequired,
   isSignedIn: PropTypes.bool.isRequired,
-  titleName: PropTypes.string.isRequired,
+  activeScreen: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }),
   isLoading: PropTypes.bool.isRequired,
   admin: PropTypes.shape({}),
   appName: PropTypes.string,
   appSubname: PropTypes.string,
+  appIcon: PropTypes.string,
   instance: PropTypes.shape({}),
   project: PropTypes.shape({}),
   message: PropTypes.string,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
   design: PropTypes.shape({
-    drawer: PropTypes.shape({ type: PropTypes.string }),
+    drawer: PropTypes.shape({
+      type: PropTypes.string,
+      header: PropTypes.shape({ href: PropTypes.string }),
+    }),
     minTitleName: PropTypes.bool,
     toolbar: PropTypes.shape({ theme: PropTypes.string }),
   }),
   initAuthSettings: PropTypes.func.isRequired,
-  /* appSetTitle: PropTypes.func.isRequired, */
   apiAdminRequest: PropTypes.func.isRequired,
   removeMessage: PropTypes.func.isRequired,
   activeTab: PropTypes.number,
@@ -465,6 +495,7 @@ const mapStateToProps = (state) => {
     screens,
     name,
     subname,
+    icon,
     instance,
     design,
     project,
@@ -475,15 +506,19 @@ const mapStateToProps = (state) => {
     (state.app && state.app.loading) ||
     (state.auth && state.auth.loading) ||
     (state.user && state.user.loading);
-  const titleName = state.app.titleName ? state.app.titleName : "";
+  const activeScreen = {
+    title: state.app.activeScreen.title ? state.app.activeScreen.title : "",
+    name: state.app.activeScreen.name ? state.app.activeScreen.name : "",
+  };
   return {
     admin,
     isLoading,
     isSignedIn,
-    titleName,
+    activeScreen,
     screens,
     appName: name,
     appSubname: subname,
+    appIcon: icon,
     instance,
     design,
     message,
@@ -492,8 +527,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  appSetTitle: (titleName) => {
-    dispatch(appSetTitle(titleName));
+  appSetScreen: (screen) => {
+    dispatch(appSetScreen(screen));
   },
   removeMessage: () => {
     dispatch(removeMessage());

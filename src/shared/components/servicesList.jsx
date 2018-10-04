@@ -6,40 +6,57 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { List, ListItem, ListItemMeta, Button } from "zrmc";
+import { List, ListItem, ListItemMeta } from "zrmc";
+import Panel from "./panel";
 
-const ServicesList = ({ name, items, onSelect, addDisabled }) => (
-  <div className="zui-sublist">
-    <div className="zui-subheader">
-      <Button
-        raised
-        className="zui-subheader-right"
-        disabled={!!addDisabled}
-        onClick={(e) => {
-          e.preventDefault();
-          if (onSelect) {
-            onSelect({ name, state: "add" });
-          }
-        }}
-      >
-        Add
-      </Button>
-      <h4>{name}</h4>
-    </div>
-    <List>
+const ServicesList = ({
+  name,
+  icon,
+  description,
+  items,
+  onSelect,
+  addDisabled,
+  defaultIcon,
+}) => (
+  <Panel
+    icon={icon}
+    title={name}
+    description={description}
+    action="Add"
+    actionDisabled={!!addDisabled}
+    onAction={() => {
+      if (onSelect) {
+        onSelect({ name, state: "add" });
+      }
+    }}
+  >
+    <List className={"zap-service__list"}>
       {items.map((item, index) => {
-        const icon =
+        /* const i = item.icon;
           item.status === "start"
             ? "play_circle_filled"
-            : "play_circle_outline";
+            : "play_circle_outline"; */
+        let imgSrc;
+        let i = item.icon || defaultIcon;
+        if (i) {
+          let { color } = item;
+          if (!color) {
+            color = "gray";
+          }
+          if (i.endsWith(".svg") || i.endsWith(".png")) {
+            imgSrc = i;
+            i = null;
+          }
+        }
         const color =
-          item.status === "start" ? "service_start" : "service_stop";
-        const classes = `selectableListItem ${color}`;
+          item.status === "start" ? "zap-service_start" : "zap-service_stop";
+        const classes = `selectableListItem zap-service_item ${color}`;
         const key = `sl_${index}`;
         return (
           <ListItem
             key={key}
-            icon={icon}
+            icon={i}
+            imgSrc={imgSrc}
             className={classes}
             onClick={(e) => {
               e.preventDefault();
@@ -62,21 +79,25 @@ const ServicesList = ({ name, items, onSelect, addDisabled }) => (
               }
             }}
           >
-            {item.name}
-            <ListItemMeta
-              icon="close"
-              onClick={(e) => {
-                e.preventDefault();
-                if (onSelect) {
-                  onSelect({ name, state: "delete", index });
-                }
-              }}
-            />
+            <div>{item.title || item.name}</div>
+            {item.system ? (
+              ""
+            ) : (
+              <ListItemMeta
+                icon="remove"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onSelect) {
+                    onSelect({ name, state: "delete", index });
+                  }
+                }}
+              />
+            )}
           </ListItem>
         );
       })}
     </List>
-  </div>
+  </Panel>
 );
 
 ServicesList.defaultProps = {
@@ -85,6 +106,9 @@ ServicesList.defaultProps = {
 
 ServicesList.propTypes = {
   name: PropTypes.string.isRequired,
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  defaultIcon: PropTypes.string,
+  description: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onSelect: PropTypes.func.isRequired,
   addDisabled: PropTypes.bool,

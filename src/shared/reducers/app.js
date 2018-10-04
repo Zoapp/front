@@ -10,7 +10,7 @@ import {
   API_SETADMINPARAMETERS,
   API_GETADMINPARAMETERS,
   APP_SETPROPERTIES,
-  APP_SETTITLE,
+  APP_SETSCREEN,
   APP_SETPROJECT,
   AUTH_SIGNOUT,
   FETCH_FAILURE,
@@ -25,7 +25,7 @@ export const initialState = {
   adminParameters: null,
   error: null,
   loading: false,
-  titleName: "",
+  activeScreen: {},
   project: {
     name: null,
     index: 0,
@@ -115,9 +115,9 @@ export const handlers = {
     ...state,
     ...properties,
   }),
-  [APP_SETTITLE]: (state, { titleName }) => ({
+  [APP_SETSCREEN]: (state, { screen }) => ({
     ...state,
-    titleName,
+    activeScreen: { ...screen },
   }),
   [APP_SETPROJECT]: (state, { project }) => ({
     ...state,
