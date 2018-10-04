@@ -43,7 +43,7 @@ const Panel = ({
 Panel.propTypes = {
   children: PropTypes.node.isRequired,
   icon: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  title: PropTypes.string.isRequired,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   description: PropTypes.string,
   action: PropTypes.string,
   actionDisabled: PropTypes.bool,
