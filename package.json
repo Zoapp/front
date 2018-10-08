@@ -82,6 +82,7 @@
     "jest": "23.5.0",
     "json-loader": "0.5.4",
     "nodemon": "^1.14.11",
+    "npm-snapshot": "^1.0.3",
     "prettier": "1.11.1",
     "react-test-renderer": "16.4.2",
     "shx": "^0.2.2",
