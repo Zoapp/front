@@ -12,6 +12,19 @@ script:
 
 jobs:
   include:
+    - stage: npm release snapshot
+      node_js: "8"
+      script:
+        - npm-snapshot $(date +%s)
+        - yarn compile
+      deploy:
+        provider: npm
+        email: "$NPM_EMAIL"
+        api_key: "$NPM_TOKEN"
+        skip_cleanup: true
+        tag: "$SNAPSHOT_TAG"
+        on:
+          all_branches: true
     - stage: npm release
       if: tag IS present
       node_js: "8"

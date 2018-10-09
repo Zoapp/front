@@ -86,6 +86,7 @@
     "json-loader": "0.5.4",
     "nodemon": "^1.14.11",
     "prettier": "1.11.1",
+    "npm-snapshot": "^1.0.3",
     "react-test-renderer": "16.4.2",
     "shx": "^0.2.2",
     "style-loader": "^0.19.1",
