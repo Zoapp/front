@@ -36,4 +36,4 @@ jobs:
         api_key: "$NPM_TOKEN"
         skip_cleanup: true
         on:
-          tags: true
+          if: branch = master AND tag = true
