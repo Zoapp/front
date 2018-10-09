@@ -1,23 +1,26 @@
 {
   "name": "zoapp-front",
-  "version": "0.25.0",
+  "version": "0.25.3",
   "description": "Javascript ES7 React Frontend",
   "author": "Mik BRY <mik@zoapp.com>",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "build:prod": "yarn compile:css && webpack --env=prod --progress --colors && rm dist/compressed.css",
     "clean-dist": "rm -r -f dist && mkdir dist",
-    "compile": "yarn compile:css && babel src/shared -d dist && cp -f ./package.json ./dist/package.json && cp -f ./LICENSE ./dist/LICENSE && cp -f ./README.md ./dist/README.md",
-    "compile:css": "yarn clean-dist && cleancss -o dist/compressed.css node_modules/zrmc/compressed.css node_modules/zoapp-ui/compressed.css src/public/css/app.css",
-    "compile:dev": "yarn compile:css && webpack --env=dev --progress --colors",
-    "dev": "env-cmd .env yarn compile:dev && yarn start:dev",
+    "packcss": "mkdir -p dist && cleancss -o dist/compressed.css node_modules/zrmc/compressed.css node_modules/zoapp-ui/compressed.css src/public/css/app.css",
+    "compile": "yarn packcss && babel src/shared -d dist -s",
+    "build:dev": "yarn compile && webpack --env=dev --progress --colors",
+    "build:prod": "yarn compile && webpack --env=prod --progress --colors && rm dist/compressed.css",
     "lint": "eslint src/shared tests/ --ext=js --ext=jsx",
     "test": "jest",
     "start:dev": "env-cmd .env webpack-dev-server --env=dev",
+    "dev": "env-cmd .env yarn build:dev && yarn start:dev",
     "willPublish": "yarn run lint && yarn run test && yarn run compile",
-    "distribute": "yarn willPublish && npm publish ./dist",
-    "distribute:dev": "yarn compile && cd ./dist && yarn pack"
+    "distribute": "yarn willPublish && npm publish"
   },
   "repository": {
     "type": "git",
@@ -82,6 +85,7 @@
     "jest": "23.5.0",
     "json-loader": "0.5.4",
     "nodemon": "^1.14.11",
+    "npm-snapshot": "^1.0.3",
     "prettier": "1.11.1",
     "react-test-renderer": "16.4.2",
     "shx": "^0.2.2",
