@@ -15,8 +15,9 @@ jobs:
     - stage: npm release snapshot
       node_js: "8"
       script:
-        - npm-snapshot $(date +%s)
         - yarn compile
+        - export SNAPSHOT_TAG=$(npm-snapshot $(date +%s))
+        - echo "Releasing snapshot $SNAPSHOT_TAG"
       deploy:
         provider: npm
         email: "$NPM_EMAIL"
