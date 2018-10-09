@@ -7,26 +7,38 @@ let webService;
 
 export function initServices(config = defaultConfig) {
   const { backend } = config;
-  let authUrl = "/auth/"; // defaults to relative, same port.
 
-  if (backend.auth && backend.auth.url) {
-    authUrl = backend.auth.url;
+  let { host, port, path } = backend.auth;
+  if (!host) {
+    ({ host } = backend.api);
   }
+  if (!port) {
+    ({ port } = backend.api);
+  }
+  // TODO remove url from config
+  let p = port ? `:${port}` : "";
+  let url = `${host}${p}/${path}`;
 
   const authConfig = {
     clientId: backend.auth.clientId,
     clientSecret: backend.auth.clientSecret,
-    url: authUrl,
+    url,
+    host,
+    port,
+    path,
+    secure: backend.secure,
   };
 
-  let apiUrl = "/api/v1/"; // defaults to relative, same port.
-
-  if (backend.api && backend.api.url) {
-    apiUrl = backend.api.url;
-  }
-
+  ({ host, port, path } = backend.api);
+  // TODO remove url from config
+  p = port ? `:${port}` : "";
+  url = `${host}${p}/${path}`;
   const apiConfig = {
-    url: apiUrl,
+    url,
+    host,
+    port,
+    path,
+    secure: backend.secure,
   };
 
   authService = new AuthService(authConfig);
@@ -34,7 +46,7 @@ export function initServices(config = defaultConfig) {
 }
 
 export function createSocketService(path) {
-  const url = webService.buildWsUrl(path);
+  const url = webService.buildUrl(path, "ws");
   const socketService = new SocketService(url);
   return socketService;
 }
