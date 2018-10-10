@@ -463,7 +463,8 @@ App.propTypes = {
   store: PropTypes.shape({}).isRequired,
   isSignedIn: PropTypes.bool.isRequired,
   activeScreen: PropTypes.shape({
-    title: PropTypes.string.isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+      .isRequired,
     name: PropTypes.string.isRequired,
   }),
   isLoading: PropTypes.bool.isRequired,
