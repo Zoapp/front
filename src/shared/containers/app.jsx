@@ -90,12 +90,10 @@ class App extends React.Component {
 
   handleToolbarTabChange = (name, index) => {
     this.setState({ activeTab: index });
-    // console.log("change activeTab", this.state.activeTab, index);
   };
 
   handleDisplayScreen = () => {
     this.setState({ activeTab: 0 });
-    // console.log("activeTab", this.state.activeTab);
   };
 
   handleDrawerItemClick = () => {
@@ -190,8 +188,6 @@ class App extends React.Component {
 
     const { activeTab } = this.state;
 
-    // console.log("render activeTab", activeTab);
-
     if (currentScreen) {
       if (currentScreen.isFullscreen != null) {
         // eslint-disable-next-line
@@ -199,12 +195,6 @@ class App extends React.Component {
       }
       if (isSignedIn || currentScreen.access !== "auth") {
         if (currentScreen.panels) {
-          /* let ac = "var(--mdc-theme-text-primary-on-primary, white)";
-          let c = "rgba(255, 255, 255, 0.54)";
-          if (this.state.toolbarTheme === "white") {
-            ac = "var(--mdc-theme-secondary, #018786)";
-            c = "rgba(2, 206, 204, 0.54)";
-          } */
           tabbar = (
             <ToolbarSection style={{ padding: "0" }}>
               <Tabbar
@@ -321,11 +311,18 @@ class App extends React.Component {
         this.props.design.drawer.header.href
       ) {
         header = (
-          <a href={this.props.design.drawer.header.href}>
+          <Link
+            href={this.props.design.drawer.header.href}
+            to={this.props.design.drawer.header.href}
+            onClick={() => {
+              this.handleDrawerItemClick();
+              this.handleDisplayScreen();
+            }}
+          >
             <img src={projecticon} className="mdc-drawer__drawer_header_icon" />{" "}
             <div>{projectname}</div>
             <div>{subinfo}</div>
-          </a>
+          </Link>
         );
       } else {
         header = (
