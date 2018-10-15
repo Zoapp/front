@@ -9,9 +9,15 @@ import {
   AUTH_INIT_SETTINGS,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
+  AUTH_SIGNUP,
   FETCH_REQUEST,
 } from "../actions/constants";
-import { signInComplete, signOutError, signOutComplete } from "../actions/auth";
+import {
+  signInComplete,
+  signOutError,
+  signOutComplete,
+  signUpComplete,
+} from "../actions/auth";
 import { getAuthService } from "../services";
 
 function* authenticate({ username, password, provider }) {
@@ -68,10 +74,35 @@ export function* signIn(action) {
   }
 }
 
+export function* signUp(action) {
+  const { username, email, password, accept, provider } = action;
+
+  try {
+    const service = getAuthService(provider);
+
+    const response = yield service.createUser({
+      username,
+      email,
+      password,
+      accept,
+    });
+
+    yield put(signUpComplete({ attributes: response, provider }));
+  } catch (error) {
+    if (error.response) {
+      const response = yield error.response.json();
+      yield put(signOutError({ provider, error: response.error || error }));
+    } else {
+      yield put(signOutError({ provider, error }));
+    }
+  }
+}
+
 const auth = [
   [AUTH_INIT_SETTINGS, authInit],
   [AUTH_SIGNIN + FETCH_REQUEST, signIn],
   [AUTH_SIGNOUT + FETCH_REQUEST, signOut],
+  [AUTH_SIGNUP + FETCH_REQUEST, signUp],
 ];
 
 export default auth;

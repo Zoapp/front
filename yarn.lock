@@ -5271,6 +5271,10 @@ npm-run-path@^2.0.0:
   dependencies:
     path-key "^2.0.0"
 
+npm-snapshot@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/npm-snapshot/-/npm-snapshot-1.0.3.tgz#18930aea89d1dd8c8ed5a256711068a1daaf7c0f"
+
 npmlog@^4.0.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.2.tgz#08a7f2a8bf734604779a9efa4ad5cc717abb954b"
@@ -8059,9 +8063,9 @@ yargs@~3.10.0:
     decamelize "^1.0.0"
     window-size "0.1.0"
 
-zoapp-common@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/zoapp-common/-/zoapp-common-0.3.0.tgz#489e4ac727510ee0be5c7c47812a3b9b03cd33d5"
+zoapp-common@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/zoapp-common/-/zoapp-common-0.5.0.tgz#aeeadd07c88da9ed7ef7a8c4c8ac0c91597d0c1a"
   dependencies:
     whatwg-fetch "^2.0.4"
     winston "2.4.0"

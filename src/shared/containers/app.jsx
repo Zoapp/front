@@ -30,7 +30,7 @@ import { hot } from "react-hot-loader";
 
 import Screen from "./screen";
 import UserBox from "./userBox";
-import SignInForm from "./signInForm";
+import Authenticate from "./authenticate";
 import { appSetScreen } from "../actions/app";
 import { removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
@@ -272,7 +272,7 @@ class App extends React.Component {
               path={screen.path}
               render={(p) => {
                 if (!isSignedIn && screen.access === "auth") {
-                  return <SignInForm screen={screen} />;
+                  return <Authenticate screen={screen} />;
                 } else if (screen.render) {
                   const props = { ...p, store };
                   return screen.render({

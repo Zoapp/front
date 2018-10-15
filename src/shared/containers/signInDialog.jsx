@@ -25,7 +25,7 @@ export class SignInDialogBase extends Component {
 
   handleCloseDialog = () => {
     Zrmc.closeDialog();
-    if (this.props.onClosed !== null) {
+    if (this.props.onClosed) {
       this.props.onClosed();
     }
   };
