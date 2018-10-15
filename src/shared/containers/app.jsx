@@ -333,6 +333,12 @@ class App extends React.Component {
           </div>
         );
       }
+      const userbox = (
+        <UserBox
+          store={this.props.store}
+          needsAuth={currentScreen && currentScreen.access === "auth"}
+        />
+      );
       return (
         <Content>
           <Toolbar
@@ -355,7 +361,7 @@ class App extends React.Component {
               </ToolbarSection>
               {tabbar}
               {toolbox}
-              <UserBox store={this.props.store} />
+              {userbox}
             </ToolbarRow>
           </Toolbar>
           <Drawer

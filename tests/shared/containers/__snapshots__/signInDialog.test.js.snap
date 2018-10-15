@@ -31,90 +31,86 @@ exports[`containers/signInDialog renders correctly 1`] = `
       <section
         className="mdc-dialog__body"
       >
-        <section
-          className="mdc-dialog__body"
+        <div
+          className="mdc-form-field"
+          style={
+            Object {
+              "display": "block",
+            }
+          }
         >
           <div
-            className="mdc-form-field"
+            className="mdc-text-field mdc-text-field--upgraded"
             style={
               Object {
-                "display": "block",
+                "width": "200px",
               }
             }
           >
-            <div
-              className="mdc-text-field mdc-text-field--upgraded"
-              style={
-                Object {
-                  "width": "200px",
-                }
-              }
+            <input
+              autoComplete="username email"
+              className="mdc-text-field__input"
+              defaultValue=""
+              id="signin-dialog-username"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              required={true}
+              type="text"
+            />
+            <label
+              className="mdc-floating-label"
+              focused="false"
+              htmlFor="signin-dialog-username"
+              style={Object {}}
             >
-              <input
-                autoComplete="username email"
-                className="mdc-text-field__input"
-                defaultValue=""
-                id="signin-dialog-username"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                required={true}
-                type="text"
-              />
-              <label
-                className="mdc-floating-label"
-                focused="false"
-                htmlFor="signin-dialog-username"
-                style={Object {}}
-              >
-                Username | Email
-              </label>
-              <div
-                className="mdc-text-field__bottom-line"
-              />
-            </div>
+              Username | Email
+            </label>
+            <div
+              className="mdc-text-field__bottom-line"
+            />
           </div>
+        </div>
+        <div
+          className="mdc-form-field"
+          style={
+            Object {
+              "display": "block",
+            }
+          }
+        >
           <div
-            className="mdc-form-field"
+            className="mdc-text-field mdc-text-field--upgraded"
             style={
               Object {
-                "display": "block",
+                "width": "200px",
               }
             }
           >
-            <div
-              className="mdc-text-field mdc-text-field--upgraded"
-              style={
-                Object {
-                  "width": "200px",
-                }
-              }
+            <input
+              autoComplete="password"
+              className="mdc-text-field__input"
+              defaultValue=""
+              id="signin-dialog-password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              required={true}
+              type="password"
+            />
+            <label
+              className="mdc-floating-label"
+              focused="false"
+              htmlFor="signin-dialog-password"
+              style={Object {}}
             >
-              <input
-                autoComplete="password"
-                className="mdc-text-field__input"
-                defaultValue=""
-                id="signin-dialog-password"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                required={true}
-                type="password"
-              />
-              <label
-                className="mdc-floating-label"
-                focused="false"
-                htmlFor="signin-dialog-password"
-                style={Object {}}
-              >
-                Password
-              </label>
-              <div
-                className="mdc-text-field__bottom-line"
-              />
-            </div>
+              Password
+            </label>
+            <div
+              className="mdc-text-field__bottom-line"
+            />
           </div>
-        </section>
+        </div>
       </section>
       <footer
         className="mdc-dialog__footer"

@@ -71,6 +71,8 @@ class UserBox extends Component {
           </MenuAnchor>
         </ToolbarSection>
       );
+    } else if (this.props.needsAuth) {
+      return <div />;
     }
 
     return (
@@ -102,6 +104,7 @@ UserBox.propTypes = {
     avatar: PropTypes.string,
   }),
   isSignedIn: PropTypes.bool,
+  needsAuth: PropTypes.bool,
   apiUserProfileRequest: PropTypes.func.isRequired,
 };
 
