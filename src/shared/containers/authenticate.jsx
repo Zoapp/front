@@ -29,7 +29,7 @@ export class AuthenticateBase extends Component {
     email: "",
     password: "",
     accept: false,
-    display: "signin",
+    display: null,
     error: null,
     displayedError: false,
     isLoading: false,
@@ -144,8 +144,9 @@ export class AuthenticateBase extends Component {
   };
 
   render() {
-    const { username, email, password, accept, display, error } = this.state;
-    const { isLoading, isDialog, recoverPassword } = this.props;
+    const { username, email, password, accept, error } = this.state;
+    let { display } = this.state;
+    const { isLoading, isDialog, recoverPassword, screen } = this.props;
     // const isLoading = true;
     let form;
     const container = isDialog ? DialogBody : CardText;
@@ -163,7 +164,9 @@ export class AuthenticateBase extends Component {
         errorMessage = progress;
       }
     }
-
+    if (!display && screen && screen.signUp) {
+      display = "signup";
+    }
     if (display === "lostpassword") {
       handler = this.handleLostPassword;
       form = (
