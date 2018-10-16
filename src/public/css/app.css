@@ -177,6 +177,13 @@
   cursor: pointer;
 }
 
+.authenticate_error {
+  padding: 2px 16px 0 16px;
+  color: #b71c1c;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 #signin-form-form .mdc-card__actions, #signin-dialog-form .mdc-dialog__footer {
   justify-content: space-between;
 }

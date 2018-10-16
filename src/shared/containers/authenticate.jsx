@@ -20,6 +20,7 @@ import { signIn } from "../actions/auth";
 import { appSetTitleName } from "../actions/app";
 import SignIn from "../components/auth/signIn";
 import SignUp from "../components/auth/signUp";
+import LostPassword from "../components/auth/lostPassword";
 
 export class AuthenticateBase extends Component {
   state = {
@@ -28,6 +29,8 @@ export class AuthenticateBase extends Component {
     password: "",
     accept: false,
     display: "signin",
+    error: null,
+    displayedError: false,
   };
 
   constructor(props) {
@@ -37,6 +40,17 @@ export class AuthenticateBase extends Component {
     if (screen) {
       props.appSetTitleName(screen.name);
     }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { error } = props;
+    if (error !== state.error) {
+      return {
+        error,
+        displayedError: false,
+      };
+    }
+    return null;
   }
 
   handleCloseDialog = () => {
@@ -63,10 +77,27 @@ export class AuthenticateBase extends Component {
     // TODO
   };
 
-  switchDisplay = () => {
-    this.setState({
-      display: this.state.display === "signin" ? "signup" : "signin",
-    });
+  switchDisplay = (
+    display = this.state.display === "signin" ? "signup" : "signin",
+  ) => {
+    if (this.state.display !== display) {
+      this.setState({
+        display,
+        displayedError: true,
+      });
+    }
+  };
+
+  displaySignUp = () => {
+    this.switchDisplay("signup");
+  };
+
+  displaySignIn = () => {
+    this.switchDisplay("signin");
+  };
+
+  displayLostPassword = () => {
+    this.switchDisplay("lostpassword");
   };
 
   createChangeHandler = (field) => (e) => {
@@ -74,14 +105,35 @@ export class AuthenticateBase extends Component {
   };
 
   render() {
-    const { username, email, password, accept, display } = this.state;
+    const { username, email, password, accept, display, error } = this.state;
     const { isDialog, recoverPassword } = this.props;
     let form;
     const container = isDialog ? DialogBody : CardText;
     let title;
     let action;
     const actions = [];
-    if (display === "signup") {
+    if (display === "lostpassword") {
+      form = (
+        <LostPassword
+          email={email}
+          password={password}
+          accept={accept}
+          createChangeHandler={this.createChangeHandler}
+          container={container}
+        />
+      );
+      title = "Change your password";
+      action = "Send";
+      actions.push(
+        <Button
+          key="but_cancel_pass"
+          onClick={this.displaySignIn}
+          className="authenticate_lostPassword"
+        >
+          Cancel
+        </Button>,
+      );
+    } else if (display === "signup") {
       form = (
         <SignUp
           username={username}
@@ -90,7 +142,7 @@ export class AuthenticateBase extends Component {
           accept={accept}
           createChangeHandler={this.createChangeHandler}
           container={container}
-          signIn={this.switchDisplay}
+          signIn={this.displaySignIn}
         />
       );
       title = "Create an account";
@@ -100,7 +152,7 @@ export class AuthenticateBase extends Component {
         actions.push(
           <Button
             key="but_lost_pass"
-            onClick={this.handleRecoverPassword}
+            onClick={this.displayLostPassword}
             className="authenticate_lostPassword"
           >
             Lost password ?
@@ -113,8 +165,7 @@ export class AuthenticateBase extends Component {
           password={password}
           createChangeHandler={this.createChangeHandler}
           container={container}
-          signUp={this.props.signUpValidation ? this.switchDisplay : undefined}
-          recoverPassword={recoverPassword ? this.handleRecoverPassword : ""}
+          signUp={this.props.signUpValidation ? this.displaySignUp : undefined}
         />
       );
       if (isDialog) {
@@ -135,6 +186,10 @@ export class AuthenticateBase extends Component {
         {action}
       </Button>
     );
+    let errorMessage;
+    if (error && !this.state.displayedError) {
+      errorMessage = <div className="authenticate_error">{error}</div>;
+    }
     if (this.props.isDialog) {
       actions.push(action);
       return (
@@ -146,6 +201,7 @@ export class AuthenticateBase extends Component {
             width="320px"
           >
             {form}
+            {errorMessage}
             <DialogFooter>{actions}</DialogFooter>
           </Dialog>
         </form>
@@ -156,6 +212,7 @@ export class AuthenticateBase extends Component {
       <Card shadow={0} style={{ width: "320px", margin: "auto" }} title={title}>
         <form id="signin-form-form" onSubmit={this.handleSignIn}>
           {form}
+          {errorMessage}
           <CardActions>{actions}</CardActions>
         </form>
       </Card>
@@ -174,6 +231,8 @@ AuthenticateBase.propTypes = {
   signUpValidation: PropTypes.string,
   display: PropTypes.string,
   recoverPassword: PropTypes.bool,
+  loading: PropTypes.bool,
+  error: PropTypes.string,
 };
 
 AuthenticateBase.defaultProps = {
@@ -181,15 +240,24 @@ AuthenticateBase.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
+  const { error, loading } = state.auth;
   const { configuration } = state.app;
   let signUpValidation;
   if (configuration.backend.auth.signUp) {
     signUpValidation = configuration.backend.auth.signUp.validation;
   }
   const recoverPassword = !!configuration.backend.auth.recoverPassword;
+  let errorMessage;
+  if (error instanceof Error) {
+    errorMessage = error.message;
+  } else if (typeof error === "string") {
+    errorMessage = error;
+  }
   return {
     signUpValidation,
     recoverPassword,
+    loading,
+    error: errorMessage,
   };
 };
 
