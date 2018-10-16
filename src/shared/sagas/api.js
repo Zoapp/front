@@ -10,9 +10,12 @@ import {
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
   FETCH_REQUEST,
+  FETCH_SUCCESS,
+  FETCH_FAILURE,
   API_GETADMINPARAMETERS,
   API_ADMIN_UPDATE,
   API_GETUSERS,
+  API_GETPLUGINS,
 } from "../actions/constants";
 import {
   apiAdminError,
@@ -105,6 +108,30 @@ const api = [
         yield put(apiGetUsersSuccess(response));
       } catch (error) {
         yield put(apiGetUsersFailure(error));
+      }
+    },
+  ],
+  /* Get plugins */
+  [
+    API_GETPLUGINS + FETCH_REQUEST,
+    function* f(action) {
+      const { botId } = action;
+      let url = "plugins/";
+      if (botId) {
+        url += botId;
+      }
+      if (action.pluginType) {
+        url += `?type=${action.pluginType}`;
+      }
+      try {
+        const plugins = yield getWebService().get(url);
+        yield put({
+          type: `${API_GETPLUGINS}${FETCH_SUCCESS}`,
+          loading: false,
+          plugins,
+        });
+      } catch (error) {
+        yield put({ type: `${API_GETPLUGINS}${FETCH_FAILURE}`, error });
       }
     },
   ],

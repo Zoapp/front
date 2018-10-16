@@ -100,4 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
   apiGetUsersRequest: () => dispatch(apiGetUsersRequest()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Users);

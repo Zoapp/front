@@ -108,4 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(null, mapDispatchToProps)(SignInFormBase);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(SignInFormBase);

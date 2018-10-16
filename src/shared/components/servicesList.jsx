@@ -49,7 +49,7 @@ const ServicesList = ({
           }
         }
         const color =
-          item.status === "start" ? "zap-service_start" : "zap-service_stop";
+          item.isStarted === true ? "zap-service_start" : "zap-service_stop";
         const classes = `selectableListItem zap-service_item ${color}`;
         const key = `sl_${index}`;
         return (

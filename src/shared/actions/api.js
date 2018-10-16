@@ -6,13 +6,14 @@
  */
 import {
   API_ADMIN,
+  API_ADMIN_UPDATE,
+  API_GETADMINPARAMETERS,
+  API_GETPLUGINS,
+  API_GETUSERS,
   API_SETADMINPARAMETERS,
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
-  API_GETADMINPARAMETERS,
-  API_ADMIN_UPDATE,
-  API_GETUSERS,
 } from "./constants";
 
 export function apiAdminRequest() {
@@ -82,4 +83,8 @@ export function apiGetUsersSuccess(users) {
 
 export function apiGetUsersFailure(error) {
   return { type: API_GETUSERS + FETCH_FAILURE, error };
+}
+
+export function apiGetPluginsRequest(botId) {
+  return { type: API_GETPLUGINS + FETCH_REQUEST, botId };
 }

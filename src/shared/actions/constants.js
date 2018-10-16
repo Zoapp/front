@@ -48,3 +48,6 @@ export const MESSAGE_REMOVEMESSAGE = "MESSAGE_REMOVEMESSAGE";
 
 // Users
 export const API_GETUSERS = "API_GETUSERS";
+
+// API plugins constants
+export const API_GETPLUGINS = "API_GETPLUGINS";

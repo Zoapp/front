@@ -18,6 +18,7 @@ import {
   FETCH_SUCCESS,
   API_ADMIN_UPDATE,
   API_GETUSERS,
+  API_GETPLUGINS,
 } from "../actions/constants";
 
 export const initialState = {
@@ -34,6 +35,7 @@ export const initialState = {
     icon: null,
   },
   users: [],
+  plugins: [],
 };
 
 export const handlers = {
@@ -140,6 +142,21 @@ export const handlers = {
     users,
   }),
   [API_GETUSERS + FETCH_FAILURE]: (state, error) => ({
+    ...state,
+    loading: false,
+    error,
+  }),
+  [API_GETPLUGINS + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [API_GETPLUGINS + FETCH_SUCCESS]: (state, { plugins }) => ({
+    ...state,
+    plugins,
+    loading: false,
+  }),
+  [API_GETPLUGINS + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
     loading: false,
     error,
