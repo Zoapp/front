@@ -14,6 +14,7 @@ import Zrmc, {
   Dialog,
   DialogBody,
   DialogFooter,
+  LinearProgress,
 } from "zrmc";
 import { connect } from "react-redux";
 import { signIn } from "../actions/auth";
@@ -31,6 +32,7 @@ export class AuthenticateBase extends Component {
     display: "signin",
     error: null,
     displayedError: false,
+    isLoading: false,
   };
 
   constructor(props) {
@@ -44,6 +46,7 @@ export class AuthenticateBase extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const { error } = props;
+
     if (error !== state.error) {
       return {
         error,
@@ -60,6 +63,18 @@ export class AuthenticateBase extends Component {
     }
   };
 
+  componentDidUpdate() {
+    // WIP
+    if (
+      this.props.isDialog &&
+      this.state.isLoading &&
+      !this.props.isLoading &&
+      !this.props.error
+    ) {
+      this.handleCloseDialog();
+    }
+  }
+
   handleSignIn = (e) => {
     e.preventDefault();
     const { provider } = this.props;
@@ -67,7 +82,7 @@ export class AuthenticateBase extends Component {
     if (username !== "" && password !== "") {
       this.props.signIn(provider, username, password);
       if (this.props.isDialog) {
-        this.handleCloseDialog();
+        this.setState({ isLoading: true });
       }
     }
   };
@@ -106,12 +121,24 @@ export class AuthenticateBase extends Component {
 
   render() {
     const { username, email, password, accept, display, error } = this.state;
-    const { isDialog, recoverPassword } = this.props;
+    const { isLoading, isDialog, recoverPassword } = this.props;
+    // const isLoading = true;
     let form;
     const container = isDialog ? DialogBody : CardText;
     let title;
     let action;
     const actions = [];
+    let errorMessage = "";
+    let progress;
+    if (error && !this.state.displayedError && !isLoading) {
+      errorMessage = <div className="authenticate_error">{error}</div>;
+    } else if (isLoading) {
+      progress = <LinearProgress buffer={0} indeterminate />;
+      if (isDialog) {
+        errorMessage = progress;
+      }
+    }
+
     if (display === "lostpassword") {
       form = (
         <LostPassword
@@ -120,7 +147,10 @@ export class AuthenticateBase extends Component {
           accept={accept}
           createChangeHandler={this.createChangeHandler}
           container={container}
-        />
+          disabled={isLoading}
+        >
+          {errorMessage}
+        </LostPassword>
       );
       title = "Change your password";
       action = "Send";
@@ -129,6 +159,7 @@ export class AuthenticateBase extends Component {
           key="but_cancel_pass"
           onClick={this.displaySignIn}
           className="authenticate_lostPassword"
+          disabled={isLoading}
         >
           Cancel
         </Button>,
@@ -143,7 +174,10 @@ export class AuthenticateBase extends Component {
           createChangeHandler={this.createChangeHandler}
           container={container}
           signIn={this.displaySignIn}
-        />
+          disabled={isLoading}
+        >
+          {errorMessage}
+        </SignUp>
       );
       title = "Create an account";
       action = "Register";
@@ -154,6 +188,7 @@ export class AuthenticateBase extends Component {
             key="but_lost_pass"
             onClick={this.displayLostPassword}
             className="authenticate_lostPassword"
+            disabled={isLoading}
           >
             Lost password ?
           </Button>,
@@ -166,7 +201,10 @@ export class AuthenticateBase extends Component {
           createChangeHandler={this.createChangeHandler}
           container={container}
           signUp={this.props.signUpValidation ? this.displaySignUp : undefined}
-        />
+          disabled={isLoading}
+        >
+          {errorMessage}
+        </SignIn>
       );
       if (isDialog) {
         title = "Your credentials";
@@ -182,14 +220,11 @@ export class AuthenticateBase extends Component {
         className="authenticate_submit"
         raised
         dense
+        disabled={isLoading}
       >
-        {action}
+        {isLoading ? "Processing..." : action}
       </Button>
     );
-    let errorMessage;
-    if (error && !this.state.displayedError) {
-      errorMessage = <div className="authenticate_error">{error}</div>;
-    }
     if (this.props.isDialog) {
       actions.push(action);
       return (
@@ -201,7 +236,6 @@ export class AuthenticateBase extends Component {
             width="320px"
           >
             {form}
-            {errorMessage}
             <DialogFooter>{actions}</DialogFooter>
           </Dialog>
         </form>
@@ -212,8 +246,8 @@ export class AuthenticateBase extends Component {
       <Card shadow={0} style={{ width: "320px", margin: "auto" }} title={title}>
         <form id="signin-form-form" onSubmit={this.handleSignIn}>
           {form}
-          {errorMessage}
           <CardActions>{actions}</CardActions>
+          {progress}
         </form>
       </Card>
     );
@@ -231,7 +265,7 @@ AuthenticateBase.propTypes = {
   signUpValidation: PropTypes.string,
   display: PropTypes.string,
   recoverPassword: PropTypes.bool,
-  loading: PropTypes.bool,
+  isLoading: PropTypes.bool,
   error: PropTypes.string,
 };
 
@@ -256,7 +290,7 @@ const mapStateToProps = (state) => {
   return {
     signUpValidation,
     recoverPassword,
-    loading,
+    isLoading: loading,
     error: errorMessage,
   };
 };

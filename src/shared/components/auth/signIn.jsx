@@ -8,13 +8,15 @@ const SignIn = ({
   createChangeHandler,
   container,
   signUp,
+  disabled,
+  children,
 }) => {
   const form = [];
   if (signUp) {
     form.push(
       <div key="signin-form-signup" className="authenticate_sign">
         Don&#39;t have an account ?
-        <Button dense onClick={signUp}>
+        <Button dense onClick={signUp} disabled={disabled}>
           Register now
         </Button>
       </div>,
@@ -31,6 +33,7 @@ const SignIn = ({
         style={{ width: "100%" }}
         autoComplete="username email"
         required
+        disabled={disabled}
       />
     </FormField>,
   );
@@ -46,9 +49,11 @@ const SignIn = ({
         style={{ width: "100%" }}
         autoComplete="password"
         required
+        disabled={disabled}
       />
     </FormField>,
   );
+  form.push(children);
   return React.createElement(container, {}, form);
 };
 
@@ -58,6 +63,8 @@ SignIn.propTypes = {
   createChangeHandler: PropTypes.func,
   container: PropTypes.func,
   signUp: PropTypes.func,
+  disabled: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 export default SignIn;

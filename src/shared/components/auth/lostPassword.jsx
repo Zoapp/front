@@ -2,7 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormField, TextField } from "zrmc";
 
-const LostPassword = ({ email, createChangeHandler, container }) => {
+const LostPassword = ({
+  email,
+  createChangeHandler,
+  container,
+  disabled,
+  children,
+}) => {
   const form = [];
   form.push(
     <div key="signin-form-signup" className="authenticate_sign">
@@ -21,9 +27,11 @@ const LostPassword = ({ email, createChangeHandler, container }) => {
         style={{ width: "100%" }}
         autoComplete="email"
         required
+        disabled={disabled}
       />
     </FormField>,
   );
+  form.push(children);
   return React.createElement(container, {}, form);
 };
 
@@ -31,6 +39,8 @@ LostPassword.propTypes = {
   email: PropTypes.string,
   createChangeHandler: PropTypes.func,
   container: PropTypes.func,
+  disabled: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 export default LostPassword;
