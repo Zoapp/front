@@ -17,7 +17,7 @@ import Zrmc, {
   LinearProgress,
 } from "zrmc";
 import { connect } from "react-redux";
-import { signIn } from "../actions/auth";
+import { signIn, signUp, lostPassword } from "../actions/auth";
 import { appSetTitleName } from "../actions/app";
 import SignIn from "../components/auth/signIn";
 import SignUp from "../components/auth/signUp";
@@ -87,6 +87,30 @@ export class AuthenticateBase extends Component {
     }
   };
 
+  handleSignUp = (e) => {
+    e.preventDefault();
+    const { provider } = this.props;
+    const { username, email, password, accept } = this.state;
+    if (username !== "" && password !== "" && email !== "") {
+      this.props.signUp(provider, username, email, password, accept);
+      if (this.props.isDialog) {
+        this.setState({ isLoading: true });
+      }
+    }
+  };
+
+  handleLostPassword = (e) => {
+    e.preventDefault();
+    const { provider } = this.props;
+    const { email } = this.state;
+    if (email !== "") {
+      this.props.lostPassword(provider, email);
+      if (this.props.isDialog) {
+        this.setState({ isLoading: true });
+      }
+    }
+  };
+
   handleRecoverPassword = (e) => {
     e.preventDefault();
     // TODO
@@ -127,6 +151,7 @@ export class AuthenticateBase extends Component {
     const container = isDialog ? DialogBody : CardText;
     let title;
     let action;
+    let handler;
     const actions = [];
     let errorMessage = "";
     let progress;
@@ -140,6 +165,7 @@ export class AuthenticateBase extends Component {
     }
 
     if (display === "lostpassword") {
+      handler = this.handleLostPassword;
       form = (
         <LostPassword
           email={email}
@@ -165,6 +191,7 @@ export class AuthenticateBase extends Component {
         </Button>,
       );
     } else if (display === "signup") {
+      handler = this.handleSignUp;
       form = (
         <SignUp
           username={username}
@@ -182,6 +209,7 @@ export class AuthenticateBase extends Component {
       title = "Create an account";
       action = "Register";
     } else {
+      handler = this.handleSignIn;
       if (recoverPassword) {
         actions.push(
           <Button
@@ -228,7 +256,7 @@ export class AuthenticateBase extends Component {
     if (this.props.isDialog) {
       actions.push(action);
       return (
-        <form id="signin-dialog-form" onSubmit={this.handleSignIn}>
+        <form id="signin-dialog-form" onSubmit={handler}>
           <Dialog
             id={this.props.id}
             onClose={this.handleCloseDialog}
@@ -244,7 +272,7 @@ export class AuthenticateBase extends Component {
     actions.unshift(action);
     return (
       <Card shadow={0} style={{ width: "320px", margin: "auto" }} title={title}>
-        <form id="signin-form-form" onSubmit={this.handleSignIn}>
+        <form id="signin-form-form" onSubmit={handler}>
           {form}
           <CardActions>{actions}</CardActions>
           {progress}
@@ -259,6 +287,8 @@ AuthenticateBase.propTypes = {
   provider: PropTypes.string,
   isDialog: PropTypes.bool,
   signIn: PropTypes.func.isRequired,
+  signUp: PropTypes.func.isRequired,
+  lostPassword: PropTypes.func.isRequired,
   screen: PropTypes.shape({}),
   appSetTitleName: PropTypes.func,
   onClosed: PropTypes.func,
@@ -298,6 +328,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   signIn: (provider, username, password) => {
     dispatch(signIn({ provider, username, password }));
+  },
+  signUp: (provider, username, email, password, accept) => {
+    dispatch(signUp({ provider, username, email, password, accept }));
+  },
+  lostPassword: (provider, email) => {
+    dispatch(lostPassword({ provider, email }));
   },
   appSetTitleName: (title) => {
     dispatch(appSetTitleName(title));

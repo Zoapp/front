@@ -8,6 +8,7 @@ import {
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
+  AUTH_LOSTPASSWORD,
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
@@ -62,12 +63,14 @@ export function signOut({ provider }) {
   };
 }
 
-export function signUp({ provider, username, password }) {
+export function signUp({ provider, username, email, password, accept }) {
   return {
     type: AUTH_SIGNUP + FETCH_REQUEST,
     provider,
     username,
+    email,
     password,
+    accept,
   };
 }
 
@@ -82,6 +85,30 @@ export function signUpComplete({ attributes, provider }) {
 export function signUpError({ provider, error }) {
   return {
     type: AUTH_SIGNUP + FETCH_FAILURE,
+    provider,
+    error,
+  };
+}
+
+export function lostPassword({ provider, email }) {
+  return {
+    type: AUTH_LOSTPASSWORD + FETCH_REQUEST,
+    provider,
+    email,
+  };
+}
+
+export function lostPasswordComplete({ attributes, provider }) {
+  return {
+    type: AUTH_LOSTPASSWORD + FETCH_SUCCESS,
+    attributes,
+    provider,
+  };
+}
+
+export function lostPasswordError({ provider, error }) {
+  return {
+    type: AUTH_LOSTPASSWORD + FETCH_FAILURE,
     provider,
     error,
   };

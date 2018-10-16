@@ -178,7 +178,7 @@
 }
 
 .authenticate_error {
-  padding: 2px 16px 0 16px;
+  padding-top: 2px;
   color: #b71c1c;
   font-size: 14px;
   font-weight: 500;

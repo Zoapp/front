@@ -10,13 +10,16 @@ import {
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
+  AUTH_LOSTPASSWORD,
   FETCH_REQUEST,
 } from "../actions/constants";
 import {
+  signIn,
   signInComplete,
   signOutError,
   signOutComplete,
   signUpComplete,
+  lostPasswordComplete,
 } from "../actions/auth";
 import { getAuthService } from "../services";
 
@@ -58,7 +61,7 @@ export function* signOut(action) {
   }
 }
 
-export function* signIn(action) {
+export function* callSignIn(action) {
   const { username, password, provider } = action;
 
   const winner = yield race({
@@ -87,7 +90,34 @@ export function* signUp(action) {
       accept,
     });
 
-    yield put(signUpComplete({ attributes: response, provider }));
+    yield put(signUpComplete({ ...response, provider }));
+    if (response.validation === "none") {
+      const scope = yield service.authorizeUser({
+        username,
+        password,
+        scope: "owner",
+      });
+      if (scope) {
+        yield put(signIn({ provider, username, password }));
+      }
+    }
+  } catch (error) {
+    if (error.response) {
+      const response = yield error.response.json();
+      yield put(signOutError({ provider, error: response.error || error }));
+    } else {
+      yield put(signOutError({ provider, error }));
+    }
+  }
+}
+
+export function* lostPassword(action) {
+  const { email, provider } = action;
+
+  try {
+    const service = getAuthService(provider);
+    const response = yield service.lostPassword({ email });
+    yield put(lostPasswordComplete({ attributes: response, provider }));
   } catch (error) {
     if (error.response) {
       const response = yield error.response.json();
@@ -100,9 +130,10 @@ export function* signUp(action) {
 
 const auth = [
   [AUTH_INIT_SETTINGS, authInit],
-  [AUTH_SIGNIN + FETCH_REQUEST, signIn],
+  [AUTH_SIGNIN + FETCH_REQUEST, callSignIn],
   [AUTH_SIGNOUT + FETCH_REQUEST, signOut],
   [AUTH_SIGNUP + FETCH_REQUEST, signUp],
+  [AUTH_LOSTPASSWORD + FETCH_REQUEST, lostPassword],
 ];
 
 export default auth;
