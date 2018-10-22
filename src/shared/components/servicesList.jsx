@@ -49,7 +49,9 @@ const ServicesList = ({
           }
         }
         const color =
-          item.isStarted === true ? "zap-service_start" : "zap-service_stop";
+          item.middleware && item.middleware.status === "start"
+            ? "zap-service_start"
+            : "zap-service_stop";
         const classes = `selectableListItem zap-service_item ${color}`;
         const key = `sl_${index}`;
         return (
@@ -88,7 +90,7 @@ const ServicesList = ({
                 onClick={(e) => {
                   e.preventDefault();
                   if (onSelect) {
-                    onSelect({ name, state: "delete", index });
+                    onSelect({ name, state: "delete", index, item });
                   }
                 }}
               />

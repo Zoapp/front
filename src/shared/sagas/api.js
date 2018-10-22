@@ -16,18 +16,23 @@ import {
   API_ADMIN_UPDATE,
   API_GETUSERS,
   API_GETPLUGINS,
+  API_SETPLUGIN,
+  API_DELETEPLUGIN,
 } from "../actions/constants";
 import {
   apiAdminError,
   apiAdminSuccess,
+  apiAdminUpdateError,
+  apiAdminUpdateSuccess,
+  apiGetAdminParametersFailure,
+  apiGetAdminParametersSuccess,
+  apiGetUsersFailure,
+  apiGetUsersSuccess,
   apiSetAdminParametersError,
   apiSetAdminParametersSuccess,
-  apiGetAdminParametersSuccess,
-  apiGetAdminParametersFailure,
-  apiAdminUpdateSuccess,
-  apiAdminUpdateError,
-  apiGetUsersSuccess,
-  apiGetUsersFailure,
+  apiSetPluginError,
+  apiSetPluginSuccess,
+  apiGetPluginsRequest,
 } from "../actions/api";
 import { apiUserProfileError, apiUserProfileSuccess } from "../actions/user";
 import { getWebService } from "../services";
@@ -111,7 +116,7 @@ const api = [
       }
     },
   ],
-  /* Get plugins */
+  /* Plugins */
   [
     API_GETPLUGINS + FETCH_REQUEST,
     function* f(action) {
@@ -132,6 +137,38 @@ const api = [
         });
       } catch (error) {
         yield put({ type: `${API_GETPLUGINS}${FETCH_FAILURE}`, error });
+      }
+    },
+  ],
+  [
+    API_SETPLUGIN + FETCH_REQUEST,
+    function* f(action) {
+      try {
+        const { plugin, botId } = action;
+        const response = yield getWebService().post("plugins/", plugin);
+        yield put(apiSetPluginSuccess(response));
+        yield put(apiGetPluginsRequest(botId));
+      } catch (error) {
+        yield put(apiSetPluginError({ error }));
+      }
+    },
+  ],
+  [
+    API_DELETEPLUGIN + FETCH_REQUEST,
+    function* f(action) {
+      const { plugin, botId } = action;
+      let url = "plugins/";
+      if (plugin.middleware && plugin.middleware.id) {
+        url += `?middlewareId=${plugin.middleware.id}`;
+      }
+      try {
+        const result = yield getWebService().delete(url);
+        if (result.error) {
+          throw result;
+        }
+        yield put(apiGetPluginsRequest(botId));
+      } catch (error) {
+        yield put({ type: `${API_DELETEPLUGIN}${FETCH_FAILURE}`, error });
       }
     },
   ],
