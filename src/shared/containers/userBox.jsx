@@ -17,7 +17,7 @@ import Zrmc, {
 } from "zrmc";
 import { connect } from "react-redux";
 import { apiUserProfileRequest } from "../actions/user";
-import SignInDialog from "./signInDialog";
+import Authenticate from "./authenticate";
 import SignOutDialog from "./signOutDialog";
 
 class UserBox extends Component {
@@ -28,7 +28,7 @@ class UserBox extends Component {
   }
 
   handleOpenSignInDialog = () => {
-    const dialog = <SignInDialog store={this.props.store} />;
+    const dialog = <Authenticate isDialog store={this.props.store} />;
     Zrmc.showDialog(dialog);
   };
 
@@ -71,6 +71,8 @@ class UserBox extends Component {
           </MenuAnchor>
         </ToolbarSection>
       );
+    } else if (this.props.needsAuth) {
+      return <div />;
     }
 
     return (
@@ -102,6 +104,7 @@ UserBox.propTypes = {
     avatar: PropTypes.string,
   }),
   isSignedIn: PropTypes.bool,
+  needsAuth: PropTypes.bool,
   apiUserProfileRequest: PropTypes.func.isRequired,
 };
 

@@ -8,6 +8,8 @@ import createReducer from "./createReducer";
 import {
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
+  AUTH_SIGNUP,
+  AUTH_LOSTPASSWORD,
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -19,6 +21,9 @@ export const initialState = {
   username: null,
   password: null,
   provider: null,
+  resetPassord: false,
+  accountCreated: false,
+  accountValidation: null,
 };
 
 export default createReducer(initialState, {
@@ -81,6 +86,7 @@ export default createReducer(initialState, {
       error,
     };
   },
+
   [AUTH_SIGNOUT + FETCH_REQUEST]: (state) => ({
     ...state,
     loading: true,
@@ -93,5 +99,71 @@ export default createReducer(initialState, {
     ...state,
     loading: false,
     error,
+  }),
+
+  [AUTH_SIGNUP + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+    accountCreated: false,
+  }),
+  [AUTH_SIGNUP + FETCH_SUCCESS]: (state, { provider, validation }) => {
+    if (provider) {
+      return {
+        ...state,
+        [provider]: {
+          loading: false,
+          error: null,
+          accountCreated: true,
+          accountValidation: validation || "none",
+        },
+      };
+    }
+
+    return {
+      ...state,
+      loading: false,
+      error: null,
+      accountCreated: true,
+      accountValidation: validation || "none",
+    };
+  },
+  [AUTH_SIGNUP + FETCH_FAILURE]: (state, { provider, error }) => {
+    if (provider) {
+      return {
+        ...state,
+        [provider]: {
+          loading: false,
+          error,
+          accountCreated: false,
+          accountValidation: null,
+        },
+      };
+    }
+
+    return {
+      ...state,
+      loading: false,
+      error,
+      accountCreated: false,
+      accountValidation: null,
+    };
+  },
+
+  [AUTH_LOSTPASSWORD + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+    resetPassord: false,
+  }),
+  [AUTH_LOSTPASSWORD + FETCH_SUCCESS]: (state) => ({
+    ...state,
+    resetPassord: true,
+  }),
+  [AUTH_LOSTPASSWORD + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+    resetPassord: false,
   }),
 });

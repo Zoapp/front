@@ -9,9 +9,18 @@ import {
   AUTH_INIT_SETTINGS,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
+  AUTH_SIGNUP,
+  AUTH_LOSTPASSWORD,
   FETCH_REQUEST,
 } from "../actions/constants";
-import { signInComplete, signOutError, signOutComplete } from "../actions/auth";
+import {
+  signIn,
+  signInComplete,
+  signOutError,
+  signOutComplete,
+  signUpComplete,
+  lostPasswordComplete,
+} from "../actions/auth";
 import { getAuthService } from "../services";
 
 function* authenticate({ username, password, provider }) {
@@ -52,7 +61,7 @@ export function* signOut(action) {
   }
 }
 
-export function* signIn(action) {
+export function* callSignIn(action) {
   const { username, password, provider } = action;
 
   const winner = yield race({
@@ -68,10 +77,63 @@ export function* signIn(action) {
   }
 }
 
+export function* signUp(action) {
+  const { username, email, password, accept, provider } = action;
+
+  try {
+    const service = getAuthService(provider);
+
+    const response = yield service.createUser({
+      username,
+      email,
+      password,
+      accept,
+    });
+
+    yield put(signUpComplete({ ...response, provider }));
+    if (response.validation === "none") {
+      const scope = yield service.authorizeUser({
+        username,
+        password,
+        scope: "owner",
+      });
+      if (scope) {
+        yield put(signIn({ provider, username, password }));
+      }
+    }
+  } catch (error) {
+    if (error.response) {
+      const response = yield error.response.json();
+      yield put(signOutError({ provider, error: response.error || error }));
+    } else {
+      yield put(signOutError({ provider, error }));
+    }
+  }
+}
+
+export function* lostPassword(action) {
+  const { email, provider } = action;
+
+  try {
+    const service = getAuthService(provider);
+    const response = yield service.lostPassword({ email });
+    yield put(lostPasswordComplete({ attributes: response, provider }));
+  } catch (error) {
+    if (error.response) {
+      const response = yield error.response.json();
+      yield put(signOutError({ provider, error: response.error || error }));
+    } else {
+      yield put(signOutError({ provider, error }));
+    }
+  }
+}
+
 const auth = [
   [AUTH_INIT_SETTINGS, authInit],
-  [AUTH_SIGNIN + FETCH_REQUEST, signIn],
+  [AUTH_SIGNIN + FETCH_REQUEST, callSignIn],
   [AUTH_SIGNOUT + FETCH_REQUEST, signOut],
+  [AUTH_SIGNUP + FETCH_REQUEST, signUp],
+  [AUTH_LOSTPASSWORD + FETCH_REQUEST, lostPassword],
 ];
 
 export default auth;

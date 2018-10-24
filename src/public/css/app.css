@@ -131,6 +131,69 @@
   color: rgb(85,38,130);
 }
 
+.authenticate_sign {
+  margin-bottom: 0;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  line-height: 32px;
+  color: var(--mdc-theme-text-hint-on-light, rgba(0, 0, 0, 0.38));
+}
+
+
+.authenticate_lostPassword {
+  font-size: 12px;
+  text-decoration: underline;
+  text-align: center;
+  cursor: pointer;
+  text-transform: none;
+}
+
+.authenticate_lostPassword.mdc-button:not(:disabled) {
+  color: var(--mdc-theme-text-hint-on-light, rgba(0, 0, 0, 0.38));
+  margin-top: 8px;
+}
+
+#signin-dialog-form  .mdc-dialog__footer > button {
+  width: 100%;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+#signin-form-form .mdc-card__actions > button {
+  width: 100%;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+#signin-dialog-form  .mdc-dialog__footer {
+  margin-bottom: 24px;
+}
+
+.authenticate_sign > button {
+  text-decoration: underline;
+  text-transform: none;
+  color: var(--mdc-theme-primary,#6200ee);
+  cursor: pointer;
+}
+
+.authenticate_error {
+  padding-top: 2px;
+  color: #b71c1c;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#signin-form-form .mdc-card__actions, #signin-dialog-form .mdc-dialog__footer {
+  justify-content: space-between;
+}
+
+#signin-form-form .mdc-card__actions {
+  flex-direction: column;
+  margin: 0;
+  padding: 24px 16px;
+}
+
 .mdc-drawer--theme-dark .mdc-list-item,
 .mdc-drawer--theme-dark .mdc-list-item *
 {

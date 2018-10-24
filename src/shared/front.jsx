@@ -54,6 +54,7 @@ export default class Front {
     { store, reducers = {}, sagas = {} } = {},
   ) {
     this.appProperties = Front.combinePropsEnv(appProperties, appEnv);
+    this.appProperties.configuration = appConfig;
     if (store) {
       this.store = store;
     } else {
