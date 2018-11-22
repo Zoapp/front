@@ -343,7 +343,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AuthenticateBase);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthenticateBase);
