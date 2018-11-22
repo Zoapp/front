@@ -10,21 +10,29 @@ import {
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
   FETCH_REQUEST,
+  FETCH_SUCCESS,
+  FETCH_FAILURE,
   API_GETADMINPARAMETERS,
   API_ADMIN_UPDATE,
   API_GETUSERS,
+  API_GETPLUGINS,
+  API_SETPLUGIN,
+  API_DELETEPLUGIN,
 } from "../actions/constants";
 import {
   apiAdminError,
   apiAdminSuccess,
+  apiAdminUpdateError,
+  apiAdminUpdateSuccess,
+  apiGetAdminParametersFailure,
+  apiGetAdminParametersSuccess,
+  apiGetUsersFailure,
+  apiGetUsersSuccess,
   apiSetAdminParametersError,
   apiSetAdminParametersSuccess,
-  apiGetAdminParametersSuccess,
-  apiGetAdminParametersFailure,
-  apiAdminUpdateSuccess,
-  apiAdminUpdateError,
-  apiGetUsersSuccess,
-  apiGetUsersFailure,
+  apiSetPluginError,
+  apiSetPluginSuccess,
+  apiGetPluginsRequest,
 } from "../actions/api";
 import { apiUserProfileError, apiUserProfileSuccess } from "../actions/user";
 import { getWebService } from "../services";
@@ -105,6 +113,62 @@ const api = [
         yield put(apiGetUsersSuccess(response));
       } catch (error) {
         yield put(apiGetUsersFailure(error));
+      }
+    },
+  ],
+  /* Plugins */
+  [
+    API_GETPLUGINS + FETCH_REQUEST,
+    function* f(action) {
+      const { botId } = action;
+      let url = "plugins/";
+      if (botId) {
+        url += botId;
+      }
+      if (action.pluginType) {
+        url += `?type=${action.pluginType}`;
+      }
+      try {
+        const plugins = yield getWebService().get(url);
+        yield put({
+          type: `${API_GETPLUGINS}${FETCH_SUCCESS}`,
+          loading: false,
+          plugins,
+        });
+      } catch (error) {
+        yield put({ type: `${API_GETPLUGINS}${FETCH_FAILURE}`, error });
+      }
+    },
+  ],
+  [
+    API_SETPLUGIN + FETCH_REQUEST,
+    function* f(action) {
+      try {
+        const { plugin, botId } = action;
+        const response = yield getWebService().post("plugins/", plugin);
+        yield put(apiSetPluginSuccess(response));
+        yield put(apiGetPluginsRequest(botId));
+      } catch (error) {
+        yield put(apiSetPluginError({ error }));
+      }
+    },
+  ],
+  [
+    API_DELETEPLUGIN + FETCH_REQUEST,
+    function* f(action) {
+      const { plugin, botId } = action;
+      let url = "plugins/";
+      if (plugin.middleware && plugin.middleware.id) {
+        url += `?middlewareId=${plugin.middleware.id}`;
+      }
+      try {
+        const result = yield getWebService().delete(url);
+        if (result.error) {
+          throw result;
+        }
+        yield put(apiGetPluginsRequest(botId));
+      } catch (error) {
+        yield put({ type: `${API_DELETEPLUGIN}${FETCH_FAILURE}`, error });
       }
     },
   ],
