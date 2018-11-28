@@ -34,7 +34,7 @@ import Authenticate from "./authenticate";
 import { appSetScreen } from "../actions/app";
 import { removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
-import { apiAdminRequest } from "../actions/api";
+import { apiAdminRequest, apiGetPluginsRequest } from "../actions/api";
 
 class App extends React.Component {
   constructor(props) {
@@ -62,8 +62,11 @@ class App extends React.Component {
     Zrmc.init(this, { typography: true });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.updateAdmin();
+    if (prevProps.selectedBotId !== this.props.selectedBotId) {
+      this.props.apiGetPluginsRequest(this.props.selectedBotId);
+    }
   }
 
   onMenuClick = (event) => {
@@ -489,6 +492,8 @@ App.propTypes = {
   }),
   initAuthSettings: PropTypes.func.isRequired,
   apiAdminRequest: PropTypes.func.isRequired,
+  apiGetPluginsRequest: PropTypes.func.isRequired,
+  selectedBotId: PropTypes.string,
   removeMessage: PropTypes.func.isRequired,
   activeTab: PropTypes.number,
 };
@@ -514,12 +519,50 @@ const mapStateToProps = (state) => {
     title: state.app.activeScreen.title ? state.app.activeScreen.title : "",
     name: state.app.activeScreen.name ? state.app.activeScreen.name : "",
   };
+
+  const selectedBotId = state.app ? state.app.selectedBotId : null;
+  const plugins = state.app ? state.app.plugins : [];
+  // create one screenPlugins entry by plugin middleware
+  const screenPlugins = [];
+  plugins.forEach((plugin) => {
+    if (plugin.type === "View" && plugin.middlewares) {
+      plugin.middlewares.forEach((middleware) => {
+        screenPlugins.push({
+          ...plugin,
+          middleware,
+          middlewares: undefined,
+        });
+      });
+    }
+  });
+
+  const newScreens = [...screens];
+
+  screenPlugins.forEach((screenPlugin) => {
+    if (screenPlugin.middleware && screenPlugin.middleware.screen) {
+      const addScreen = screenPlugin.middleware.screen;
+      const position = newScreens.findIndex(
+        (screen) => screen.id === addScreen.afterScreenId,
+      );
+      const index = position > -1 ? position + 1 : newScreens.length;
+
+      newScreens.splice(index, 0, {
+        id: newScreens.length + 2,
+        isDrawerItem: false,
+        name: "Plugin view",
+        path: "#",
+        access: "all",
+        ...screenPlugin.middleware.screen,
+      });
+    }
+  });
+
   return {
     admin,
     isLoading,
     isSignedIn,
     activeScreen,
-    screens,
+    screens: newScreens,
     appName: name,
     appSubname: subname,
     appIcon: icon,
@@ -527,6 +570,7 @@ const mapStateToProps = (state) => {
     design,
     message,
     project,
+    selectedBotId,
   };
 };
 
@@ -542,6 +586,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   apiAdminRequest: () => {
     dispatch(apiAdminRequest());
+  },
+  apiGetPluginsRequest: (botId) => {
+    dispatch(apiGetPluginsRequest(botId));
   },
 });
 
