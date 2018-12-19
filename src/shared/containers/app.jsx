@@ -282,6 +282,7 @@ class App extends React.Component {
                     ...props,
                     screen,
                     activeTab,
+                    handleToolbarTabChange: this.handleToolbarTabChange,
                   });
                 }
                 return <Screen screen={screen}>{screen.name}</Screen>;
