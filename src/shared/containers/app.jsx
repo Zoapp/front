@@ -31,7 +31,7 @@ import { hot } from "react-hot-loader";
 import Screen from "./screen";
 import UserBox from "./userBox";
 import Authenticate from "./authenticate";
-import { appSetScreen } from "../actions/app";
+import { appSetScreen, appSetActiveTab } from "../actions/app";
 import { removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
 import { apiAdminRequest, apiGetPluginsRequest } from "../actions/api";
@@ -47,7 +47,6 @@ class App extends React.Component {
     const { theme: toolbarTheme } = props.design.toolbar;
     this.state = {
       needUpdate: true,
-      activeTab: props.activeTab,
       drawer,
       drawerOpen: false,
       drawerThemeDark,
@@ -92,11 +91,11 @@ class App extends React.Component {
   }
 
   handleToolbarTabChange = (name, index) => {
-    this.setState({ activeTab: index });
+    this.props.appSetActiveTab(index);
   };
 
   handleDisplayScreen = () => {
-    this.setState({ activeTab: 0 });
+    this.props.appSetActiveTab(0);
   };
 
   handleDrawerItemClick = () => {
@@ -189,7 +188,7 @@ class App extends React.Component {
     let toolbox;
     let fab;
 
-    const { activeTab } = this.state;
+    const { activeTab } = this.props;
 
     if (currentScreen) {
       if (currentScreen.isFullscreen != null) {
@@ -282,7 +281,6 @@ class App extends React.Component {
                     ...props,
                     screen,
                     activeTab,
-                    handleToolbarTabChange: this.handleToolbarTabChange,
                   });
                 }
                 return <Screen screen={screen}>{screen.name}</Screen>;
@@ -492,6 +490,7 @@ App.propTypes = {
     toolbar: PropTypes.shape({ theme: PropTypes.string }),
   }),
   initAuthSettings: PropTypes.func.isRequired,
+  appSetActiveTab: PropTypes.func.isRequired,
   apiAdminRequest: PropTypes.func.isRequired,
   apiGetPluginsRequest: PropTypes.func.isRequired,
   selectedBotId: PropTypes.string,
@@ -520,6 +519,8 @@ const mapStateToProps = (state) => {
     title: state.app.activeScreen.title ? state.app.activeScreen.title : "",
     name: state.app.activeScreen.name ? state.app.activeScreen.name : "",
   };
+
+  const { activeTab } = state.app;
 
   const selectedBotId = state.app ? state.app.selectedBotId : null;
   const plugins = state.app ? state.app.plugins : [];
@@ -563,6 +564,7 @@ const mapStateToProps = (state) => {
     isLoading,
     isSignedIn,
     activeScreen,
+    activeTab,
     screens: newScreens,
     appName: name,
     appSubname: subname,
@@ -576,6 +578,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  appSetActiveTab: (activeTab) => {
+    dispatch(appSetActiveTab(activeTab));
+  },
   appSetScreen: (screen) => {
     dispatch(appSetScreen(screen));
   },

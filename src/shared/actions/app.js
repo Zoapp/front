@@ -5,7 +5,19 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { APP_SETPROPERTIES, APP_SETSCREEN, APP_SETPROJECT } from "./constants";
+import {
+  APP_SETACTIVETAB,
+  APP_SETPROPERTIES,
+  APP_SETSCREEN,
+  APP_SETPROJECT,
+} from "./constants";
+
+export function appSetActiveTab(tabIndex) {
+  return {
+    type: APP_SETACTIVETAB,
+    activeTab: tabIndex,
+  };
+}
 
 export function appSetProperties(properties) {
   return {

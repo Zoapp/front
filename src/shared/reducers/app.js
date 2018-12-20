@@ -9,6 +9,7 @@ import {
   API_ADMIN,
   API_SETADMINPARAMETERS,
   API_GETADMINPARAMETERS,
+  APP_SETACTIVETAB,
   APP_SETPROPERTIES,
   APP_SETSCREEN,
   APP_SETPROJECT,
@@ -27,6 +28,7 @@ export const initialState = {
   error: null,
   loading: false,
   activeScreen: {},
+  activeTab: 0,
   project: {
     name: null,
     index: 0,
@@ -111,8 +113,11 @@ export const handlers = {
     loading: false,
     error,
   }),
-
   /* APP section */
+  [APP_SETACTIVETAB]: (state, { activeTab }) => ({
+    ...state,
+    activeTab,
+  }),
   [APP_SETPROPERTIES]: (state, { properties }) => ({
     ...state,
     ...properties,
