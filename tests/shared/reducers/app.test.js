@@ -138,6 +138,19 @@ describe("reducers/app", () => {
     });
   });
 
+  it("sets the active tab panel", () => {
+    const activeTabIndex = 1;
+
+    const prevState = reducer(undefined, {});
+    expect(prevState).toEqual(initialState);
+
+    const state = reducer(prevState, actions.appSetActiveTab(activeTabIndex));
+    expect(state).toEqual({
+      ...prevState,
+      activeTab: activeTabIndex,
+    });
+  });
+
   it("resets the state when user signs out", () => {
     const screen = { title: "app title", name: "app name" };
 
