@@ -81,7 +81,7 @@ const SignUp = ({
             })
           }
         />
-        <Button link={policyUrl} newTarget>
+        <Button link={policyUrl} id="btn-policy-link" newTarget>
           {policyUrl}
         </Button>
       </FormField>,
