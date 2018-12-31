@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { FormField, TextField, Button } from "zrmc";
+import { FormField, TextField, Button, Checkbox } from "zrmc";
 
 const SignUp = ({
   username,
@@ -10,6 +10,7 @@ const SignUp = ({
   container,
   signIn,
   disabled,
+  policyUrl,
   children,
 }) => {
   const form = [];
@@ -70,6 +71,22 @@ const SignUp = ({
       />
     </FormField>,
   );
+  if (policyUrl) {
+    form.push(
+      <FormField key="signup-form-policy" style={{ display: "block" }}>
+        <Checkbox
+          onChange={(e) =>
+            createChangeHandler("accept")({
+              target: { value: e.target.checked },
+            })
+          }
+        />
+        <Button link={policyUrl} newTarget>
+          {policyUrl}
+        </Button>
+      </FormField>,
+    );
+  }
   form.push(children);
   return React.createElement(container, {}, form);
 };
@@ -78,11 +95,11 @@ SignUp.propTypes = {
   username: PropTypes.string,
   email: PropTypes.string,
   password: PropTypes.string,
-  accept: PropTypes.bool,
   createChangeHandler: PropTypes.func,
   container: PropTypes.func,
   signIn: PropTypes.func,
   disabled: PropTypes.bool,
+  policyUrl: PropTypes.string,
   children: PropTypes.node,
 };
 

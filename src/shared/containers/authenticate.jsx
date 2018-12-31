@@ -42,6 +42,9 @@ export class AuthenticateBase extends Component {
     if (screen) {
       props.appSetTitleName(screen.name);
     }
+
+    // accept is set to true if policyUrl is unDefined
+    this.state.accept = !props.policyUrl;
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -144,7 +147,7 @@ export class AuthenticateBase extends Component {
   };
 
   render() {
-    const { username, email, password, accept, error } = this.state;
+    const { username, email, password, error } = this.state;
     let { display } = this.state;
     const { isLoading, isDialog, recoverPassword, screen } = this.props;
     // const isLoading = true;
@@ -173,7 +176,6 @@ export class AuthenticateBase extends Component {
         <LostPassword
           email={email}
           password={password}
-          accept={accept}
           createChangeHandler={this.createChangeHandler}
           container={container}
           disabled={isLoading}
@@ -200,11 +202,11 @@ export class AuthenticateBase extends Component {
           username={username}
           email={email}
           password={password}
-          accept={accept}
           createChangeHandler={this.createChangeHandler}
           container={container}
           signIn={this.displaySignIn}
           disabled={isLoading}
+          policyUrl={this.props.policyUrl}
         >
           {errorMessage}
         </SignUp>
@@ -296,6 +298,7 @@ AuthenticateBase.propTypes = {
   appSetTitleName: PropTypes.func,
   onClosed: PropTypes.func,
   signUpValidation: PropTypes.string,
+  policyUrl: PropTypes.string,
   display: PropTypes.string,
   recoverPassword: PropTypes.bool,
   isLoading: PropTypes.bool,
@@ -309,11 +312,15 @@ AuthenticateBase.defaultProps = {
 const mapStateToProps = (state) => {
   const { error, loading } = state.auth;
   const { configuration } = state.app;
+
   let signUpValidation;
   if (configuration.backend.auth.signUp) {
     signUpValidation = configuration.backend.auth.signUp.validation;
   }
+
   const recoverPassword = !!configuration.backend.auth.recoverPassword;
+  const { policyUrl } = configuration.backend.auth;
+
   let errorMessage;
   if (error instanceof Error) {
     errorMessage = error.message;
@@ -323,6 +330,7 @@ const mapStateToProps = (state) => {
   return {
     signUpValidation,
     recoverPassword,
+    policyUrl,
     isLoading: loading,
     error: errorMessage,
   };
