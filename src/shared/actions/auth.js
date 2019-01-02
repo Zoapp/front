@@ -9,6 +9,7 @@ import {
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
+  AUTH_ADMIN_CREATE_USER,
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
@@ -87,6 +88,23 @@ export function signUpError({ provider, error }) {
     type: AUTH_SIGNUP + FETCH_FAILURE,
     provider,
     error,
+  };
+}
+
+export function adminCreateUser({
+  provider,
+  username,
+  email,
+  password,
+  accept,
+}) {
+  return {
+    type: AUTH_ADMIN_CREATE_USER + FETCH_REQUEST,
+    provider,
+    username,
+    email,
+    password,
+    accept,
   };
 }
 

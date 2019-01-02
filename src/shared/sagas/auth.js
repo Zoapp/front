@@ -11,6 +11,7 @@ import {
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
+  AUTH_ADMIN_CREATE_USER,
   FETCH_REQUEST,
 } from "../actions/constants";
 import {
@@ -77,9 +78,8 @@ export function* callSignIn(action) {
   }
 }
 
-export function* signUp(action) {
+export function* createUser(action, func) {
   const { username, email, password, accept, provider } = action;
-
   try {
     const service = getAuthService(provider);
 
@@ -91,16 +91,7 @@ export function* signUp(action) {
     });
 
     yield put(signUpComplete({ ...response, provider }));
-    if (response.validation === "none") {
-      const scope = yield service.authorizeUser({
-        username,
-        password,
-        scope: "owner",
-      });
-      if (scope) {
-        yield put(signIn({ provider, username, password }));
-      }
-    }
+    if (func) yield* func().bind(this);
   } catch (error) {
     if (error.response) {
       const response = yield error.response.json();
@@ -109,6 +100,24 @@ export function* signUp(action) {
       yield put(signOutError({ provider, error }));
     }
   }
+}
+
+export function* signUp(action) {
+  function* authAndSignIn() {
+    if (this.response.validation === "none") {
+      const { username, password, provider } = this;
+      const scope = yield this.service.authorizeUser({
+        username,
+        password,
+        scope: "owner",
+      });
+      if (scope) {
+        yield put(signIn({ provider, username, password }));
+      }
+    }
+  }
+
+  yield* createUser(action, authAndSignIn);
 }
 
 export function* lostPassword(action) {
@@ -134,6 +143,7 @@ const auth = [
   [AUTH_SIGNOUT + FETCH_REQUEST, signOut],
   [AUTH_SIGNUP + FETCH_REQUEST, signUp],
   [AUTH_LOSTPASSWORD + FETCH_REQUEST, lostPassword],
+  [AUTH_ADMIN_CREATE_USER + FETCH_REQUEST, createUser],
 ];
 
 export default auth;

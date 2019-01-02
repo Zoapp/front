@@ -10,6 +10,7 @@ import {
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
+  AUTH_ADMIN_CREATE_USER,
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -149,6 +150,13 @@ export default createReducer(initialState, {
       accountValidation: null,
     };
   },
+
+  [AUTH_ADMIN_CREATE_USER + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+    accountCreated: false,
+  }),
 
   [AUTH_LOSTPASSWORD + FETCH_REQUEST]: (state) => ({
     ...state,

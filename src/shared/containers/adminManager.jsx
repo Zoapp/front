@@ -35,7 +35,11 @@ class AdminManager extends Component {
 
     return (
       <div className="zap-admin zui-layout__content">
-        <section>{this.props.tabs[active]}</section>
+        <section>
+          {React.cloneElement(this.props.tabs[active], {
+            provider: this.props.provider,
+          })}
+        </section>
       </div>
     );
   }
@@ -45,6 +49,7 @@ AdminManager.defaultProps = {
   activeTab: 0,
   isLoading: false,
   isSignedIn: false,
+  provider: null,
 };
 
 AdminManager.propTypes = {
@@ -53,6 +58,7 @@ AdminManager.propTypes = {
   isSignedIn: PropTypes.bool,
   appSetTitleName: PropTypes.func.isRequired,
   tabs: PropTypes.array.isRequired,
+  provider: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
