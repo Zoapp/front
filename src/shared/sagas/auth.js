@@ -91,7 +91,7 @@ export function* createUser(action, func) {
     });
 
     yield put(signUpComplete({ ...response, provider }));
-    if (func) yield* func().bind(this);
+    if (func) yield call(func, service, response);
   } catch (error) {
     if (error.response) {
       const response = yield error.response.json();
@@ -103,10 +103,10 @@ export function* createUser(action, func) {
 }
 
 export function* signUp(action) {
-  function* authAndSignIn() {
-    if (this.response.validation === "none") {
-      const { username, password, provider } = this;
-      const scope = yield this.service.authorizeUser({
+  function* authAndSignIn(service, response) {
+    if (response.validation === "none") {
+      const { username, password, provider } = action;
+      const scope = yield service.authorizeUser({
         username,
         password,
         scope: "owner",

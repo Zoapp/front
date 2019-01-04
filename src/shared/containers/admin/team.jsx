@@ -45,7 +45,7 @@ class Users extends Component {
     return state;
   }
 
-  hanleCreateUser = (e) => {
+  handleCreateUser = (e) => {
     e.preventDefault();
     const { username, email, password } = this.state.newUser;
     this.setState({ isLoading: true });
@@ -116,7 +116,7 @@ class Users extends Component {
           </Inner>
         </Grid>
         {this.state.displayAddUserPanel && (
-          <form id="signin-dialog-form" onSubmit={this.hanleCreateUser}>
+          <form id="signin-dialog-form" onSubmit={this.handleCreateUser}>
             <Dialog
               id="admin-add-user"
               onClose={() => {
