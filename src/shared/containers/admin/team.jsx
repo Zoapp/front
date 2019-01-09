@@ -19,7 +19,7 @@ import {
 import { connect } from "react-redux";
 import { TableComponent } from "zoapp-ui";
 import { apiGetUsersRequest } from "../../actions/api";
-import { adminCreateUser } from "../../actions/auth";
+import { createUserRequest } from "../../actions/auth";
 import Panel from "../../components/panel";
 import SignUp from "../../components/auth/signUp";
 
@@ -35,12 +35,16 @@ class Users extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (state.isLoading && !props.isLoading && !props.error) {
-      return {
+    if (state.isLoading && !props.isLoading) {
+      const newState = {
         ...state,
-        displayAddUserPanel: false,
         isLoading: false,
       };
+      if (!props.error) {
+        props.apiGetUsersRequest();
+        newState.displayAddUserPanel = false;
+      }
+      return newState;
     }
     return state;
   }
@@ -184,7 +188,7 @@ const mapStateToProps = (state) => {
   const { user } = state;
   const { users } = state.app;
   const profile = user ? user.profile : null;
-  const { error, isLoading } = state.auth;
+  const { error, newUserLoading } = state.auth;
 
   let errorMessage;
   if (error instanceof Error) {
@@ -197,7 +201,7 @@ const mapStateToProps = (state) => {
     user,
     profile,
     users,
-    isLoading,
+    isLoading: newUserLoading || user.loading,
     error: errorMessage,
   };
 };
@@ -206,7 +210,13 @@ const mapDispatchToProps = (dispatch) => ({
   apiGetUsersRequest: () => dispatch(apiGetUsersRequest()),
   createUser: (provider, username, email, password) => {
     dispatch(
-      adminCreateUser({ provider, username, email, password, accept: true }),
+      createUserRequest({
+        provider,
+        username,
+        email,
+        password,
+        accept: true,
+      }),
     );
   },
 });

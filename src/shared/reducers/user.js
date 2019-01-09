@@ -8,6 +8,7 @@ import createReducer from "./createReducer";
 import {
   AUTH_SIGNIN,
   API_USERPROFILE,
+  API_CREATEUSERPROFILE,
   FETCH_SUCCESS,
   FETCH_REQUEST,
   FETCH_FAILURE,
@@ -46,5 +47,15 @@ export default createReducer(initialState, {
     ...state,
     loading: false,
     error,
+  }),
+  [API_CREATEUSERPROFILE + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [API_CREATEUSERPROFILE + FETCH_SUCCESS]: (state) => ({
+    ...state,
+    loading: false,
+    error: null,
   }),
 });
