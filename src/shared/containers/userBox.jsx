@@ -16,7 +16,9 @@ import Zrmc, {
   MenuAnchor,
 } from "zrmc";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import { apiUserProfileRequest } from "../actions/user";
+
 import Authenticate from "./authenticate";
 import SignOutDialog from "./signOutDialog";
 
@@ -37,6 +39,10 @@ class UserBox extends Component {
     Zrmc.showDialog(dialog);
   };
 
+  handleGotoSettings = () => {
+    this.props.history.push("/settings");
+  };
+
   render() {
     if (this.props.isSignedIn) {
       const username = this.props.profile ? this.props.profile.username : "";
@@ -53,8 +59,9 @@ class UserBox extends Component {
           <MenuAnchor
             menu={
               <Menu anchorMargin={{ bottom: "4px" }} role="menu">
-                <MenuItem disabled>Profile</MenuItem>
-                <MenuItem disabled>Settings</MenuItem>
+                <MenuItem onSelected={this.handleGotoSettings}>
+                  Settings
+                </MenuItem>
                 <MenuItem onSelected={this.handleOpenSignOutDialog}>
                   Sign out
                 </MenuItem>
@@ -106,6 +113,8 @@ UserBox.propTypes = {
   isSignedIn: PropTypes.bool,
   needsAuth: PropTypes.bool,
   apiUserProfileRequest: PropTypes.func.isRequired,
+  history: PropTypes.shape({ length: PropTypes.number, push: PropTypes.func })
+    .isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -120,4 +129,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserBox);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(UserBox),
+);
