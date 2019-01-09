@@ -6,6 +6,7 @@
  */
 import {
   API_USERPROFILE,
+  API_USERPROFILE_UPDATE,
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -27,4 +28,16 @@ export function apiUserProfileError({ error }) {
     type: API_USERPROFILE + FETCH_FAILURE,
     error,
   };
+}
+
+export function apiUserProfileUpdateRequest(params) {
+  return { type: API_USERPROFILE_UPDATE + FETCH_REQUEST, params };
+}
+
+export function apiUserProfileUpdateSuccess({ profile }) {
+  return { type: API_USERPROFILE_UPDATE + FETCH_SUCCESS, profile };
+}
+
+export function apiUserProfileUpdateError({ error }) {
+  return { type: API_USERPROFILE_UPDATE + FETCH_FAILURE, error };
 }

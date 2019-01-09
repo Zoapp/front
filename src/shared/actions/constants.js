@@ -29,6 +29,7 @@ export const AUTH_LOSTPASSWORD = "AUTH_LOSTPASSWORD";
 
 // API User constants
 export const API_USERPROFILE = "API_USERPROFILE";
+export const API_USERPROFILE_UPDATE = "API_USERPROFILE_UPDATE";
 export const API_SAVEUSERPROFILE = "API_SAVEUSERPROFILE";
 
 // API admin constants

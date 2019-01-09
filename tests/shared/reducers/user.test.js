@@ -19,6 +19,39 @@ describe("reducers/user", () => {
     });
   });
 
+  it("update the user profile", () => {
+    const prevState = reducer(undefined, {});
+    expect(prevState).toEqual(initialState);
+
+    const state = reducer(prevState, actions.apiUserProfileUpdateRequest());
+    expect(state).toEqual({
+      ...prevState,
+      loading: true,
+    });
+  });
+
+  it("stores the updated user profile", () => {
+    const profile = {
+      email: "test@example.org",
+      id: "yk1zEPEeTy37fwXoEoaayUrgA2EAULcQ",
+      username: "test",
+    };
+
+    const prevState = reducer(undefined, {});
+    expect(prevState).toEqual(initialState);
+
+    const state = reducer(
+      prevState,
+      actions.apiUserProfileUpdateSuccess({ profile }),
+    );
+    expect(state).toEqual({
+      ...prevState,
+      error: null,
+      loading: false,
+      profile,
+    });
+  });
+
   it("stores user's information after successful authentication", () => {
     const attributes = {
       accessToken: "xyz",
