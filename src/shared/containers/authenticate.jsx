@@ -68,12 +68,7 @@ export class AuthenticateBase extends Component {
 
   componentDidUpdate() {
     // WIP
-    if (
-      this.props.isDialog &&
-      this.state.isLoading &&
-      !this.props.isLoading &&
-      !this.props.error
-    ) {
+    if (this.state.isLoading && !this.props.isLoading && !this.props.error) {
       this.handleCloseDialog();
     }
   }
@@ -146,107 +141,195 @@ export class AuthenticateBase extends Component {
     this.setState({ [field]: e.target.value });
   };
 
-  render() {
-    const { username, email, password, error } = this.state;
-    let { display } = this.state;
-    const { isLoading, isDialog, recoverPassword, screen } = this.props;
-    // const isLoading = true;
-    let form;
-    const container = isDialog ? DialogBody : CardText;
-    let title;
-    let action;
-    let handler;
+  getLostPasswordForm = (
+    container,
+    email,
+    password,
+    isLoading,
+    errorMessage,
+  ) => ({
+    handler: this.handleLostPassword,
+    form: (
+      <LostPassword
+        email={email}
+        password={password}
+        createChangeHandler={this.createChangeHandler}
+        container={container}
+        disabled={isLoading}
+      >
+        {errorMessage}
+      </LostPassword>
+    ),
+    title: "Change your password",
+    action: "Send",
+    actions: [
+      <Button
+        key="but_cancel_pass"
+        onClick={this.displaySignIn}
+        className="authenticate_lostPassword"
+        disabled={isLoading}
+      >
+        Cancel
+      </Button>,
+    ],
+  });
+
+  getSignUpForm = (
+    container,
+    username,
+    email,
+    password,
+    isLoading,
+    errorMessage,
+  ) => ({
+    handler: this.handleSignUp,
+    form: (
+      <SignUp
+        username={username}
+        email={email}
+        password={password}
+        createChangeHandler={this.createChangeHandler}
+        container={container}
+        signIn={this.displaySignIn}
+        disabled={isLoading}
+        policyUrl={this.props.policyUrl}
+      >
+        {errorMessage}
+      </SignUp>
+    ),
+    title: "Create an account",
+    action: "Register",
+    actions: [],
+  });
+
+  getSingInForm = (
+    container,
+    username,
+    password,
+    isLoading,
+    errorMessage,
+    recoverPassword,
+    signUpValidation,
+  ) => {
     const actions = [];
-    let errorMessage = "";
-    let progress;
-    if (error && !this.state.displayedError && !isLoading) {
-      errorMessage = <div className="authenticate_error">{error}</div>;
-    } else if (isLoading) {
-      progress = <LinearProgress buffer={0} indeterminate />;
-      if (isDialog) {
-        errorMessage = progress;
-      }
-    }
-    if (!display && screen && screen.signUp) {
-      display = "signup";
-    }
-    if (display === "lostpassword") {
-      handler = this.handleLostPassword;
-      form = (
-        <LostPassword
-          email={email}
-          password={password}
-          createChangeHandler={this.createChangeHandler}
-          container={container}
-          disabled={isLoading}
-        >
-          {errorMessage}
-        </LostPassword>
-      );
-      title = "Change your password";
-      action = "Send";
+    if (recoverPassword) {
       actions.push(
         <Button
-          key="but_cancel_pass"
-          onClick={this.displaySignIn}
+          key="but_lost_pass"
+          onClick={this.displayLostPassword}
           className="authenticate_lostPassword"
           disabled={isLoading}
         >
-          Cancel
+          Lost password ?
         </Button>,
       );
-    } else if (display === "signup") {
-      handler = this.handleSignUp;
-      form = (
-        <SignUp
-          username={username}
-          email={email}
-          password={password}
-          createChangeHandler={this.createChangeHandler}
-          container={container}
-          signIn={this.displaySignIn}
-          disabled={isLoading}
-          policyUrl={this.props.policyUrl}
-        >
-          {errorMessage}
-        </SignUp>
-      );
-      title = "Create an account";
-      action = "Register";
-    } else {
-      handler = this.handleSignIn;
-      if (recoverPassword) {
-        actions.push(
-          <Button
-            key="but_lost_pass"
-            onClick={this.displayLostPassword}
-            className="authenticate_lostPassword"
-            disabled={isLoading}
-          >
-            Lost password ?
-          </Button>,
-        );
-      }
-      form = (
+    }
+
+    return {
+      handler: this.handleSignIn,
+      form: (
         <SignIn
           username={username}
           password={password}
           createChangeHandler={this.createChangeHandler}
           container={container}
-          signUp={this.props.signUpValidation ? this.displaySignUp : undefined}
+          signUp={signUpValidation ? this.displaySignUp : undefined}
           disabled={isLoading}
         >
           {errorMessage}
         </SignIn>
+      ),
+      title: "Please login to continue",
+      action: "Sign in",
+      actions,
+    };
+  };
+
+  formatForm = (isDialog, buildedForm, id) => {
+    if (isDialog) {
+      return (
+        <form id="signin-dialog-form" onSubmit={buildedForm.handler}>
+          <Dialog
+            id={id}
+            onClose={this.handleCloseDialog}
+            header={buildedForm.title}
+            width="320px"
+          >
+            {buildedForm.form}
+            <DialogFooter>{buildedForm.actions}</DialogFooter>
+          </Dialog>
+        </form>
       );
-      if (isDialog) {
-        title = "Your credentials";
-      } else {
-        title = "Please login to continue";
-      }
-      action = "Sign in";
     }
-    action = (
+
+    return (
+      <Card
+        shadow={0}
+        style={{ width: "320px", margin: "auto" }}
+        title={buildedForm.title}
+      >
+        <form id="signin-form-form" onSubmit={buildedForm.handler}>
+          {buildedForm.form}
+          <CardActions>{buildedForm.actions}</CardActions>
+        </form>
+      </Card>
+    );
+  };
+
+  render() {
+    const { username, email, password, error } = this.state;
+    let { display } = this.state;
+    const {
+      isLoading,
+      recoverPassword,
+      screen,
+      signUpValidation,
+      isDialog,
+    } = this.props;
+
+    let errorMessage = "";
+    if (error && !this.state.displayedError && !isLoading) {
+      errorMessage = <div className="authenticate_error">{error}</div>;
+    } else if (isLoading) {
+      errorMessage = <LinearProgress buffer={0} indeterminate />;
+    }
+
+    if (!display && screen && screen.signUp && signUpValidation) {
+      display = "signup";
+    }
+
+    const container = isDialog ? DialogBody : CardText;
+    let buildedForm;
+    if (display === "lostpassword") {
+      buildedForm = this.getLostPasswordForm(
+        container,
+        email,
+        password,
+        isLoading,
+        errorMessage,
+      );
+    } else if (display === "signup") {
+      buildedForm = this.getSignUpForm(
+        container,
+        username,
+        email,
+        password,
+        isLoading,
+        errorMessage,
+      );
+    } else {
+      buildedForm = this.getSingInForm(
+        container,
+        username,
+        password,
+        isLoading,
+        errorMessage,
+        recoverPassword,
+        signUpValidation,
+      );
+    }
+
+    buildedForm.actions.push(
       <Button
         key="but_sign"
         type="submit"
@@ -255,35 +338,11 @@ export class AuthenticateBase extends Component {
         dense
         disabled={isLoading}
       >
-        {isLoading ? "Processing..." : action}
-      </Button>
+        {isLoading ? "Processing..." : buildedForm.action}
+      </Button>,
     );
-    if (this.props.isDialog) {
-      actions.push(action);
-      return (
-        <form id="signin-dialog-form" onSubmit={handler}>
-          <Dialog
-            id={this.props.id}
-            onClose={this.handleCloseDialog}
-            header={title}
-            width="320px"
-          >
-            {form}
-            <DialogFooter>{actions}</DialogFooter>
-          </Dialog>
-        </form>
-      );
-    }
-    actions.unshift(action);
-    return (
-      <Card shadow={0} style={{ width: "320px", margin: "auto" }} title={title}>
-        <form id="signin-form-form" onSubmit={handler}>
-          {form}
-          <CardActions>{actions}</CardActions>
-          {progress}
-        </form>
-      </Card>
-    );
+
+    return this.formatForm(isDialog, buildedForm, this.props.id);
   }
 }
 

@@ -16,10 +16,10 @@ function takeAll(subRoot) {
     takeList.push(takeEvery(sub[0], sub[1]));
   });
 
-  return takeList;
+  return all(takeList);
 }
 
 export default function* root() {
-  yield all(takeAll(auth));
-  yield all(takeAll(api));
+  yield takeAll(auth);
+  yield takeAll(api);
 }
