@@ -9,7 +9,6 @@ import {
   API_ADMIN,
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
-  API_CREATEUSERPROFILE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
@@ -38,22 +37,25 @@ import {
 import {
   apiUserProfileError,
   apiUserProfileSuccess,
+  apiCreateUserProfileRequest,
   apiCreateUserProfileSuccess,
 } from "../actions/user";
 import { getWebService } from "../services";
 
-function* createProfile({ userId }) {
+export function* createProfile({ userId }) {
   try {
-    yield getWebService().post("users", { userId });
+    yield put(apiCreateUserProfileRequest({ userId }));
+    const profile = yield getWebService().post("users", { userId });
     yield put(apiCreateUserProfileSuccess());
+    return profile;
   } catch (error) {
     yield put(apiUserProfileError({ error }));
+    return { error };
   }
 }
 
 const api = [
   /* User */
-  [API_CREATEUSERPROFILE + FETCH_REQUEST, createProfile],
   [
     API_USERPROFILE + FETCH_REQUEST,
     function* f() {

@@ -101,7 +101,7 @@ class Users extends Component {
                   </svg>
                 }
                 title="Team & Collaborators"
-                action="Add"
+                action={user.attributes.scope === "admin" ? "Add" : undefined}
                 description="Manage user's access, rights, role. Add new one or delete/revoke another."
                 onAction={() => {
                   this.setState({ displayAddUserPanel: true });

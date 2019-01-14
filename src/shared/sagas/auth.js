@@ -24,7 +24,7 @@ import {
   createUserSuccess,
   createUserFailure,
 } from "../actions/auth";
-import { apiCreateUserProfileRequest } from "../actions/user";
+import { createProfile } from "./api";
 import { getAuthService } from "../services";
 
 function* authenticate({ username, password, provider }) {
@@ -81,7 +81,7 @@ export function* callSignIn(action) {
   }
 }
 
-export function* createUser(action) {
+export function* createUser(action, needProfile = true) {
   const { username, email, password, accept, provider } = action;
   let response;
 
@@ -95,7 +95,6 @@ export function* createUser(action) {
       accept,
     });
 
-    yield put(apiCreateUserProfileRequest({ userId: response.id }));
     if (response.validation === "none") {
       response.scope = yield service.authorizeUser({
         username,
@@ -104,13 +103,23 @@ export function* createUser(action) {
       });
     }
 
+    // don't create profile if is signup action
+    // user not authentified
+    if (needProfile) {
+      const profile = yield createProfile({ userId: response.id });
+      if (profile.error) {
+        throw profile.error;
+      }
+    }
+
     yield put(createUserSuccess());
   } catch (error) {
     if (error.response) {
-      response = yield error.response.json();
-      yield put(createUserFailure({ error: response.error || error }));
+      response = { error: yield error.response.json() };
+      yield put(createUserFailure(response.error));
     } else {
-      yield put(createUserFailure({ error }));
+      response = error;
+      yield put(createUserFailure(error));
     }
   }
 
@@ -120,7 +129,7 @@ export function* createUser(action) {
 export function* signUp(action) {
   const { provider, username, password } = action;
 
-  let response = yield createUser(action);
+  let response = yield createUser(action, false);
   if (!response.error) {
     try {
       if (response.scope) {
@@ -137,7 +146,7 @@ export function* signUp(action) {
       }
     }
   } else {
-    yield put(signOutError({ provider, error: response.error }));
+    yield put(signOutError({ provider, ...response.error }));
   }
 }
 
