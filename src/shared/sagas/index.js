@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { takeEvery } from "redux-saga";
+import { takeEvery, all } from "redux-saga/effects";
 
 import auth from "./auth";
 import api from "./api";
@@ -16,7 +16,7 @@ function takeAll(subRoot) {
     takeList.push(takeEvery(sub[0], sub[1]));
   });
 
-  return takeList;
+  return all(takeList);
 }
 
 export default function* root() {
