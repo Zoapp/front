@@ -10,6 +10,7 @@ import {
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
+  AUTH_CREATEUSER,
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -17,6 +18,7 @@ import {
 
 export const initialState = {
   loading: false,
+  newUserLoading: false,
   error: null,
   username: null,
   password: null,
@@ -149,6 +151,22 @@ export default createReducer(initialState, {
       accountValidation: null,
     };
   },
+
+  [AUTH_CREATEUSER + FETCH_REQUEST]: (state) => ({
+    ...state,
+    newUserLoading: true,
+    error: null,
+  }),
+  [AUTH_CREATEUSER + FETCH_SUCCESS]: (state) => ({
+    ...state,
+    newUserLoading: false,
+    error: null,
+  }),
+  [AUTH_CREATEUSER + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    newUserLoading: false,
+    error,
+  }),
 
   [AUTH_LOSTPASSWORD + FETCH_REQUEST]: (state) => ({
     ...state,

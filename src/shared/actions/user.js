@@ -6,6 +6,7 @@
  */
 import {
   API_USERPROFILE,
+  API_CREATEUSERPROFILE,
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -27,4 +28,12 @@ export function apiUserProfileError({ error }) {
     type: API_USERPROFILE + FETCH_FAILURE,
     error,
   };
+}
+
+export function apiCreateUserProfileRequest({ userId }) {
+  return { type: API_CREATEUSERPROFILE + FETCH_REQUEST, userId };
+}
+
+export function apiCreateUserProfileSuccess() {
+  return { type: API_CREATEUSERPROFILE + FETCH_SUCCESS };
 }

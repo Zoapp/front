@@ -9,6 +9,7 @@ import {
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
+  AUTH_CREATEUSER,
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
@@ -88,6 +89,29 @@ export function signUpError({ provider, error }) {
     provider,
     error,
   };
+}
+
+export function createUserRequest({
+  provider,
+  username,
+  email,
+  password,
+  accept,
+}) {
+  return {
+    type: AUTH_CREATEUSER + FETCH_REQUEST,
+    provider,
+    username,
+    email,
+    password,
+    accept,
+  };
+}
+export function createUserSuccess() {
+  return { type: AUTH_CREATEUSER + FETCH_SUCCESS };
+}
+export function createUserFailure({ error }) {
+  return { type: AUTH_CREATEUSER + FETCH_FAILURE, error };
 }
 
 export function lostPassword({ provider, email }) {

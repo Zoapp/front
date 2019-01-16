@@ -34,8 +34,25 @@ import {
   apiSetPluginSuccess,
   apiGetPluginsRequest,
 } from "../actions/api";
-import { apiUserProfileError, apiUserProfileSuccess } from "../actions/user";
+import {
+  apiUserProfileError,
+  apiUserProfileSuccess,
+  apiCreateUserProfileRequest,
+  apiCreateUserProfileSuccess,
+} from "../actions/user";
 import { getWebService } from "../services";
+
+export function* createProfile({ userId }) {
+  try {
+    yield put(apiCreateUserProfileRequest({ userId }));
+    const profile = yield getWebService().post("users", { userId });
+    yield put(apiCreateUserProfileSuccess());
+    return profile;
+  } catch (error) {
+    yield put(apiUserProfileError({ error }));
+    return { error };
+  }
+}
 
 const api = [
   /* User */
