@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import { TableComponent } from "zoapp-ui";
 import { apiGetUsersRequest } from "../../actions/api";
 import { createUserRequest } from "../../actions/auth";
+import Avatar from "../../components/avatar";
 import Panel from "../../components/panel";
 import SignUp from "../../components/auth/signUp";
 
@@ -79,13 +80,17 @@ class Users extends Component {
     values.push(user.attributes.scope);
     values.push(status);
 
-    items.push({ id: 1, values, icon: `../images/${profile.avatar}.png` });
+    items.push({
+      id: 1,
+      values,
+      icon: <Avatar src={profile.avatar} size={36} />,
+    });
 
     users.forEach((u) => {
       items.push({
         id: u.id,
         values: [u.username, u.email, u.scope, ""],
-        icon: `../images/${u.avatar}.png`,
+        icon: <Avatar src={u.avatar} size={36} />,
       });
     });
 

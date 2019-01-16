@@ -121,7 +121,7 @@
   cursor: pointer;
 }
 
-.userbox_right > i {
+.mdc-toolbar__dropdown {
   margin-top: 12px;
   height: 24px;
   color: var(--mdc-theme-text-hint-on-background,rgba(0,0,0,.38));
