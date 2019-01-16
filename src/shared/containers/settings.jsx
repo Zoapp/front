@@ -172,6 +172,7 @@ class Settings extends Component {
               </Inner>
               {footerButtons}
             </form>
+            <div className="authenticate_error">{this.props.errorMessage}</div>
           </Grid>
         </section>
       </div>
@@ -200,12 +201,11 @@ Settings.propTypes = {
   }),
   downloadData: PropTypes.bool,
   removeAccount: PropTypes.bool,
+  errorMessage: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
-  const profile = state.user ? state.user.profile : null;
-  const isSignedIn = state.user ? state.user.isSignedIn : false;
-  const isLoading = state.loading || state.user.loading;
+  const { profile, isSignedIn, loading, error } = state.user;
   const { configuration } = state.app;
   let downloadData = false;
   let removeAccount = false;
@@ -220,10 +220,11 @@ const mapStateToProps = (state) => {
   }
   return {
     profile,
-    isLoading,
+    isLoading: loading,
     isSignedIn,
     downloadData,
     removeAccount,
+    errorMessage: error,
   };
 };
 

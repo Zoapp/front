@@ -38,13 +38,10 @@ import {
 import {
   apiUserProfileError,
   apiUserProfileSuccess,
-<<<<<<< HEAD
   apiCreateUserProfileRequest,
   apiCreateUserProfileSuccess,
-=======
   apiUserProfileUpdateSuccess,
   apiUserProfileUpdateError,
->>>>>>> Add new Account settings page
 } from "../actions/user";
 import { getWebService } from "../services";
 
@@ -80,7 +77,12 @@ const api = [
         const response = yield getWebService().put("me", params);
         yield put(apiUserProfileUpdateSuccess({ profile: response }));
       } catch (error) {
-        yield put(apiUserProfileUpdateError({ error }));
+        if (error.response) {
+          const response = yield error.response.json();
+          yield put(apiUserProfileUpdateError({ error: response.error }));
+        } else {
+          yield put(apiUserProfileUpdateError({ error }));
+        }
       }
     },
   ],

@@ -21,10 +21,12 @@ export const initialState = {
   isSignedIn: false,
   loading: false,
   error: null,
+  profile: null,
 };
 
 export default createReducer(initialState, {
   [AUTH_SIGNIN + FETCH_SUCCESS]: (state, { attributes }) => ({
+    ...state,
     attributes,
     error: null,
     isSignedIn: true,
