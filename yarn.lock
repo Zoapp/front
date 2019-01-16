@@ -3940,7 +3940,12 @@ global@^4.3.0:
     min-document "^2.19.0"
     process "~0.5.1"
 
-globals@^11.0.1, globals@^11.1.0:
+globals@^11.0.1:
+  version "11.10.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-11.10.0.tgz#1e09776dffda5e01816b3bb4077c8b59c24eaa50"
+  integrity sha512-0GZF1RiPKU97IHUO5TORo9w1PwrH/NBPl+fS7oMLdaTRiYmYbwK4NWoZWrAdd0/abG9R2BU+OiwyQpTpE6pdfQ==
+
+globals@^11.1.0:
   version "11.9.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.9.0.tgz#bde236808e987f290768a93d065060d78e6ab249"
   integrity sha512-5cJVtyXWH8PiJPVLZzzoIizXx944O4OmRro5MWKx5fT4MgcN7OfaMutPeaTdJCCURwbWdhhcCWcKIffPnmTzBg==
@@ -9505,10 +9510,10 @@ zoapp-common@0.6.0:
     whatwg-fetch "^2.0.4"
     winston "2.4.0"
 
-zoapp-ui@0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.8.2.tgz#6da7f1208b8dea440ee7aa4f769d7ba40fd19945"
-  integrity sha512-qD9oGC5wzM4KnsCpV5MhG9h9nL7xIn1E7EjKx4x2zRUg7z417d6GYkpGiCuy9bJHINy6Ei1D/vmIWNvgKTHWQQ==
+zoapp-ui@0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.8.3.tgz#1ca10168d78f748aaefd33f6e4d2abef4ef4d670"
+  integrity sha512-awl0wwCmgo1dBGrpn+A2ULu3GC5LjSREp4/rK3CCFgkIVuNy0vVf7WINXyTAUIkDFEHjozpNyq5baoDKT8aLNQ==
   dependencies:
     prop-types "15.6.0"
     react "16.4.2"

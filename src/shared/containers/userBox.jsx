@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import Zrmc, {
   Button,
   ToolbarSection,
-  ToolbarIcon,
   Menu,
   MenuItem,
   Icon,
@@ -18,7 +17,7 @@ import Zrmc, {
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { apiUserProfileRequest } from "../actions/user";
-
+import Avatar from "../components/avatar";
 import Authenticate from "./authenticate";
 import SignOutDialog from "./signOutDialog";
 
@@ -46,13 +45,7 @@ class UserBox extends Component {
   render() {
     if (this.props.isSignedIn) {
       const username = this.props.profile ? this.props.profile.username : "";
-
-      let avatar = this.props.profile ? this.props.profile.avatar : null;
-      if (!avatar || avatar === "default") {
-        avatar = "account_circle";
-      } else {
-        avatar = "account_circle";
-      }
+      const avatar = this.props.profile ? this.props.profile.avatar : null;
 
       return (
         <ToolbarSection align="end" shrinkToFit>
@@ -71,8 +64,11 @@ class UserBox extends Component {
             <div className="userbox">
               <div className="userbox_name">{username}</div>
               <div className="userbox_right">
-                <ToolbarIcon name={avatar} />
-                <Icon name="keyboard_arrow_down" />
+                <Avatar src={avatar} size={48} />
+                <Icon
+                  className="mdc-toolbar__dropdown"
+                  name="keyboard_arrow_down"
+                />
               </div>
             </div>
           </MenuAnchor>

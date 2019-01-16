@@ -7,9 +7,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Button, Cell, FormField, Grid, Inner, TextField } from "zrmc";
+import { Button, Cell, FormField, Grid, Icon, Inner, TextField } from "zrmc";
 
 import Loading from "../components/loading";
+import Avatar from "../components/avatar";
+
 import { appSetTitleName } from "../actions/app";
 
 import {
@@ -40,7 +42,7 @@ class Settings extends Component {
   };
 
   onSaveClick = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (this.props.isSignedIn) {
       const profile = { ...this.props.profile, ...this.state.profile };
       this.props.apiUserProfileUpdateRequest(profile);
@@ -64,6 +66,24 @@ class Settings extends Component {
     this.setState({
       profile: { ...this.state.profile, [field]: e.target.value },
     });
+  };
+
+  resetAvatar = () => {
+    this.setState(
+      {
+        profile: { ...this.state.profile, avatar: "default" },
+      },
+      () => this.onSaveClick(),
+    );
+  };
+
+  getFromGravatar = () => {
+    this.setState(
+      {
+        profile: { ...this.state.profile, avatar: "reset" },
+      },
+      () => this.onSaveClick(),
+    );
   };
 
   render() {
@@ -139,13 +159,15 @@ class Settings extends Component {
                   </FormField>
                 </Cell>
                 <Cell span={6}>
-                  <img
-                    src={
-                      this.props.profile.avatar === "default"
-                        ? "images/default.png"
-                        : this.props.profile.avatar
-                    }
-                  />
+                  <Avatar src={this.props.profile.avatar} size={200} />
+                  <Inner>
+                    <Button onClick={this.resetAvatar}>
+                      <Icon>delete</Icon>
+                    </Button>
+                    <Button onClick={this.getFromGravatar}>
+                      <Icon>autorenew</Icon>
+                    </Button>
+                  </Inner>
                 </Cell>
               </Inner>
               {footerButtons}
