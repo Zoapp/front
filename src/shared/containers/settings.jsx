@@ -30,7 +30,21 @@ class Settings extends Component {
 
     this.state = {
       profile: props.profile,
+      error: null,
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { error, profile } = props;
+
+    if (error !== state.error) {
+      // Since there was an error, reset profile to latest props
+      return {
+        profile,
+        error,
+      };
+    }
+    return null;
   }
 
   onCancelClick = (e) => {
@@ -172,7 +186,7 @@ class Settings extends Component {
               </Inner>
               {footerButtons}
             </form>
-            <div className="authenticate_error">{this.props.errorMessage}</div>
+            <div className="authenticate_error">{this.state.error}</div>
           </Grid>
         </section>
       </div>
@@ -201,7 +215,7 @@ Settings.propTypes = {
   }),
   downloadData: PropTypes.bool,
   removeAccount: PropTypes.bool,
-  errorMessage: PropTypes.string,
+  error: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -224,7 +238,7 @@ const mapStateToProps = (state) => {
     isSignedIn,
     downloadData,
     removeAccount,
-    errorMessage: error,
+    error,
   };
 };
 
