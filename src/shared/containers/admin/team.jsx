@@ -66,10 +66,23 @@ class Users extends Component {
     });
   };
 
+  handleMenuSelect = (action, userIndex) => {
+    if (action === "edit") {
+      this.handleSelectUser(userIndex);
+    } else if (action === "delete") {
+      console.log(`TODO: delete user #${userIndex}`);
+    }
+  };
+
+  handleSelectUser = (userIndex) => {
+    console.log(`TODO: display edit user modal for #${userIndex}`);
+  };
+
   render() {
     const items = [];
     const status = "you";
-    const { user, profile, users, menu, onSelect } = this.props;
+    const { user, profile, users } = this.props;
+    const { scope } = user.attributes;
 
     const { isLoading } = this.state;
     const { username, email, password } = this.state.newUser;
@@ -77,7 +90,7 @@ class Users extends Component {
     const values = [];
     values.push(profile.username);
     values.push(profile.email);
-    values.push(user.attributes.scope);
+    values.push(scope);
     values.push(status);
 
     items.push({
@@ -93,6 +106,20 @@ class Users extends Component {
         icon: <Avatar src={u.avatar} size={36} />,
       });
     });
+
+    let menu;
+    if (scope === "admin") {
+      menu = [
+        {
+          name: "edit",
+          onSelect: this.handleMenuSelect,
+        },
+        {
+          name: "delete",
+          onSelect: this.handleMenuSelect,
+        },
+      ];
+    }
 
     return (
       <React.Fragment>
@@ -116,7 +143,7 @@ class Users extends Component {
                   <TableComponent
                     items={items}
                     selectedItem={-1}
-                    onSelect={onSelect}
+                    onSelect={this.handleSelectUser}
                     menu={menu}
                   />
                 </div>
@@ -181,8 +208,6 @@ Users.propTypes = {
   user: PropTypes.shape({}),
   users: PropTypes.array,
   apiGetUsersRequest: PropTypes.func,
-  menu: PropTypes.arrayOf(PropTypes.shape({})),
-  onSelect: PropTypes.func,
   isLoading: PropTypes.bool,
   createUser: PropTypes.func,
   provider: PropTypes.string,
