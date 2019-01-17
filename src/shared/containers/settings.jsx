@@ -35,9 +35,9 @@ class Settings extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { error, profile } = props;
+    const { error, profile, isLoading } = props;
 
-    if (error !== state.error) {
+    if (!isLoading && error !== state.error) {
       // Since there was an error, reset profile to latest props
       return {
         profile,
