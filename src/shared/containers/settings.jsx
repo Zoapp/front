@@ -60,6 +60,7 @@ class Settings extends Component {
     if (this.props.isSignedIn) {
       const profile = { ...this.props.profile, ...this.state.profile };
       this.props.apiUserProfileUpdateRequest(profile);
+      delete profile.password;
       this.setState({ profile });
     }
   };
