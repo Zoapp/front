@@ -7,6 +7,7 @@
 import createReducer from "./createReducer";
 import {
   API_ADMIN,
+  API_ADMIN_UPDATE_PROFILE,
   API_SETADMINPARAMETERS,
   API_GETADMINPARAMETERS,
   APP_SETACTIVETAB,
@@ -71,6 +72,22 @@ export const handlers = {
     admin,
   }),
   [API_ADMIN_UPDATE + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }),
+
+  [API_ADMIN_UPDATE_PROFILE + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [API_ADMIN_UPDATE_PROFILE + FETCH_SUCCESS]: (state) => ({
+    ...state,
+    loading: false,
+    error: null,
+  }),
+  [API_ADMIN_UPDATE_PROFILE + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
     loading: false,
     error,

@@ -65,7 +65,7 @@ describe("containers/admin/team", () => {
       .dive()
       .find(Button)
       .simulate("click", createFakeEvent());
-    expect(wrapper.state("displayAddUserPanel")).toEqual(true);
+    expect(wrapper.state("displayAddUserDialog")).toEqual(true);
 
     wrapper.update();
     expect(wrapper.find(SignUp)).toHaveLength(1);

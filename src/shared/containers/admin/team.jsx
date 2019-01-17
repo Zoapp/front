@@ -18,16 +18,24 @@ import {
 } from "zrmc";
 import { connect } from "react-redux";
 import { TableComponent } from "zoapp-ui";
-import { apiGetUsersRequest } from "../../actions/api";
+import {
+  apiGetUsersRequest,
+  apiAdminUpdateProfileRequest,
+} from "../../actions/api";
 import { createUserRequest } from "../../actions/auth";
 import Avatar from "../../components/avatar";
 import Panel from "../../components/panel";
 import SignUp from "../../components/auth/signUp";
+import Loading from "../../components/loading";
+import Settings from "../../components/settings";
 
 class Users extends Component {
   state = {
-    displayAddUserPanel: false,
+    displayAddUserDialog: false,
+    displayEditUserDialog: false,
+    selectedUser: null,
     newUser: {},
+    editProfile: {},
     isLoading: false,
   };
 
@@ -38,16 +46,18 @@ class Users extends Component {
   static getDerivedStateFromProps(props, state) {
     if (state.isLoading && !props.isLoading) {
       const newState = {
-        ...state,
         isLoading: false,
       };
       if (!props.error) {
         props.apiGetUsersRequest();
-        newState.displayAddUserPanel = false;
+        newState.displayAddUserDialog = false;
+        newState.displayEditUserDialog = false;
+        newState.newUser = {};
+        newState.editProfile = {};
       }
       return newState;
     }
-    return state;
+    return null;
   }
 
   handleCreateUser = (e) => {
@@ -57,10 +67,29 @@ class Users extends Component {
     this.props.createUser(this.props.provider, username, email, password);
   };
 
-  createChangeHandler = (field) => (e) => {
+  handleEditUser = (e) => {
+    e.preventDefault();
+    const { selectedUser, editProfile } = this.state;
+    let profile = {
+      id: selectedUser.id,
+      username: selectedUser.username,
+      email: selectedUser.email,
+      avatar: selectedUser.avatar,
+    };
+
+    profile = {
+      ...profile,
+      ...editProfile,
+    };
+
+    this.setState({ isLoading: true });
+    this.props.apiAdminUpdateProfileRequest(profile);
+  };
+
+  createChangeHandler = (entity) => (field) => (e) => {
     this.setState({
-      newUser: {
-        ...this.state.newUser,
+      [entity]: {
+        ...this.state[entity],
         [field]: e.target.value,
       },
     });
@@ -70,12 +99,111 @@ class Users extends Component {
     if (action === "edit") {
       this.handleSelectUser(userIndex);
     } else if (action === "delete") {
-      console.log(`TODO: delete user #${userIndex}`);
+      // `TODO: delete user #${userIndex}`;
     }
   };
 
   handleSelectUser = (userIndex) => {
-    console.log(`TODO: display edit user modal for #${userIndex}`);
+    // admin is not in the users props but present on table
+    this.setState({
+      displayEditUserDialog: userIndex > 0,
+      selectedUser: this.props.users[userIndex - 1],
+    });
+  };
+
+  renderAddUserDialog = () => {
+    const { isLoading } = this.state;
+    const { username, email, password } = this.state.newUser;
+
+    return (
+      <form id="signin-dialog-form" onSubmit={this.handleCreateUser}>
+        <Dialog
+          id="admin-add-user"
+          onClose={() => {
+            this.setState({ displayAddUserDialog: false });
+          }}
+          header="Add user"
+          width="320px"
+        >
+          <SignUp
+            username={username}
+            email={email}
+            password={password}
+            createChangeHandler={this.createChangeHandler("newUser")}
+            container={DialogBody}
+            disabled={false}
+          >
+            {isLoading ? (
+              <LinearProgress buffer={0} indeterminate />
+            ) : (
+              <div className="authenticate_error">{this.props.error}</div>
+            )}
+          </SignUp>
+          <DialogFooter>
+            <Button
+              key="btn-create-user"
+              type="submit"
+              className="authenticate_submit"
+              raised
+              dense
+              disabled={isLoading}
+            >
+              {isLoading ? "Processing..." : "Create user"}
+            </Button>
+          </DialogFooter>
+        </Dialog>
+      </form>
+    );
+  };
+
+  renderEditUserDialog = () => {
+    const { isLoading, selectedUser } = this.state;
+
+    return (
+      <form id="edit-dialog-form" onSubmit={this.handleEditUser}>
+        <Dialog
+          id="admin-edit-user"
+          onClose={() => {
+            this.setState({ displayEditUserDialog: false });
+          }}
+          header="Edit user"
+        >
+          <DialogBody>
+            <Settings
+              profile={selectedUser}
+              onChangeHandler={this.createChangeHandler("editProfile")}
+            />
+            {isLoading ? (
+              <LinearProgress buffer={0} indeterminate />
+            ) : (
+              <div className="authenticate_error">{this.props.error}</div>
+            )}
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              key="btn-cancel"
+              className="authenticate_submit"
+              raised
+              dense
+              disabled={isLoading}
+              onClick={() => this.setState({ displayEditUserDialog: false })}
+            >
+              Cancel
+            </Button>
+            <Button
+              key="btn-edit-user"
+              type="submit"
+              className="authenticate_submit"
+              raised
+              dense
+              disabled={isLoading}
+            >
+              {isLoading ? "Processing..." : "Edit user"}
+            </Button>
+          </DialogFooter>
+        </Dialog>
+      </form>
+    );
   };
 
   render() {
@@ -84,8 +212,9 @@ class Users extends Component {
     const { user, profile, users } = this.props;
     const { scope } = user.attributes;
 
-    const { isLoading } = this.state;
-    const { username, email, password } = this.state.newUser;
+    if (!profile) {
+      return <Loading />;
+    }
 
     const values = [];
     values.push(profile.username);
@@ -117,6 +246,7 @@ class Users extends Component {
         {
           name: "delete",
           onSelect: this.handleMenuSelect,
+          disabled: true,
         },
       ];
     }
@@ -136,7 +266,7 @@ class Users extends Component {
                 action={user.attributes.scope === "admin" ? "Add" : undefined}
                 description="Manage user's access, rights, role. Add new one or delete/revoke another."
                 onAction={() => {
-                  this.setState({ displayAddUserPanel: true });
+                  this.setState({ displayAddUserDialog: true });
                 }}
               >
                 <div className="zap-panel_scroll">
@@ -151,45 +281,8 @@ class Users extends Component {
             </Cell>
           </Inner>
         </Grid>
-        {this.state.displayAddUserPanel && (
-          <form id="signin-dialog-form" onSubmit={this.handleCreateUser}>
-            <Dialog
-              id="admin-add-user"
-              onClose={() => {
-                this.setState({ displayAddUserPanel: false });
-              }}
-              header="Add user"
-              width="320px"
-            >
-              <SignUp
-                username={username}
-                email={email}
-                password={password}
-                createChangeHandler={this.createChangeHandler}
-                container={DialogBody}
-                disabled={false}
-              >
-                {isLoading ? (
-                  <LinearProgress buffer={0} indeterminate />
-                ) : (
-                  <div className="authenticate_error">{this.props.error}</div>
-                )}
-              </SignUp>
-              <DialogFooter>
-                <Button
-                  key="but_sign"
-                  type="submit"
-                  className="authenticate_submit"
-                  raised
-                  dense
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Processing..." : "Create user"}
-                </Button>
-              </DialogFooter>
-            </Dialog>
-          </form>
-        )}
+        {this.state.displayAddUserDialog && this.renderAddUserDialog()}
+        {this.state.displayEditUserDialog && this.renderEditUserDialog()}
       </React.Fragment>
     );
   }
@@ -212,13 +305,16 @@ Users.propTypes = {
   createUser: PropTypes.func,
   provider: PropTypes.string,
   error: PropTypes.string,
+  apiAdminUpdateProfileRequest: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
   const { user } = state;
-  const { users } = state.app;
-  const profile = user ? user.profile : null;
-  const { error, newUserLoading } = state.auth;
+  const { error: appError, loading: appLoading, users } = state.app;
+  const { error: userError, loading: userLoading, profile } = user;
+  const { error: authError, newUserLoading } = state.auth;
+
+  const error = authError || userError || appError;
 
   let errorMessage;
   if (error instanceof Error) {
@@ -231,7 +327,7 @@ const mapStateToProps = (state) => {
     user,
     profile,
     users,
-    isLoading: newUserLoading || user.loading,
+    isLoading: newUserLoading || userLoading || appLoading,
     error: errorMessage,
   };
 };
@@ -248,6 +344,9 @@ const mapDispatchToProps = (dispatch) => ({
         accept: true,
       }),
     );
+  },
+  apiAdminUpdateProfileRequest: (profile) => {
+    dispatch(apiAdminUpdateProfileRequest(profile));
   },
 });
 
