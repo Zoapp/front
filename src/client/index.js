@@ -9,7 +9,7 @@ import Front from "Zoapp/front";
 import Screen from "Zoapp/containers/screen";
 import AdminManager from "ZoappContainers/adminManager";
 import Advanced from "ZoappContainers/admin/advanced";
-import Settings from "ZoappContainers/settings";
+import Settings from "ZoappContainers/settingsManager";
 import Team from "ZoappContainers/admin/team";
 import DrawerFooter from "ZoappContainers/drawerFooter";
 import Zrmc from "zrmc";
