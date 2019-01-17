@@ -9,6 +9,7 @@ import {
   AUTH_SIGNIN,
   API_USERPROFILE,
   API_CREATEUSERPROFILE,
+  API_USERPROFILE_UPDATE,
   FETCH_SUCCESS,
   FETCH_REQUEST,
   FETCH_FAILURE,
@@ -20,10 +21,12 @@ export const initialState = {
   isSignedIn: false,
   loading: false,
   error: null,
+  profile: null,
 };
 
 export default createReducer(initialState, {
   [AUTH_SIGNIN + FETCH_SUCCESS]: (state, { attributes }) => ({
+    ...state,
     attributes,
     error: null,
     isSignedIn: true,
@@ -57,5 +60,21 @@ export default createReducer(initialState, {
     ...state,
     loading: false,
     error: null,
+  }),
+  [API_USERPROFILE_UPDATE + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [API_USERPROFILE_UPDATE + FETCH_SUCCESS]: (state, { profile }) => ({
+    ...state,
+    error: null,
+    loading: false,
+    profile: { ...profile },
+  }),
+  [API_USERPROFILE_UPDATE + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }),
 });

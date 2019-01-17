@@ -9,6 +9,7 @@ import {
   API_ADMIN,
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
+  API_USERPROFILE_UPDATE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
@@ -39,6 +40,8 @@ import {
   apiUserProfileSuccess,
   apiCreateUserProfileRequest,
   apiCreateUserProfileSuccess,
+  apiUserProfileUpdateSuccess,
+  apiUserProfileUpdateError,
 } from "../actions/user";
 import { getWebService } from "../services";
 
@@ -64,6 +67,22 @@ const api = [
         yield put(apiUserProfileSuccess({ profile: response }));
       } catch (error) {
         yield put(apiUserProfileError({ error }));
+      }
+    },
+  ],
+  [
+    API_USERPROFILE_UPDATE + FETCH_REQUEST,
+    function* f({ params }) {
+      try {
+        const response = yield getWebService().put("me", params);
+        yield put(apiUserProfileUpdateSuccess({ profile: response }));
+      } catch (error) {
+        if (error.response) {
+          const response = yield error.response.json();
+          yield put(apiUserProfileUpdateError({ error: response.error }));
+        } else {
+          yield put(apiUserProfileUpdateError({ error }));
+        }
       }
     },
   ],

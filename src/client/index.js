@@ -9,6 +9,7 @@ import Front from "Zoapp/front";
 import Screen from "Zoapp/containers/screen";
 import AdminManager from "ZoappContainers/adminManager";
 import Advanced from "ZoappContainers/admin/advanced";
+import Settings from "ZoappContainers/settings";
 import Team from "ZoappContainers/admin/team";
 import DrawerFooter from "ZoappContainers/drawerFooter";
 import Zrmc from "zrmc";
@@ -23,6 +24,20 @@ const handleAction = () => {
     actions: [{ name: "Cancel" }, { name: "Continue" }],
   });
 };
+
+const DrawerFooterComponent = (props) =>
+  React.createElement(DrawerFooter, props);
+const DashboardComponent = (props) =>
+  React.createElement(Screen, props, "Dashboard");
+const AdminManagerComponent = (props) => (
+  <AdminManager
+    {...props}
+    tabs={[<Team key="team" />, <Advanced key="advanced" />]}
+  />
+);
+const HomeComponent = (props) => React.createElement(Screen, props, "Home");
+const HelpComponent = (props) => React.createElement(Screen, props, "Help");
+const SettingsComponent = (props) => <Settings {...props} />;
 
 const app = {
   name: "Zoapp",
@@ -41,7 +56,7 @@ const app = {
     drawer: {
       type: "temporary",
       themeDark: true,
-      renderFooter: (props) => React.createElement(DrawerFooter, props),
+      renderFooter: DrawerFooterComponent,
     },
   },
   screens: [
@@ -62,7 +77,7 @@ const app = {
         },
       ],
       fab: { icon: "favorite", onAction: handleAction },
-      render: (props) => React.createElement(Screen, props, "Dashboard"),
+      render: DashboardComponent,
     },
     {
       id: "2",
@@ -72,12 +87,7 @@ const app = {
       path: "/admin",
       access: "auth",
       panels: ["Team", "Advanced"],
-      render: (props) => (
-        <AdminManager
-          {...props}
-          tabs={[<Team key="team" />, <Advanced key="advanced" />]}
-        />
-      ),
+      render: AdminManagerComponent,
     },
     {
       id: "3",
@@ -86,7 +96,7 @@ const app = {
       name: "Home",
       path: "*",
       access: "public",
-      render: (props) => React.createElement(Screen, props, "Home"),
+      render: HomeComponent,
     },
     {
       id: "5",
@@ -95,7 +105,7 @@ const app = {
       icon: "bug_report",
       href: "https://github.com/zoapp/front/issues",
       access: "all",
-      render: (props) => React.createElement(Screen, props, "Help"),
+      render: HelpComponent,
     },
     {
       id: "4",
@@ -104,7 +114,15 @@ const app = {
       icon: "help",
       path: "/help",
       access: "all",
-      render: (props) => React.createElement(Screen, props, "Help"),
+      render: HelpComponent,
+    },
+    {
+      id: "6",
+      icon: "settings",
+      name: "Settings",
+      access: "auth",
+      path: "/settings",
+      render: SettingsComponent,
     },
   ],
 };

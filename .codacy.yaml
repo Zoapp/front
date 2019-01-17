@@ -1,5 +1,0 @@
-exclude_paths:
-  - 'webpack.*.js'
-  - 'tests/**'
-  - 'src/public/css/**'
-  
