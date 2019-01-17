@@ -37,6 +37,7 @@ class Users extends Component {
     newUser: {},
     editProfile: {},
     isLoading: false,
+    hasChanged: false,
   };
 
   componentDidMount() {
@@ -92,6 +93,7 @@ class Users extends Component {
         ...this.state[entity],
         [field]: e.target.value,
       },
+      hasChanged: true,
     });
   };
 
@@ -108,6 +110,7 @@ class Users extends Component {
     this.setState({
       displayEditUserDialog: userIndex > 0,
       selectedUser: this.props.users[userIndex - 1],
+      hasChanged: false,
     });
   };
 
@@ -157,7 +160,7 @@ class Users extends Component {
   };
 
   renderEditUserDialog = () => {
-    const { isLoading, selectedUser } = this.state;
+    const { isLoading, selectedUser, hasChanged } = this.state;
 
     return (
       <form id="edit-dialog-form" onSubmit={this.handleEditUser}>
@@ -196,7 +199,7 @@ class Users extends Component {
               className="authenticate_submit"
               raised
               dense
-              disabled={isLoading}
+              disabled={isLoading || !hasChanged}
             >
               {isLoading ? "Processing..." : "Edit user"}
             </Button>
