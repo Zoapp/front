@@ -38,6 +38,7 @@ class Users extends Component {
     editProfile: {},
     isLoading: false,
     hasChanged: false,
+    error: null,
   };
 
   componentDidMount() {
@@ -55,6 +56,8 @@ class Users extends Component {
         newState.displayEditUserDialog = false;
         newState.newUser = {};
         newState.editProfile = {};
+      } else {
+        newState.error = props.error;
       }
       return newState;
     }
@@ -105,6 +108,8 @@ class Users extends Component {
         displayEditUserDialog: userIndex > 0,
         selectedUser: this.props.users[userIndex - 1],
         hasChanged: false,
+        editProfile: {},
+        error: null,
       });
     } else if (action === "delete") {
       // `TODO: delete user #${userIndex}`;
@@ -112,7 +117,7 @@ class Users extends Component {
   };
 
   renderAddUserDialog = () => {
-    const { isLoading } = this.state;
+    const { isLoading, error } = this.state;
     const { username, email, password } = this.state.newUser;
 
     return (
@@ -136,7 +141,7 @@ class Users extends Component {
             {isLoading ? (
               <LinearProgress buffer={0} indeterminate />
             ) : (
-              <div className="authenticate_error">{this.props.error}</div>
+              <div className="authenticate_error">{error}</div>
             )}
           </SignUp>
           <DialogFooter>
@@ -157,7 +162,7 @@ class Users extends Component {
   };
 
   renderEditUserDialog = () => {
-    const { isLoading, selectedUser, hasChanged } = this.state;
+    const { isLoading, selectedUser, hasChanged, error } = this.state;
 
     return (
       <form id="edit-dialog-form" onSubmit={this.handleEditUser}>
@@ -176,7 +181,7 @@ class Users extends Component {
             {isLoading ? (
               <LinearProgress buffer={0} indeterminate />
             ) : (
-              <div className="authenticate_error">{this.props.error}</div>
+              <div className="authenticate_error">{error}</div>
             )}
           </DialogBody>
           <DialogFooter>
@@ -266,7 +271,7 @@ class Users extends Component {
                 action={user.attributes.scope === "admin" ? "Add" : undefined}
                 description="Manage user's access, rights, role. Add new one or delete/revoke another."
                 onAction={() => {
-                  this.setState({ displayAddUserDialog: true });
+                  this.setState({ displayAddUserDialog: true, error: null });
                 }}
               >
                 <div className="zap-panel_scroll">
