@@ -6,16 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  Grid,
-  Inner,
-  Cell,
-  Dialog,
-  DialogFooter,
-  DialogBody,
-  Button,
-  LinearProgress,
-} from "zrmc";
+import { Grid, Inner, Cell, Button } from "zrmc";
 import { connect } from "react-redux";
 import { TableComponent } from "zoapp-ui";
 import {
@@ -28,6 +19,7 @@ import Panel from "../../components/panel";
 import SignUp from "../../components/auth/signUp";
 import Loading from "../../components/loading";
 import Settings from "../../components/settings";
+import TeamDialog from "../../components/teamDialog";
 
 class Users extends Component {
   state = {
@@ -121,43 +113,35 @@ class Users extends Component {
     const { username, email, password } = this.state.newUser;
 
     return (
-      <form id="signin-dialog-form" onSubmit={this.handleCreateUser}>
-        <Dialog
-          id="admin-add-user"
-          onClose={() => {
-            this.setState({ displayAddUserDialog: false });
-          }}
-          header="Add user"
-          width="320px"
-        >
-          <SignUp
-            username={username}
-            email={email}
-            password={password}
-            createChangeHandler={this.createChangeHandler("newUser")}
-            container={DialogBody}
-            disabled={false}
+      <TeamDialog
+        onSubmit={this.handleCreateUser}
+        onClose={() => this.setState({ displayAddUserDialog: false })}
+        header="Add user"
+        width="320px"
+        isLoading={isLoading}
+        error={error}
+        footer={
+          <Button
+            key="btn-create-user"
+            type="submit"
+            className="authenticate_submit"
+            raised
+            dense
+            disabled={isLoading}
           >
-            {isLoading ? (
-              <LinearProgress buffer={0} indeterminate />
-            ) : (
-              <div className="authenticate_error">{error}</div>
-            )}
-          </SignUp>
-          <DialogFooter>
-            <Button
-              key="btn-create-user"
-              type="submit"
-              className="authenticate_submit"
-              raised
-              dense
-              disabled={isLoading}
-            >
-              {isLoading ? "Processing..." : "Create user"}
-            </Button>
-          </DialogFooter>
-        </Dialog>
-      </form>
+            {isLoading ? "Processing..." : "Create user"}
+          </Button>
+        }
+      >
+        <SignUp
+          username={username}
+          email={email}
+          password={password}
+          createChangeHandler={this.createChangeHandler("newUser")}
+          container={React.Fragment}
+          disabled={false}
+        />
+      </TeamDialog>
     );
   };
 
@@ -165,49 +149,41 @@ class Users extends Component {
     const { isLoading, selectedUser, hasChanged, error } = this.state;
 
     return (
-      <form id="edit-dialog-form" onSubmit={this.handleEditUser}>
-        <Dialog
-          id="admin-edit-user"
-          onClose={() => {
-            this.setState({ displayEditUserDialog: false });
-          }}
-          header="Edit user"
-        >
-          <DialogBody>
-            <Settings
-              profile={selectedUser}
-              onChangeHandler={this.createChangeHandler("editProfile")}
-            />
-            {isLoading ? (
-              <LinearProgress buffer={0} indeterminate />
-            ) : (
-              <div className="authenticate_error">{error}</div>
-            )}
-          </DialogBody>
-          <DialogFooter>
-            <Button
-              key="btn-cancel"
-              className="authenticate_submit"
-              raised
-              dense
-              disabled={isLoading}
-              onClick={() => this.setState({ displayEditUserDialog: false })}
-            >
-              Cancel
-            </Button>
-            <Button
-              key="btn-edit-user"
-              type="submit"
-              className="authenticate_submit"
-              raised
-              dense
-              disabled={isLoading || !hasChanged}
-            >
-              {isLoading ? "Processing..." : "Edit user"}
-            </Button>
-          </DialogFooter>
-        </Dialog>
-      </form>
+      <TeamDialog
+        onSubmit={this.handleEditUser}
+        onClose={() => this.setState({ displayEditUserDialog: false })}
+        header="Edit user"
+        width="640px"
+        isLoading={isLoading}
+        error={error}
+        footer={[
+          <Button
+            key="btn-cancel"
+            className="authenticate_submit"
+            raised
+            dense
+            disabled={isLoading}
+            onClick={() => this.setState({ displayEditUserDialog: false })}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="btn-edit-user"
+            type="submit"
+            className="authenticate_submit"
+            raised
+            dense
+            disabled={isLoading || !hasChanged}
+          >
+            {isLoading ? "Processing..." : "Edit user"}
+          </Button>,
+        ]}
+      >
+        <Settings
+          profile={selectedUser}
+          onChangeHandler={this.createChangeHandler("editProfile")}
+        />
+      </TeamDialog>
     );
   };
 
