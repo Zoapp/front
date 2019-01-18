@@ -99,19 +99,16 @@ class Users extends Component {
 
   handleMenuSelect = (action, userIndex) => {
     if (action === "edit") {
-      this.handleSelectUser(userIndex);
+      // admin is not in the users props but present on table
+
+      this.setState({
+        displayEditUserDialog: userIndex > 0,
+        selectedUser: this.props.users[userIndex - 1],
+        hasChanged: false,
+      });
     } else if (action === "delete") {
       // `TODO: delete user #${userIndex}`;
     }
-  };
-
-  handleSelectUser = (userIndex) => {
-    // admin is not in the users props but present on table
-    this.setState({
-      displayEditUserDialog: userIndex > 0,
-      selectedUser: this.props.users[userIndex - 1],
-      hasChanged: false,
-    });
   };
 
   renderAddUserDialog = () => {
@@ -276,7 +273,7 @@ class Users extends Component {
                   <TableComponent
                     items={items}
                     selectedItem={-1}
-                    onSelect={this.handleSelectUser}
+                    onSelect={() => {}}
                     menu={menu}
                   />
                 </div>

@@ -2,5 +2,6 @@
 
 export const createFakeEvent = (params = {}) => ({
   preventDefault: jest.fn(),
+  stopPropagation: jest.fn(),
   ...params,
 });

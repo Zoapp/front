@@ -3,7 +3,7 @@ import { shallow } from "enzyme";
 
 import { UsersBase } from "shared/containers/admin/team";
 import { TableComponent } from "zoapp-ui";
-import { Dialog, Button } from "zrmc";
+import { Button, Dialog, Icon, MenuItem } from "zrmc";
 
 import { createFakeEvent } from "../../helpers";
 
@@ -69,7 +69,6 @@ describe("containers/admin/team", () => {
       .simulate("click", createFakeEvent());
     expect(wrapper.state("displayAddUserDialog")).toEqual(true);
 
-    wrapper.update();
     expect(wrapper.find(SignUp)).toHaveLength(1);
   });
 
@@ -90,10 +89,19 @@ describe("containers/admin/team", () => {
         .text(),
     ).toEqual("blbl");
 
-    secondTableLineWrapper.simulate("click", createFakeEvent());
+    const secondLineBtnWrapper = secondTableLineWrapper.find(Icon); // Get btns
+    secondLineBtnWrapper.simulate("click", createFakeEvent());
+
+    const menuItemEditWrapper = secondLineBtnWrapper
+      .shallow()
+      .dive()
+      .find(MenuItem)
+      .first()
+      .dive()
+      .find("li"); // LOL
+    menuItemEditWrapper.simulate("click", createFakeEvent());
     expect(wrapper.state("displayEditUserDialog")).toEqual(true);
 
-    wrapper.update();
     expect(wrapper.find(Settings)).toHaveLength(1);
   });
 });
