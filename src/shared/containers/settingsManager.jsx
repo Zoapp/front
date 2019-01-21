@@ -29,17 +29,16 @@ class SettingsManager extends Component {
 
     this.state = {
       profile: {},
-      error: props.error,
       hasChanged: false,
     };
   }
 
-  static getDerivedStateFromProps(props) {
-    const { error, isLoading } = props;
-    if (error && !isLoading) {
+  static getDerivedStateFromProps(props, state) {
+    const { isLoading } = props;
+    if (!state.hasChanged && !isLoading) {
       // Since there was an error, reset profile to latest props
       return {
-        error,
+        profile: {},
       };
     }
     return null;
@@ -72,6 +71,7 @@ class SettingsManager extends Component {
     this.setState(
       {
         profile: { ...this.state.profile, avatar: "default" },
+        hasChanged: true,
       },
       () => this.onSaveClick(),
     );
@@ -81,6 +81,7 @@ class SettingsManager extends Component {
     this.setState(
       {
         profile: { ...this.state.profile, avatar: "reset" },
+        hasChanged: true,
       },
       () => this.onSaveClick(),
     );

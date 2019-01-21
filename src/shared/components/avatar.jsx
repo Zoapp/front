@@ -23,7 +23,7 @@ class Avatar extends React.Component {
 
     return (
       <React.Fragment>
-        {this.state.isLoading && (
+        {(this.state.isLoading || src === "default") && (
           <Icon className={className} style={{ fontSize: size }}>
             account_circle
           </Icon>
