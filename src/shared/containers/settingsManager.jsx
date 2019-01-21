@@ -28,18 +28,17 @@ class SettingsManager extends Component {
     props.appSetTitleName("Profile");
 
     this.state = {
-      profile: props.profile,
+      profile: {},
       error: props.error,
+      hasChanged: false,
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { error, profile } = props;
-
-    if (error !== state.error) {
+  static getDerivedStateFromProps(props) {
+    const { error, isLoading } = props;
+    if (error && !isLoading) {
       // Since there was an error, reset profile to latest props
       return {
-        profile,
         error,
       };
     }
@@ -49,7 +48,7 @@ class SettingsManager extends Component {
   onCancelClick = (e) => {
     e.preventDefault();
     this.props.apiUserProfileRequest();
-    this.setState({ profile: { ...this.props.profile } });
+    this.setState({ profile: { ...this.props.profile }, hasChanged: false });
   };
 
   onSaveClick = (e) => {
@@ -57,26 +56,17 @@ class SettingsManager extends Component {
     const profile = { ...this.props.profile, ...this.state.profile };
     this.props.apiUserProfileUpdateRequest(profile);
     delete profile.password;
-    this.setState({ profile });
+    this.setState({ hasChanged: false });
   };
 
   updateChangeHandler = (field) => (e) => {
     this.setState({
       profile: { ...this.state.profile, [field]: e.target.value },
+      hasChanged: true,
     });
   };
 
-  hasProfileChanged = () => {
-    const propsProfile = this.props.profile;
-    const stateProfile = this.state.profile;
-    return !(
-      propsProfile &&
-      stateProfile &&
-      (propsProfile.username !== stateProfile.username ||
-        propsProfile.email !== stateProfile.email ||
-        propsProfile.password !== stateProfile.password)
-    );
-  };
+  hasProfileChanged = () => this.state.hasChanged;
 
   resetAvatar = () => {
     this.setState(
@@ -101,7 +91,7 @@ class SettingsManager extends Component {
     if (!this.props.isSignedIn || this.props.isLoading || !this.props.profile) {
       content = <Loading />;
     } else {
-      const shouldDisableButton = this.hasProfileChanged();
+      const shouldDisableButton = !this.hasProfileChanged();
       const footerButtons = [];
       if (this.props.downloadData) {
         footerButtons.push(
@@ -152,9 +142,8 @@ class SettingsManager extends Component {
             onChangeHandler={this.updateChangeHandler}
             downloadData={this.props.downloadData}
             removeAccount={this.props.removeAccount}
-            error={this.props.error}
           />
-          <div className="authenticate_error">{this.state.error}</div>
+          <div className="authenticate_error">{this.props.error}</div>
           {footerButtons}
         </form>
       );

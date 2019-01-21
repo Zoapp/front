@@ -71,7 +71,6 @@ Settings.propTypes = {
     avatar: PropTypes.string,
     email: PropTypes.string,
   }),
-  error: PropTypes.string,
   avatarChildren: PropTypes.shape({}),
 };
 
