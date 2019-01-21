@@ -17,6 +17,11 @@ Array [
     onError={[Function]}
     onLoad={[Function]}
     src="http://www.gravatar.com/avatar/?d=identicon?size=100"
+    style={
+      Object {
+        "borderRadius": "100%",
+      }
+    }
   />,
 ]
 `;

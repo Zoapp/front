@@ -31,6 +31,7 @@ class Avatar extends React.Component {
         {src !== "default" && (
           <img
             src={`${src}?size=${size}`}
+            style={{ borderRadius: "100%" }}
             className={className}
             ref={(i) => {
               this.img = i;

@@ -16,7 +16,7 @@ class TeamDialog extends React.Component {
     } = this.props;
 
     return (
-      <form id="signin-dialog-form" onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}>
         <Dialog
           id="team-dialog"
           onClose={onClose}
