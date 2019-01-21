@@ -67,7 +67,6 @@ class Users extends Component {
     e.preventDefault();
     const { selectedUser, editProfile } = this.state;
     let profile = {
-      id: selectedUser.id,
       username: selectedUser.username,
       email: selectedUser.email,
       avatar: selectedUser.avatar,
@@ -79,7 +78,7 @@ class Users extends Component {
     };
 
     this.setState({ isLoading: true });
-    this.props.apiAdminUpdateProfileRequest(profile);
+    this.props.apiAdminUpdateProfileRequest(profile, selectedUser.id);
   };
 
   createChangeHandler = (entity) => (field) => (e) => {
@@ -326,8 +325,8 @@ const mapDispatchToProps = (dispatch) => ({
       }),
     );
   },
-  apiAdminUpdateProfileRequest: (profile) => {
-    dispatch(apiAdminUpdateProfileRequest(profile));
+  apiAdminUpdateProfileRequest: (profile, userId) => {
+    dispatch(apiAdminUpdateProfileRequest(profile, userId));
   },
 });
 

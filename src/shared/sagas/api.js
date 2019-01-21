@@ -157,10 +157,9 @@ const api = [
   ],
   [
     API_ADMIN_UPDATE_PROFILE + FETCH_REQUEST,
-    function* f({ profile }) {
+    function* f({ profile, userId }) {
       try {
-        const { id } = profile;
-        yield getWebService().put(`users/${id}`, profile);
+        yield getWebService().put(`users/${userId}`, profile);
         yield put(apiAdminUpdateProfileSuccess());
       } catch (error) {
         if (error.response) {

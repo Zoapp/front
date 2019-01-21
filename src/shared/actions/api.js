@@ -43,8 +43,8 @@ export function apiAdminUpdateError({ error }) {
   return { type: API_ADMIN_UPDATE + FETCH_FAILURE, error };
 }
 
-export function apiAdminUpdateProfileRequest(profile) {
-  return { type: API_ADMIN_UPDATE_PROFILE + FETCH_REQUEST, profile };
+export function apiAdminUpdateProfileRequest(profile, userId) {
+  return { type: API_ADMIN_UPDATE_PROFILE + FETCH_REQUEST, profile, userId };
 }
 
 export function apiAdminUpdateProfileSuccess() {
