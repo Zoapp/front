@@ -47,7 +47,8 @@ describe("containers/admin/team", () => {
     isLoading: false,
     createUser: () => {},
     provider: "",
-    error: null,
+    userError: null,
+    authError: null,
   };
   it("should render admin team component", () => {
     const wrapper = shallow(<UsersBase {...defaultProps} />);

@@ -30,7 +30,8 @@ class Users extends Component {
     editProfile: {},
     isLoading: false,
     hasChanged: false,
-    error: null,
+    authError: null,
+    userError: null,
   };
 
   componentDidMount() {
@@ -42,15 +43,29 @@ class Users extends Component {
       const newState = {
         isLoading: false,
       };
-      if (!props.error) {
-        props.apiGetUsersRequest();
+
+      let shouldRequestUsers = false;
+
+      if (!props.authError) {
+        shouldRequestUsers = true;
         newState.displayAddUserDialog = false;
-        newState.displayEditUserDialog = false;
         newState.newUser = {};
-        newState.editProfile = {};
       } else {
-        newState.error = props.error;
+        newState.authError = props.authError;
       }
+
+      if (!props.userError) {
+        shouldRequestUsers = true;
+        newState.editProfile = {};
+        newState.displayEditUserDialog = false;
+      } else {
+        newState.userError = props.userError;
+      }
+
+      if (shouldRequestUsers) {
+        props.apiGetUsersRequest();
+      }
+
       return newState;
     }
     return null;
@@ -100,7 +115,7 @@ class Users extends Component {
         selectedUser: this.props.users[userIndex - 1],
         hasChanged: false,
         editProfile: {},
-        error: null,
+        userError: null,
       });
     } else if (action === "delete") {
       // `TODO: delete user #${userIndex}`;
@@ -108,7 +123,7 @@ class Users extends Component {
   };
 
   renderAddUserDialog = () => {
-    const { isLoading, error } = this.state;
+    const { isLoading, authError } = this.state;
     const { username, email, password } = this.state.newUser;
 
     return (
@@ -118,13 +133,12 @@ class Users extends Component {
         header="Add user"
         width="320px"
         isLoading={isLoading}
-        error={error}
+        error={authError}
         footer={
           <Button
             key="btn-create-user"
             type="submit"
             className="authenticate_submit"
-            raised
             dense
             disabled={isLoading}
           >
@@ -145,7 +159,7 @@ class Users extends Component {
   };
 
   renderEditUserDialog = () => {
-    const { isLoading, selectedUser, hasChanged, error } = this.state;
+    const { isLoading, selectedUser, hasChanged, userError } = this.state;
 
     return (
       <TeamDialog
@@ -154,12 +168,11 @@ class Users extends Component {
         header="Edit user"
         width="640px"
         isLoading={isLoading}
-        error={error}
+        error={userError}
         footer={[
           <Button
             key="btn-cancel"
             className="authenticate_submit"
-            raised
             dense
             disabled={isLoading}
             onClick={() => this.setState({ displayEditUserDialog: false })}
@@ -170,7 +183,6 @@ class Users extends Component {
             key="btn-edit-user"
             type="submit"
             className="authenticate_submit"
-            raised
             dense
             disabled={isLoading || !hasChanged}
           >
@@ -246,7 +258,10 @@ class Users extends Component {
                 action={user.attributes.scope === "admin" ? "Add" : undefined}
                 description="Manage user's access, rights, role. Add new one or delete/revoke another."
                 onAction={() => {
-                  this.setState({ displayAddUserDialog: true, error: null });
+                  this.setState({
+                    displayAddUserDialog: true,
+                    authError: null,
+                  });
                 }}
               >
                 <div className="zap-panel_scroll">
@@ -284,7 +299,8 @@ Users.propTypes = {
   isLoading: PropTypes.bool,
   createUser: PropTypes.func,
   provider: PropTypes.string,
-  error: PropTypes.string,
+  authError: PropTypes.string,
+  userError: PropTypes.string,
   apiAdminUpdateProfileRequest: PropTypes.func,
 };
 
@@ -294,21 +310,23 @@ const mapStateToProps = (state) => {
   const { error: userError, loading: userLoading, profile } = user;
   const { error: authError, newUserLoading } = state.auth;
 
-  const error = authError || userError || appError;
-
-  let errorMessage;
-  if (error instanceof Error) {
-    errorMessage = error.message;
-  } else if (typeof error === "string") {
-    errorMessage = error;
-  }
+  const getErrorMessage = (error) => {
+    let errorMessage;
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (typeof error === "string") {
+      errorMessage = error;
+    }
+    return errorMessage;
+  };
 
   return {
     user,
     profile,
     users,
     isLoading: newUserLoading || userLoading || appLoading,
-    error: errorMessage,
+    authError: getErrorMessage(authError),
+    userError: getErrorMessage(userError || appError),
   };
 };
 
