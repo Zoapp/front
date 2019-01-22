@@ -9518,10 +9518,10 @@ zoapp-common@0.6.3:
     whatwg-fetch "^2.0.4"
     winston "2.4.0"
 
-zoapp-ui@0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.8.4.tgz#41cc51aa558e82e19309fe973f6ae4c1c629ea74"
-  integrity sha512-9daSdC53uQrobI9HkhCX1O1kZ0RVth7eSbij0NTbMToTumX0eO5jvtWkNkYgqDKUrsAZyHZkKbtjciw7mqxxUQ==
+zoapp-ui@0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.8.5.tgz#87f4241a3107338d59113ae42c8909254222fd70"
+  integrity sha512-/veREfNwNCiajHo2497VLCF4Uphb42x2qub0zIsAheBBXE+cvGvOJy3coZBiuRHwEO9oXqAhwSH3SFiCifd0Pw==
   dependencies:
     prop-types "15.6.0"
     react "16.4.2"
