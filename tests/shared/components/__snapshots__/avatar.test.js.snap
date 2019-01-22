@@ -1,10 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Avatar can take an src and size prop 1`] = `
-<img
-  className=""
-  src="http://www.gravatar.com/avatar/?d=identicon?size=100"
-/>
+Array [
+  <i
+    className="material-icons"
+    style={
+      Object {
+        "fontSize": 100,
+      }
+    }
+  >
+    account_circle
+  </i>,
+  <img
+    className=""
+    onError={[Function]}
+    onLoad={[Function]}
+    src="http://www.gravatar.com/avatar/?d=identicon?size=100"
+    style={
+      Object {
+        "borderRadius": "100%",
+      }
+    }
+  />,
+]
 `;
 
 exports[`Avatar renders correctly 1`] = `

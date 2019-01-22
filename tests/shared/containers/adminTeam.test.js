@@ -3,12 +3,13 @@ import { shallow } from "enzyme";
 
 import { UsersBase } from "shared/containers/admin/team";
 import { TableComponent } from "zoapp-ui";
-import { Dialog, Button } from "zrmc";
+import { Button, Dialog, Icon, MenuItem } from "zrmc";
 
 import { createFakeEvent } from "../../helpers";
 
 import Panel from "../../../src/shared/components/panel";
 import SignUp from "../../../src/shared/components/auth/signUp";
+import Settings from "../../../src/shared/components/settings";
 
 describe("containers/admin/team", () => {
   const defaultProps = {
@@ -46,7 +47,8 @@ describe("containers/admin/team", () => {
     isLoading: false,
     createUser: () => {},
     provider: "",
-    error: null,
+    userError: null,
+    authError: null,
   };
   it("should render admin team component", () => {
     const wrapper = shallow(<UsersBase {...defaultProps} />);
@@ -55,6 +57,7 @@ describe("containers/admin/team", () => {
     expect(table).toHaveLength(1);
     expect(table.prop("items")).toHaveLength(3);
     expect(wrapper.find(Dialog)).toHaveLength(0);
+    expect(wrapper.find(Settings)).toHaveLength(0);
   });
 
   it("Should render signUp dialog on add button click", () => {
@@ -65,9 +68,41 @@ describe("containers/admin/team", () => {
       .dive()
       .find(Button)
       .simulate("click", createFakeEvent());
-    expect(wrapper.state("displayAddUserPanel")).toEqual(true);
+    expect(wrapper.state("displayAddUserDialog")).toEqual(true);
 
-    wrapper.update();
     expect(wrapper.find(SignUp)).toHaveLength(1);
+  });
+
+  it("Should render settings dialog on users table line click", () => {
+    const wrapper = shallow(<UsersBase {...defaultProps} />);
+
+    const secondTableLineWrapper = wrapper
+      .find(TableComponent)
+      .dive()
+      .find("tr")
+      .at(1);
+
+    // expect the second column of the second line
+    expect(
+      secondTableLineWrapper
+        .find("td")
+        .at(1)
+        .text(),
+    ).toEqual("blbl");
+
+    const secondLineBtnWrapper = secondTableLineWrapper.find(Icon); // Get btns
+    secondLineBtnWrapper.simulate("click", createFakeEvent());
+
+    const menuItemEditWrapper = secondLineBtnWrapper
+      .shallow()
+      .dive()
+      .find(MenuItem)
+      .first()
+      .dive()
+      .find("li"); // LOL
+    menuItemEditWrapper.simulate("click", createFakeEvent());
+    expect(wrapper.state("displayEditUserDialog")).toEqual(true);
+
+    expect(wrapper.find(Settings)).toHaveLength(1);
   });
 });

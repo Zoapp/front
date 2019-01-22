@@ -7,6 +7,7 @@
 import {
   API_ADMIN,
   API_ADMIN_UPDATE,
+  API_ADMIN_UPDATE_PROFILE,
   API_GETADMINPARAMETERS,
   API_GETPLUGINS,
   API_GETUSERS,
@@ -40,6 +41,18 @@ export function apiAdminUpdateSuccess({ admin }) {
 
 export function apiAdminUpdateError({ error }) {
   return { type: API_ADMIN_UPDATE + FETCH_FAILURE, error };
+}
+
+export function apiAdminUpdateProfileRequest(profile, userId) {
+  return { type: API_ADMIN_UPDATE_PROFILE + FETCH_REQUEST, profile, userId };
+}
+
+export function apiAdminUpdateProfileSuccess() {
+  return { type: API_ADMIN_UPDATE_PROFILE + FETCH_SUCCESS };
+}
+
+export function apiAdminUpdateProfileError({ error }) {
+  return { type: API_ADMIN_UPDATE_PROFILE + FETCH_FAILURE, error };
 }
 
 export function apiSetAdminParametersRequest(params) {

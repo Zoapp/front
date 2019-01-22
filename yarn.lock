@@ -9518,10 +9518,10 @@ zoapp-common@0.6.3:
     whatwg-fetch "^2.0.4"
     winston "2.4.0"
 
-zoapp-ui@0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.8.3.tgz#1ca10168d78f748aaefd33f6e4d2abef4ef4d670"
-  integrity sha512-awl0wwCmgo1dBGrpn+A2ULu3GC5LjSREp4/rK3CCFgkIVuNy0vVf7WINXyTAUIkDFEHjozpNyq5baoDKT8aLNQ==
+zoapp-ui@0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.8.5.tgz#87f4241a3107338d59113ae42c8909254222fd70"
+  integrity sha512-/veREfNwNCiajHo2497VLCF4Uphb42x2qub0zIsAheBBXE+cvGvOJy3coZBiuRHwEO9oXqAhwSH3SFiCifd0Pw==
   dependencies:
     prop-types "15.6.0"
     react "16.4.2"
@@ -9530,12 +9530,12 @@ zoapp-ui@0.8.3:
     react-dom "16.4.2"
     react-redux "5.0.7"
     redux "4.0.0"
-    zrmc "0.12.3"
+    zrmc "0.12.4"
 
-zrmc@0.12.3:
-  version "0.12.3"
-  resolved "https://registry.yarnpkg.com/zrmc/-/zrmc-0.12.3.tgz#d3712426b9021f59168d7ea32d2bfcc6c5c2dc48"
-  integrity sha512-VIJRBOrsoK9gSl3GKpRGSpEJGatov2XvXKkGQ5KBY4yhVPO1yOIDL0PfWI6idx/F7h5dojnwdb34f9g06Y9Fog==
+zrmc@0.12.4:
+  version "0.12.4"
+  resolved "https://registry.yarnpkg.com/zrmc/-/zrmc-0.12.4.tgz#4acf8ca2a44140d6ac1f21bd466bf8d541fb32af"
+  integrity sha512-uAT7pzI+dWSjuer6duf2VUZr78B359HppBQAFxQmGZsgx8Gp8leTNklMyQ4Wez0t4FAhx4rHrX8vqhdTL/OGBw==
   dependencies:
     dialog-polyfill "^0.4.9"
     prop-types "15.6.0"

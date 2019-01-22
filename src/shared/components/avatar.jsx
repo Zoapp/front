@@ -8,16 +8,50 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Icon } from "zrmc";
 
-const Avatar = ({ size, src, className }) => {
-  if (src === "default") {
+class Avatar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+    };
+
+    this.img = null;
+  }
+
+  render() {
+    const { src, className, size } = this.props;
+
     return (
-      <Icon className={className} style={{ fontSize: size }}>
-        account_circle
-      </Icon>
+      <React.Fragment>
+        {(this.state.isLoading || src === "default") && (
+          <Icon className={className} style={{ fontSize: size }}>
+            account_circle
+          </Icon>
+        )}
+        {src !== "default" && (
+          <img
+            src={`${src}?size=${size}`}
+            style={{ borderRadius: "100%" }}
+            className={className}
+            ref={(i) => {
+              this.img = i;
+            }}
+            onLoad={() => {
+              const isLoading = !this.img.complete;
+              if (!isLoading) {
+                this.img.style.display = "block";
+              }
+              this.setState({ isLoading });
+            }}
+            onError={() => {
+              this.img.style.display = "none";
+            }}
+          />
+        )}
+      </React.Fragment>
     );
   }
-  return <img src={`${src}?size=${size}`} className={className} />;
-};
+}
 
 Avatar.defaultProps = {
   src: "default",

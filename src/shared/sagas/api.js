@@ -7,6 +7,7 @@
 import { put } from "redux-saga/effects";
 import {
   API_ADMIN,
+  API_ADMIN_UPDATE_PROFILE,
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
   API_USERPROFILE_UPDATE,
@@ -25,6 +26,8 @@ import {
   apiAdminSuccess,
   apiAdminUpdateError,
   apiAdminUpdateSuccess,
+  apiAdminUpdateProfileSuccess,
+  apiAdminUpdateProfileError,
   apiGetAdminParametersFailure,
   apiGetAdminParametersSuccess,
   apiGetUsersFailure,
@@ -149,6 +152,22 @@ const api = [
         yield put(apiGetUsersSuccess(response));
       } catch (error) {
         yield put(apiGetUsersFailure(error));
+      }
+    },
+  ],
+  [
+    API_ADMIN_UPDATE_PROFILE + FETCH_REQUEST,
+    function* f({ profile, userId }) {
+      try {
+        yield getWebService().put(`users/${userId}`, profile);
+        yield put(apiAdminUpdateProfileSuccess());
+      } catch (error) {
+        if (error.response) {
+          const response = yield error.response.json();
+          yield put(apiAdminUpdateProfileError({ error: response.error }));
+        } else {
+          yield put(apiAdminUpdateProfileError({ error }));
+        }
       }
     },
   ],

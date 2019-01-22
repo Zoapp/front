@@ -96,7 +96,7 @@ SignUp.propTypes = {
   email: PropTypes.string,
   password: PropTypes.string,
   createChangeHandler: PropTypes.func,
-  container: PropTypes.func,
+  container: PropTypes.oneOfType([PropTypes.func, PropTypes.symbol]),
   signIn: PropTypes.func,
   disabled: PropTypes.bool,
   policyUrl: PropTypes.string,
