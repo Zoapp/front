@@ -11,6 +11,7 @@ import {
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
   AUTH_CREATEUSER,
+  AUTH_UPDATE_STATE,
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
@@ -183,5 +184,21 @@ export default createReducer(initialState, {
     loading: false,
     error,
     resetPassord: false,
+  }),
+
+  [AUTH_UPDATE_STATE + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [AUTH_UPDATE_STATE + FETCH_SUCCESS]: (state) => ({
+    ...state,
+    loading: false,
+    error: null,
+  }),
+  [AUTH_UPDATE_STATE + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }),
 });

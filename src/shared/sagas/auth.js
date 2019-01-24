@@ -12,6 +12,7 @@ import {
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
   AUTH_CREATEUSER,
+  AUTH_UPDATE_STATE,
   FETCH_REQUEST,
 } from "../actions/constants";
 import {
@@ -23,6 +24,8 @@ import {
   lostPasswordComplete,
   createUserSuccess,
   createUserFailure,
+  adminUpdateAccountStateSuccess,
+  adminUpdateAccountStateFaillure,
 } from "../actions/auth";
 import { createProfile } from "./api";
 import { getAuthService } from "../services";
@@ -95,13 +98,11 @@ export function* createUser(action, needProfile = true) {
       accept,
     });
 
-    if (response.validation === "none") {
-      response.scope = yield service.authorizeUser({
-        username,
-        password,
-        scope: "owner",
-      });
-    }
+    response.scope = yield service.authorizeUser({
+      username,
+      password,
+      scope: "owner",
+    });
 
     // don't create profile if is signup action
     // user not authentified
@@ -167,6 +168,22 @@ export function* lostPassword(action) {
   }
 }
 
+export function* updateAccountState(action) {
+  try {
+    yield getAuthService().updateAccountState(action);
+    yield put(adminUpdateAccountStateSuccess());
+  } catch (error) {
+    if (error.response) {
+      const response = yield error.response.json();
+      yield put(
+        adminUpdateAccountStateFaillure({ error: response.error || error }),
+      );
+    } else {
+      yield put(adminUpdateAccountStateFaillure({ error }));
+    }
+  }
+}
+
 const auth = [
   [AUTH_INIT_SETTINGS, authInit],
   [AUTH_SIGNIN + FETCH_REQUEST, callSignIn],
@@ -174,6 +191,7 @@ const auth = [
   [AUTH_SIGNUP + FETCH_REQUEST, signUp],
   [AUTH_LOSTPASSWORD + FETCH_REQUEST, lostPassword],
   [AUTH_CREATEUSER + FETCH_REQUEST, createUser],
+  [AUTH_UPDATE_STATE + FETCH_REQUEST, updateAccountState],
 ];
 
 export default auth;

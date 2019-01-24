@@ -28,6 +28,7 @@ export const AUTH_SIGNUP = "AUTH_SIGNUP";
 export const AUTH_LOSTPASSWORD = "AUTH_LOSTPASSWORD";
 
 export const AUTH_CREATEUSER = "AUTH_CREATEUSER";
+export const AUTH_UPDATE_STATE = "AUTH_UPDATE_STATE";
 
 // API User constants
 export const API_USERPROFILE = "API_USERPROFILE";

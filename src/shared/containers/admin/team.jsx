@@ -13,21 +13,27 @@ import {
   apiGetUsersRequest,
   apiAdminUpdateProfileRequest,
 } from "../../actions/api";
-import { createUserRequest } from "../../actions/auth";
+import {
+  createUserRequest,
+  adminUpdateAccountStateRequest,
+} from "../../actions/auth";
 import Avatar from "../../components/avatar";
 import Panel from "../../components/panel";
 import SignUp from "../../components/auth/signUp";
 import Loading from "../../components/loading";
 import Settings from "../../components/settings";
 import TeamDialog from "../../components/teamDialog";
+import AccountState from "../../components/accountState";
 
 class Users extends Component {
   state = {
     displayAddUserDialog: false,
     displayEditUserDialog: false,
+    displayEditStateDialog: false,
     selectedUser: null,
     newUser: {},
     editProfile: {},
+    editState: {},
     isLoading: false,
     hasChanged: false,
     authError: null,
@@ -49,7 +55,9 @@ class Users extends Component {
       if (!props.authError) {
         shouldRequestUsers = true;
         newState.displayAddUserDialog = false;
+        newState.displayEditStateDialog = false;
         newState.newUser = {};
+        newState.editState = {};
       } else {
         newState.authError = props.authError;
       }
@@ -96,6 +104,16 @@ class Users extends Component {
     this.props.apiAdminUpdateProfileRequest(profile, selectedUser.id);
   };
 
+  handleEditState = (e) => {
+    e.preventDefault();
+    const { editState, selectedUser } = this.state;
+    this.setState({ isLoading: true });
+    this.props.adminUpdateAccountStateRequest(
+      editState.newState,
+      selectedUser.id,
+    );
+  };
+
   createChangeHandler = (entity) => (field) => (e) => {
     this.setState({
       [entity]: {
@@ -107,18 +125,28 @@ class Users extends Component {
   };
 
   handleMenuSelect = (action, userIndex) => {
-    if (action === "edit") {
-      // admin is not in the users props but present on table
-
-      this.setState({
-        displayEditUserDialog: userIndex > 0,
-        selectedUser: this.props.users[userIndex - 1],
-        hasChanged: false,
-        editProfile: {},
-        userError: null,
-      });
-    } else if (action === "delete") {
-      // `TODO: delete user #${userIndex}`;
+    switch (action) {
+      case "edit":
+        this.setState({
+          displayEditUserDialog: userIndex > 0,
+          selectedUser: this.props.users[userIndex - 1],
+          hasChanged: false,
+          editProfile: {},
+          userError: null,
+        });
+        break;
+      case "state":
+        this.setState({
+          displayEditStateDialog: userIndex > 0,
+          selectedUser: this.props.users[userIndex - 1],
+          editState: {},
+          authError: null,
+        });
+        break;
+      case "delete":
+        break;
+      default:
+        break;
     }
   };
 
@@ -134,7 +162,16 @@ class Users extends Component {
         width="320px"
         isLoading={isLoading}
         error={authError}
-        footer={
+        footer={[
+          <Button
+            key="btn-cancel"
+            className="authenticate_submit"
+            dense
+            disabled={isLoading}
+            onClick={() => this.setState({ displayAddUserDialog: false })}
+          >
+            Cancel
+          </Button>,
           <Button
             key="btn-create-user"
             type="submit"
@@ -143,8 +180,8 @@ class Users extends Component {
             disabled={isLoading}
           >
             {isLoading ? "Processing..." : "Create user"}
-          </Button>
-        }
+          </Button>,
+        ]}
       >
         <SignUp
           username={username}
@@ -198,6 +235,46 @@ class Users extends Component {
     );
   };
 
+  renderEditStateDialog = () => {
+    const { isLoading, selectedUser, authError, editState } = this.state;
+
+    return (
+      <TeamDialog
+        onSubmit={this.handleEditState}
+        onClose={() => this.setState({ displayEditStateDialog: false })}
+        header="Edit user state account"
+        width="500px"
+        isLoading={isLoading}
+        error={authError}
+        footer={[
+          <Button
+            key="btn-cancel"
+            className="authenticate_submit"
+            dense
+            disabled={isLoading}
+            onClick={() => this.setState({ displayEditStateDialog: false })}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="btn-disable-account"
+            className="authenticate_submit"
+            type="submit"
+            dense
+            disabled={isLoading || !editState.newState}
+          >
+            {isLoading ? "Processing..." : "Edit account state"}
+          </Button>,
+        ]}
+      >
+        <AccountState
+          user={selectedUser}
+          onChangeHandler={this.createChangeHandler("editState")}
+        />
+      </TeamDialog>
+    );
+  };
+
   render() {
     const items = [];
     const status = "you";
@@ -233,6 +310,10 @@ class Users extends Component {
       menu = [
         {
           name: "edit",
+          onSelect: this.handleMenuSelect,
+        },
+        {
+          name: "state",
           onSelect: this.handleMenuSelect,
         },
         {
@@ -278,6 +359,7 @@ class Users extends Component {
         </Grid>
         {this.state.displayAddUserDialog && this.renderAddUserDialog()}
         {this.state.displayEditUserDialog && this.renderEditUserDialog()}
+        {this.state.displayEditStateDialog && this.renderEditStateDialog()}
       </React.Fragment>
     );
   }
@@ -302,13 +384,14 @@ Users.propTypes = {
   authError: PropTypes.string,
   userError: PropTypes.string,
   apiAdminUpdateProfileRequest: PropTypes.func,
+  adminUpdateAccountStateRequest: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
   const { user } = state;
   const { error: appError, loading: appLoading, users } = state.app;
   const { error: userError, loading: userLoading, profile } = user;
-  const { error: authError, newUserLoading } = state.auth;
+  const { error: authError, newUserLoading, loading: authLoading } = state.auth;
 
   const getErrorMessage = (error) => {
     let errorMessage;
@@ -324,7 +407,7 @@ const mapStateToProps = (state) => {
     user,
     profile,
     users,
-    isLoading: newUserLoading || userLoading || appLoading,
+    isLoading: newUserLoading || userLoading || appLoading || authLoading,
     authError: getErrorMessage(authError),
     userError: getErrorMessage(userError || appError),
   };
@@ -345,6 +428,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   apiAdminUpdateProfileRequest: (profile, userId) => {
     dispatch(apiAdminUpdateProfileRequest(profile, userId));
+  },
+  adminUpdateAccountStateRequest: (newState, userId) => {
+    dispatch(adminUpdateAccountStateRequest(newState, userId));
   },
 });
 

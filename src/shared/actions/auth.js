@@ -10,6 +10,7 @@ import {
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
   AUTH_CREATEUSER,
+  AUTH_UPDATE_STATE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
@@ -136,4 +137,18 @@ export function lostPasswordError({ provider, error }) {
     provider,
     error,
   };
+}
+
+export function adminUpdateAccountStateRequest(newState, userId) {
+  return {
+    type: AUTH_UPDATE_STATE + FETCH_REQUEST,
+    newState,
+    userId,
+  };
+}
+export function adminUpdateAccountStateSuccess() {
+  return { type: AUTH_UPDATE_STATE + FETCH_SUCCESS };
+}
+export function adminUpdateAccountStateFaillure({ error }) {
+  return { type: AUTH_UPDATE_STATE + FETCH_FAILURE, error };
 }
