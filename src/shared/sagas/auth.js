@@ -24,6 +24,7 @@ import {
   lostPasswordComplete,
   createUserSuccess,
   createUserFailure,
+  createUserInfo,
   adminUpdateAccountStateSuccess,
   adminUpdateAccountStateFaillure,
 } from "../actions/auth";
@@ -40,6 +41,9 @@ function* authenticate({ username, password, provider }) {
   } catch (error) {
     if (error.response) {
       const response = yield error.response.json();
+      if (response.error.type === "info") {
+        response.error = response.error.message;
+      }
       yield put(signOutError({ provider, error: response.error || error }));
     } else {
       yield put(signOutError({ provider, error }));
@@ -116,8 +120,14 @@ export function* createUser(action, needProfile = true) {
     yield put(createUserSuccess());
   } catch (error) {
     if (error.response) {
-      response = { error: yield error.response.json() };
-      yield put(createUserFailure(response.error));
+      response = yield error.response.json();
+      // Validation error not really error
+      if (response.error.type === "info") {
+        yield put(createUserSuccess());
+        yield put(createUserInfo(response.error.message));
+      } else {
+        yield put(createUserFailure(response));
+      }
     } else {
       response = error;
       yield put(createUserFailure(error));
@@ -146,8 +156,8 @@ export function* signUp(action) {
         yield put(signOutError({ provider, error }));
       }
     }
-  } else {
-    yield put(signOutError({ provider, ...response.error }));
+  } else if (response.error.type !== "info") {
+    yield put(signOutError({ provider, ...response }));
   }
 }
 

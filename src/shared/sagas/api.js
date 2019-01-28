@@ -108,7 +108,12 @@ const api = [
         const response = yield getWebService().put("admin", params);
         yield put(apiAdminUpdateSuccess({ admin: response }));
       } catch (error) {
-        yield put(apiAdminUpdateError({ error }));
+        if (error.response) {
+          const response = yield error.response.json();
+          yield put(apiAdminUpdateError({ error: response.error }));
+        } else {
+          yield put(apiAdminUpdateError({ error }));
+        }
       }
     },
   ],

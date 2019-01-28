@@ -15,6 +15,7 @@ import {
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
+  FETCH_INFO,
 } from "../actions/constants";
 
 export const initialState = {
@@ -167,6 +168,12 @@ export default createReducer(initialState, {
     ...state,
     newUserLoading: false,
     error,
+  }),
+  [AUTH_CREATEUSER + FETCH_INFO]: (state) => ({
+    ...state,
+    newUserLoading: false,
+    loading: false,
+    error: null,
   }),
 
   [AUTH_LOSTPASSWORD + FETCH_REQUEST]: (state) => ({

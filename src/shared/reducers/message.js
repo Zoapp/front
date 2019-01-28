@@ -7,13 +7,16 @@
 import createReducer from "./createReducer";
 import {
   API_ADMIN,
+  API_ADMIN_UPDATE,
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
+  AUTH_CREATEUSER,
   MESSAGE_SETMESSAGE,
   MESSAGE_REMOVEMESSAGE,
   FETCH_FAILURE,
+  FETCH_INFO,
   API_GETADMINPARAMETERS,
   API_USERPROFILE_UPDATE,
 } from "../actions/constants";
@@ -31,22 +34,32 @@ export const addErrorToState = (state, { error }) => {
   return {
     ...state,
     message,
+    type: null,
   };
 };
 
+export const addMessageToState = (state, { message }) => ({
+  ...state,
+  message,
+  type: "info",
+});
+
 export const initialState = {
   message: null,
+  type: null,
 };
 
 export const handlers = {
   /* App section */
   [API_ADMIN + FETCH_FAILURE]: addErrorToState,
+  [API_ADMIN_UPDATE + FETCH_FAILURE]: addErrorToState,
   [API_SETADMINPARAMETERS + FETCH_FAILURE]: addErrorToState,
   [API_GETADMINPARAMETERS + FETCH_FAILURE]: addErrorToState,
 
   /* Auth section */
   [AUTH_SIGNIN + FETCH_FAILURE]: addErrorToState,
   [AUTH_SIGNOUT + FETCH_FAILURE]: addErrorToState,
+  [AUTH_CREATEUSER + FETCH_INFO]: addMessageToState,
 
   /* User section */
   [API_USERPROFILE + FETCH_FAILURE]: addErrorToState,
@@ -60,6 +73,7 @@ export const handlers = {
   [MESSAGE_REMOVEMESSAGE]: (state) => ({
     ...state,
     message: null,
+    type: null,
   }),
 };
 

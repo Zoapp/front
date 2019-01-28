@@ -6,7 +6,7 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Zrmc, { Grid, Inner, Cell, TextField } from "zrmc";
+import Zrmc, { Grid, Inner, Cell, TextField, LinearProgress } from "zrmc";
 import { connect } from "react-redux";
 import {
   apiSetAdminParametersRequest,
@@ -45,8 +45,8 @@ class Advanced extends Component {
       emailServerParams: {
         host: emailServer.host || "",
         port: emailServer.port || "",
-        username: emailServer.username || "",
-        password: emailServer.password || "",
+        username: emailServer.auth.user || "",
+        password: "",
       },
     };
   }
@@ -118,18 +118,12 @@ class Advanced extends Component {
     this.props.apiAdminUpdateRequest({
       emailServer: params,
     });
-
-    Zrmc.showDialog({
-      header: "email settings",
-      body: "parameters saved",
-      syle: { width: "520px" },
-    });
   };
 
   render() {
     const emailServer = this.state.emailServerParams;
     const backend = this.state.backendParams;
-    const { user } = this.props;
+    const { user, isLoading } = this.props;
     // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
     /* const hasTunnelParams = !!this.state.tunnelParams; */
     // const publicApiUrlDisabled = user.attributes.scope === "owner";
@@ -217,6 +211,7 @@ class Advanced extends Component {
               title="Email server configuration"
               action="Save"
               onAction={this.onSaveEmailParams}
+              actionDisabled={isLoading}
               description="Setup the SMTP server"
             >
               <form className="zap-panel_form" autoComplete="nope">
@@ -258,6 +253,7 @@ class Advanced extends Component {
                     type="password"
                   />
                 </div>
+                {isLoading && <LinearProgress buffer={0} indeterminate />}
               </form>
             </Panel>
           </Cell>
@@ -278,6 +274,7 @@ class Advanced extends Component {
 Advanced.defaultProps = {
   admin: null,
   user: null,
+  isLoading: false,
 };
 
 Advanced.propTypes = {
@@ -291,15 +288,17 @@ Advanced.propTypes = {
   apiAdminUpdateRequest: PropTypes.func.isRequired,
   children: PropTypes.element,
   user: PropTypes.shape({}),
+  isLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
-  const { admin } = state.app;
+  const { admin, loading: isLoading } = state.app;
   const { user } = state;
 
   return {
     admin,
     user,
+    isLoading,
   };
 };
 

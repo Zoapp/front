@@ -14,6 +14,7 @@ import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
+  FETCH_INFO,
 } from "./constants";
 
 export function signIn({ provider, username, email, password, accept }) {
@@ -113,6 +114,9 @@ export function createUserSuccess() {
 }
 export function createUserFailure({ error }) {
   return { type: AUTH_CREATEUSER + FETCH_FAILURE, error };
+}
+export function createUserInfo(message) {
+  return { type: AUTH_CREATEUSER + FETCH_INFO, message };
 }
 
 export function lostPassword({ provider, email }) {

@@ -14,6 +14,7 @@ export const UNSUBSCRIBE = "_UNSUBSCRIBE";
 export const FETCH_REQUEST = "_REQUEST";
 export const FETCH_SUCCESS = "_SUCCESS";
 export const FETCH_FAILURE = "_FAILURE";
+export const FETCH_INFO = "_INFO";
 
 // Sign In constants
 export const AUTH_SIGNIN = "AUTH_SIGNIN";

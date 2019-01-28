@@ -110,18 +110,28 @@ class App extends React.Component {
   };
 
   renderSnackbar = () => {
-    const { message } = this.props;
-    if (message) {
-      return (
+    const { message, type } = this.props.message;
+    let snackProp = {};
+    if (type === "info") {
+      snackProp = {
+        onAction: () => {
+          this.props.removeMessage();
+        },
+        actionText: "Close",
+        timeout: 60000,
+      };
+    }
+    return (
+      message && (
         <Snackbar
           message={message}
           onTimeout={() => {
             this.props.removeMessage();
           }}
+          {...snackProp}
         />
-      );
-    }
-    return null;
+      )
+    );
   };
 
   render() {
@@ -452,7 +462,7 @@ class App extends React.Component {
 }
 
 App.defaultProps = {
-  message: null,
+  message: {},
   admin: null,
   appName: "",
   appSubname: "",
@@ -479,7 +489,10 @@ App.propTypes = {
   appIcon: PropTypes.string,
   instance: PropTypes.shape({}),
   project: PropTypes.shape({}),
-  message: PropTypes.string,
+  message: PropTypes.shape({
+    message: PropTypes.string,
+    type: PropTypes.string,
+  }),
   screens: PropTypes.arrayOf(PropTypes.shape({})),
   design: PropTypes.shape({
     drawer: PropTypes.shape({
@@ -509,7 +522,7 @@ const mapStateToProps = (state) => {
     design,
     project,
   } = state.app;
-  const { message } = state.message;
+  const { message } = state;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading =
     (state.app && state.app.loading) ||
