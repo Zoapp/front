@@ -24,7 +24,9 @@ import {
 } from "../actions/constants";
 
 export const initialState = {
-  admin: null,
+  admin: {
+    params: null,
+  },
   adminParameters: null,
   error: null,
   loading: false,

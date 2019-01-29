@@ -6,48 +6,31 @@
  */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Zrmc, { Grid, Inner, Cell, TextField, LinearProgress } from "zrmc";
+import Zrmc, {
+  Grid,
+  Inner,
+  Cell,
+  TextField,
+  LinearProgress,
+  FormField,
+} from "zrmc";
 import { connect } from "react-redux";
 import {
   apiSetAdminParametersRequest,
   apiAdminUpdateRequest,
+  apiAdminRequest,
 } from "../../actions/api";
 import Panel from "../../components/panel";
 import TunnelBox from "../../components/tunnelBox";
+import Loading from "../../components/loading";
 
 class Advanced extends Component {
   constructor(props) {
     super(props);
-
-    const emailServer = props.admin.params.emailServer || {
-      host: "",
-      port: "",
-      clientId: "",
-      clientSecret: "",
-    };
-
-    const backend = props.admin.params.backend || {
-      apiUrl: "",
-      authUrl: "",
-      clientId: "",
-      clientSecret: "",
-    };
-
     this.state = {
       tunnelParams: null,
-      backendParams: {
-        publicUrl: backend.publicUrl || "",
-        apiUrl: backend.apiUrl || "",
-        authUrl: backend.authUrl || "",
-        clientId: backend.clientId || "",
-        clientSecret: backend.clientSecret || "",
-      },
-      emailServerParams: {
-        host: emailServer.host || "",
-        port: emailServer.port || "",
-        username: emailServer.auth.user || "",
-        password: "",
-      },
+      backendParams: null,
+      emailServerParams: null,
     };
   }
 
@@ -55,21 +38,50 @@ class Advanced extends Component {
     Zrmc.closeDialog();
   }
 
+  componentDidMount() {
+    this.props.apiAdminRequest();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isLoading && !this.props.isLoading && this.props.admin) {
+      const { backend, emailServer } = this.props.admin;
+      const defaultParams = emailServer.defaultParams || {};
+      const auth = emailServer.auth || {};
+
+      this.setState({
+        backendParams: {
+          publicUrl: backend.publicUrl || "",
+          apiUrl: backend.apiUrl || "",
+          authUrl: backend.authUrl || "",
+          clientId: backend.clientId || "",
+          clientSecret: backend.clientSecret || "",
+        },
+        emailServerParams: {
+          host: emailServer.host || "",
+          port: String(emailServer.port || ""),
+          username: auth.user || "",
+          password: "",
+          from: defaultParams.from || "",
+        },
+      });
+    }
+  }
+
   onChangeTunnel = (tunnelParams) => {
     this.setState({ tunnelParams });
   };
 
-  onSaveBackend() {
+  onSaveBackend = () => {
     if (this.state.tunnelParams) {
       // WIP save tunnel parameters
       const tunnel = this.state.tunnelParams.active || "None";
       this.setState({ tunnelParams: null });
       this.props.apiSetAdminParametersRequest({ tunnel });
     }
-  }
+  };
 
-  displayTunnelDialog() {
-    const { params } = this.props.admin;
+  displayTunnelDialog = () => {
+    const { admin: params } = this.props;
     const backend = this.state.backendParams || params.backend || {};
     const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
     const body = (
@@ -81,7 +93,7 @@ class Advanced extends Component {
       syle: { width: "520px" },
       onAction: Advanced.onActionTunnel,
     });
-  }
+  };
 
   onEmailParamsChange = (field, e) => {
     const { value } = e.currentTarget;
@@ -121,81 +133,86 @@ class Advanced extends Component {
   };
 
   render() {
+    const { user, isLoading } = this.props;
     const emailServer = this.state.emailServerParams;
     const backend = this.state.backendParams;
-    const { user, isLoading } = this.props;
-    // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
-    /* const hasTunnelParams = !!this.state.tunnelParams; */
-    // const publicApiUrlDisabled = user.attributes.scope === "owner";
-    const publicApiUrlDisabled = true; // Will make this editable when we need.
-    const backendConfig = (
-      <Inner>
-        <Cell span={12}>
-          <Panel
-            icon={
-              <svg viewBox="0 0 24 24">
-                <path
-                  fill="#000000"
-                  d="M4,1H20A1,1 0 0,1 21,2V6A1,1 0 0,1 20,7H4A1,1 0 0,1 3,6V2A1,1 0 0,1 4,1M4,9H20A1,1 0 0,1 21,10V14A1,1 0 0,1 20,15H4A1,1 0 0,1 3,14V10A1,1 0 0,1 4,9M4,17H20A1,1 0 0,1 21,18V22A1,1 0 0,1 20,23H4A1,1 0 0,1 3,22V18A1,1 0 0,1 4,17M9,5H10V3H9V5M9,13H10V11H9V13M9,21H10V19H9V21M5,3V5H7V3H5M5,11V13H7V11H5M5,19V21H7V19H5Z"
-                />
-              </svg>
-            }
-            title="Backend configuration"
-            action="Save"
-            onAction={this.onSaveBackend}
-            description="Informations about Api and Authentification"
-          >
-            <form className="zap-panel_form">
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="Public Api url"
-                  disabled={publicApiUrlDisabled}
-                  defaultValue={backend.publicUrl}
-                  trailingIcon="link"
-                  onClickTI={this.displayTunnelDialog}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="Api url"
-                  disabled
-                  defaultValue={backend.apiUrl}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="Auth url"
-                  disabled
-                  defaultValue={backend.authUrl}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="AppId"
-                  disabled
-                  defaultValue={backend.clientId}
-                />
-              </div>
-              <div>
-                <TextField
-                  onChange={() => {}}
-                  label="Secret"
-                  disabled
-                  defaultValue={backend.clientSecret}
-                />
-              </div>
-            </form>
-          </Panel>
-        </Cell>
-      </Inner>
-    );
-
-    let emailConfig = null;
+    if (isLoading || !emailServer || !backend) {
+      return <Loading />;
+    }
+    let backendConfig;
+    let emailConfig;
     if (user.attributes.scope === "admin") {
+      // const tunnelParams = this.state.tunnelParams || backend.tunnel || {};
+      /* const hasTunnelParams = !!this.state.tunnelParams; */
+      // const publicApiUrlDisabled = user.attributes.scope === "owner";
+      const publicApiUrlDisabled = true; // Will make this editable when we need.
+      backendConfig = (
+        <Inner>
+          <Cell span={12}>
+            <Panel
+              icon={
+                <svg viewBox="0 0 24 24">
+                  <path
+                    fill="#000000"
+                    d="M4,1H20A1,1 0 0,1 21,2V6A1,1 0 0,1 20,7H4A1,1 0 0,1 3,6V2A1,1 0 0,1 4,1M4,9H20A1,1 0 0,1 21,10V14A1,1 0 0,1 20,15H4A1,1 0 0,1 3,14V10A1,1 0 0,1 4,9M4,17H20A1,1 0 0,1 21,18V22A1,1 0 0,1 20,23H4A1,1 0 0,1 3,22V18A1,1 0 0,1 4,17M9,5H10V3H9V5M9,13H10V11H9V13M9,21H10V19H9V21M5,3V5H7V3H5M5,11V13H7V11H5M5,19V21H7V19H5Z"
+                  />
+                </svg>
+              }
+              title="Backend configuration"
+              action="Save"
+              onAction={this.onSaveBackend}
+              actionDisabled
+              description="Informations about Api and Authentification"
+            >
+              <form className="zap-panel_form">
+                <div>
+                  <TextField
+                    onChange={() => {}}
+                    label="Public Api url"
+                    disabled={publicApiUrlDisabled}
+                    defaultValue={backend.publicUrl}
+                    trailingIcon="link"
+                    onClickTI={this.displayTunnelDialog}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    onChange={() => {}}
+                    label="Api url"
+                    disabled
+                    defaultValue={backend.apiUrl}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    onChange={() => {}}
+                    label="Auth url"
+                    disabled
+                    defaultValue={backend.authUrl}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    onChange={() => {}}
+                    label="AppId"
+                    disabled
+                    defaultValue={backend.clientId}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    onChange={() => {}}
+                    label="Secret"
+                    disabled
+                    defaultValue={backend.clientSecret}
+                  />
+                </div>
+              </form>
+            </Panel>
+          </Cell>
+        </Inner>
+      );
+
       emailConfig = (
         <Inner>
           <Cell span={12}>
@@ -215,7 +232,7 @@ class Advanced extends Component {
               description="Setup the SMTP server"
             >
               <form className="zap-panel_form" autoComplete="nope">
-                <div>
+                <FormField style={{ display: "block" }}>
                   <TextField
                     onChange={(e) => this.onEmailParamsChange("host", e)}
                     label={
@@ -225,8 +242,8 @@ class Advanced extends Component {
                     }
                     defaultValue={emailServer.host}
                   />
-                </div>
-                <div>
+                </FormField>
+                <FormField style={{ display: "block" }}>
                   <TextField
                     onChange={(e) => this.onEmailParamsChange("port", e)}
                     label={
@@ -236,23 +253,30 @@ class Advanced extends Component {
                     }
                     defaultValue={emailServer.port}
                   />
-                </div>
-                <div>
+                </FormField>
+                <FormField style={{ display: "block" }}>
                   <TextField
                     onChange={(e) => this.onEmailParamsChange("username", e)}
                     label="Username"
                     autoComplete="new-password"
                     defaultValue={emailServer.username}
                   />
-                </div>
-                <div>
+                </FormField>
+                <FormField style={{ display: "block" }}>
                   <TextField
                     onChange={(e) => this.onEmailParamsChange("password", e)}
                     label="Password"
                     autoComplete="new-password"
                     type="password"
                   />
-                </div>
+                </FormField>
+                <FormField style={{ display: "block" }}>
+                  <TextField
+                    onChange={(e) => this.onEmailParamsChange("from", e)}
+                    label="From email"
+                    defaultValue={emailServer.from}
+                  />
+                </FormField>
                 {isLoading && <LinearProgress buffer={0} indeterminate />}
               </form>
             </Panel>
@@ -279,13 +303,12 @@ Advanced.defaultProps = {
 
 Advanced.propTypes = {
   admin: PropTypes.shape({
-    params: PropTypes.shape({
-      emailServer: PropTypes.shape({}),
-      backend: PropTypes.shape({}),
-    }).isRequired,
+    emailServer: PropTypes.shape({}).isRequired,
+    backend: PropTypes.shape({}).isRequired,
   }),
   apiSetAdminParametersRequest: PropTypes.func.isRequired,
   apiAdminUpdateRequest: PropTypes.func.isRequired,
+  apiAdminRequest: PropTypes.func.isRequired,
   children: PropTypes.element,
   user: PropTypes.shape({}),
   isLoading: PropTypes.bool,
@@ -296,7 +319,7 @@ const mapStateToProps = (state) => {
   const { user } = state;
 
   return {
-    admin,
+    admin: admin.params,
     user,
     isLoading,
   };
@@ -308,6 +331,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   apiAdminUpdateRequest: (params) => {
     dispatch(apiAdminUpdateRequest(params));
+  },
+  apiAdminRequest: () => {
+    dispatch(apiAdminRequest());
   },
 });
 

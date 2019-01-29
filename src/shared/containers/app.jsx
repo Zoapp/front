@@ -34,7 +34,7 @@ import Authenticate from "./authenticate";
 import { appSetScreen, appSetActiveTab } from "../actions/app";
 import { removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
-import { apiAdminRequest, apiGetPluginsRequest } from "../actions/api";
+import { apiGetPluginsRequest } from "../actions/api";
 
 class App extends React.Component {
   constructor(props) {
@@ -57,12 +57,10 @@ class App extends React.Component {
 
   componentDidMount() {
     this.props.initAuthSettings();
-    this.updateAdmin();
     Zrmc.init(this, { typography: true });
   }
 
   componentDidUpdate(prevProps) {
-    this.updateAdmin();
     if (prevProps.selectedBotId !== this.props.selectedBotId) {
       this.props.apiGetPluginsRequest(this.props.selectedBotId);
     }
@@ -72,19 +70,6 @@ class App extends React.Component {
     event.preventDefault();
     this.toggleDrawer();
   };
-
-  updateAdmin() {
-    if (!this.props.isSignedIn) {
-      if (!this.state.needUpdate) {
-        this.setState({ needUpdate: true });
-      }
-      return;
-    }
-    if (this.state.needUpdate) {
-      this.setState({ needUpdate: false });
-      this.props.apiAdminRequest();
-    }
-  }
 
   handleTimeoutError() {
     this.todo = {};
@@ -150,7 +135,7 @@ class App extends React.Component {
       isSignedIn,
       store,
     } = this.props;
-    if (!isLoading && !this.props.admin && isSignedIn) {
+    if (!isLoading && isSignedIn) {
       isLoading = true;
     }
     const { title, name } = activeScreen;
@@ -463,7 +448,6 @@ class App extends React.Component {
 
 App.defaultProps = {
   message: {},
-  admin: null,
   appName: "",
   appSubname: "",
   appIcon: "images/default.png",
@@ -483,7 +467,6 @@ App.propTypes = {
     name: PropTypes.string.isRequired,
   }),
   isLoading: PropTypes.bool.isRequired,
-  admin: PropTypes.shape({}),
   appName: PropTypes.string,
   appSubname: PropTypes.string,
   appIcon: PropTypes.string,
@@ -504,7 +487,6 @@ App.propTypes = {
   }),
   initAuthSettings: PropTypes.func.isRequired,
   appSetActiveTab: PropTypes.func.isRequired,
-  apiAdminRequest: PropTypes.func.isRequired,
   apiGetPluginsRequest: PropTypes.func.isRequired,
   selectedBotId: PropTypes.string,
   removeMessage: PropTypes.func.isRequired,
@@ -512,16 +494,7 @@ App.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const {
-    admin,
-    screens,
-    name,
-    subname,
-    icon,
-    instance,
-    design,
-    project,
-  } = state.app;
+  const { screens, name, subname, icon, instance, design, project } = state.app;
   const { message } = state;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading =
@@ -573,7 +546,6 @@ const mapStateToProps = (state) => {
   });
 
   return {
-    admin,
     isLoading,
     isSignedIn,
     activeScreen,
@@ -602,9 +574,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   initAuthSettings: () => {
     dispatch(initAuthSettings());
-  },
-  apiAdminRequest: () => {
-    dispatch(apiAdminRequest());
   },
   apiGetPluginsRequest: (botId) => {
     dispatch(apiGetPluginsRequest(botId));
