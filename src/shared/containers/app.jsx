@@ -59,6 +59,7 @@ class App extends React.Component {
     this.props.initAuthSettings();
     this.updateAdmin();
     Zrmc.init(this, { typography: true });
+    this.props.apiGetPluginsRequest(this.props.selectedBotId);
   }
 
   componentDidUpdate(prevProps) {
@@ -520,6 +521,7 @@ const mapStateToProps = (state) => {
     name: state.app.activeScreen.name ? state.app.activeScreen.name : "",
   };
 
+  const { frontPlugins = [] } = state.app;
   const { activeTab } = state.app;
 
   const selectedBotId = state.app ? state.app.selectedBotId : null;
@@ -537,9 +539,10 @@ const mapStateToProps = (state) => {
       });
     }
   });
+  const findRenderViewByPluginName = (screenPluginName, fps) =>
+    (fps.find((fp) => fp.name === screenPluginName) || {}).renderView;
 
   const newScreens = [...screens];
-
   screenPlugins.forEach((screenPlugin) => {
     if (screenPlugin.middleware && screenPlugin.middleware.screen) {
       const addScreen = screenPlugin.middleware.screen;
@@ -555,6 +558,7 @@ const mapStateToProps = (state) => {
         path: "#",
         access: "all",
         ...screenPlugin.middleware.screen,
+        render: findRenderViewByPluginName(screenPlugin.name, frontPlugins),
       });
     }
   });
