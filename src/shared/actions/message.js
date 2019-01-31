@@ -5,17 +5,19 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { MESSAGE_SETMESSAGE, MESSAGE_REMOVEMESSAGE } from "./constants";
+import { MESSAGE_ADDMESSAGE, MESSAGE_REMOVEMESSAGE } from "./constants";
 
-export function setMessage(message) {
+export function addMessage(message, level) {
   return {
-    type: MESSAGE_SETMESSAGE,
+    type: MESSAGE_ADDMESSAGE,
     message,
+    level,
   };
 }
 
-export function removeMessage() {
+export function removeMessage(messageId) {
   return {
     type: MESSAGE_REMOVEMESSAGE,
+    messageId,
   };
 }

@@ -14,27 +14,27 @@ describe("reducers/app", () => {
     const prevState = reducer(undefined, {});
     expect(prevState).toEqual(initialState);
 
-    const state = reducer(prevState, actions.setMessage("An error message"));
+    const state = reducer(prevState, actions.addMessage("A message"));
     expect(state).toEqual({
       ...prevState,
-      message: "An error message",
+      messages: [{ level: undefined, message: "A message" }],
     });
   });
 
   it("removes message", () => {
-    const prevState = reducer(
-      undefined,
-      actions.setMessage("An error message"),
-    );
+    const prevState = reducer(undefined, actions.addMessage("Another message"));
     expect(prevState).toEqual({
       ...initialState,
-      message: "An error message",
+      messages: [
+        { level: undefined, message: "A message" },
+        { level: undefined, message: "Another message" },
+      ],
     });
 
     const state = reducer(prevState, actions.removeMessage());
     expect(state).toEqual({
       ...prevState,
-      message: null,
+      messages: [{ level: undefined, message: "Another message" }],
     });
   });
 
@@ -46,25 +46,11 @@ describe("reducers/app", () => {
 
       expect(state).toEqual({
         ...initialState,
-        message: "An error message",
+        messages: [
+          { level: undefined, message: "Another message" },
+          { level: "error", message: "An error message" },
+        ],
       });
-    });
-
-    it("accepts an error as a Error object", () => {
-      const state = addErrorToState(initialState, {
-        error: Error("An error message"),
-      });
-
-      expect(state).toEqual({
-        ...initialState,
-        message: "An error message",
-      });
-    });
-
-    it("throws a Error object if the error message is not a valid string", () => {
-      expect(() => {
-        addErrorToState(initialState, { error: true });
-      }).toThrowError("addErrorToState requires either an Error or a string");
     });
   });
 });

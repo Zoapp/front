@@ -13,7 +13,7 @@ import {
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_CREATEUSER,
-  MESSAGE_SETMESSAGE,
+  MESSAGE_ADDMESSAGE,
   MESSAGE_REMOVEMESSAGE,
   FETCH_FAILURE,
   FETCH_INFO,
@@ -21,32 +21,26 @@ import {
   API_USERPROFILE_UPDATE,
 } from "../actions/constants";
 
-export const addErrorToState = (state, { error }) => {
-  let message;
-  if (error instanceof Error) {
-    ({ message } = error);
-  } else if (typeof error === "string") {
-    message = error;
-  } else {
-    throw new Error("addErrorToState requires either an Error or a string");
-  }
-
+export const addMessageToState = (state, { message, level }) => {
+  const { messages } = state;
+  messages.push({
+    message,
+    level,
+  });
   return {
     ...state,
-    message,
-    type: null,
+    messages,
   };
 };
 
-export const addMessageToState = (state, { message }) => ({
-  ...state,
-  message,
-  type: "info",
-});
+export const addErrorToState = (state, { error }) =>
+  addMessageToState(state, { message: error, level: "error" });
+
+export const addInfoToState = (state, { message }) =>
+  addMessageToState(state, { message, level: "info" });
 
 export const initialState = {
-  message: null,
-  type: null,
+  messages: [],
 };
 
 export const handlers = {
@@ -59,22 +53,22 @@ export const handlers = {
   /* Auth section */
   [AUTH_SIGNIN + FETCH_FAILURE]: addErrorToState,
   [AUTH_SIGNOUT + FETCH_FAILURE]: addErrorToState,
-  [AUTH_CREATEUSER + FETCH_INFO]: addMessageToState,
+  [AUTH_CREATEUSER + FETCH_INFO]: addInfoToState,
 
   /* User section */
   [API_USERPROFILE + FETCH_FAILURE]: addErrorToState,
   [API_USERPROFILE_UPDATE + FETCH_FAILURE]: addErrorToState,
 
-  [MESSAGE_SETMESSAGE]: (state, { message }) => ({
-    ...state,
-    message,
-  }),
+  [MESSAGE_ADDMESSAGE]: addMessageToState,
 
-  [MESSAGE_REMOVEMESSAGE]: (state) => ({
-    ...state,
-    message: null,
-    type: null,
-  }),
+  [MESSAGE_REMOVEMESSAGE]: (state) => {
+    const { messages } = state;
+    messages.shift();
+    return {
+      ...state,
+      messages,
+    };
+  },
 };
 
 export default createReducer(initialState, handlers);

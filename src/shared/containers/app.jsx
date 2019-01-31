@@ -30,11 +30,13 @@ import { hot } from "react-hot-loader";
 
 import Screen from "./screen";
 import UserBox from "./userBox";
-import Authenticate from "./authenticate";
+import NeedAuth from "./needAuth";
 import { appSetScreen, appSetActiveTab } from "../actions/app";
-import { removeMessage } from "../actions/message";
+import { addMessage, removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
 import { apiGetPluginsRequest } from "../actions/api";
+
+import QueryParser from "../utils/queryParser";
 
 class App extends React.Component {
   constructor(props) {
@@ -58,6 +60,14 @@ class App extends React.Component {
   componentDidMount() {
     this.props.initAuthSettings();
     Zrmc.init(this, { typography: true });
+    const queryParams = QueryParser.parse(this.props.location.search);
+    if (queryParams.error) {
+      this.props.addMessage(queryParams.error, "error");
+    }
+
+    if (queryParams.info) {
+      this.props.addMessage(queryParams.info, "info");
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -95,27 +105,28 @@ class App extends React.Component {
   };
 
   renderSnackbar = () => {
-    const { message, type } = this.props.message;
+    const { messages } = this.props;
+    if (!messages.length) {
+      return null;
+    }
+    const [{ message, level }] = messages;
     let snackProp = {};
-    if (type === "info") {
+    if (level) {
       snackProp = {
-        onAction: () => {
-          this.props.removeMessage();
-        },
+        onAction: () => {},
         actionText: "Close",
         timeout: 60000,
       };
     }
     return (
-      message && (
-        <Snackbar
-          message={message}
-          onTimeout={() => {
-            this.props.removeMessage();
-          }}
-          {...snackProp}
-        />
-      )
+      <Snackbar
+        key={message}
+        message={message}
+        onTimeout={() => {
+          this.props.removeMessage();
+        }}
+        {...snackProp}
+      />
     );
   };
 
@@ -269,7 +280,7 @@ class App extends React.Component {
               path={screen.path}
               render={(p) => {
                 if (!isSignedIn && screen.access === "auth") {
-                  return <Authenticate screen={screen} />;
+                  return <NeedAuth screen={screen} />;
                 } else if (screen.render) {
                   const props = { ...p, store };
                   return screen.render({
@@ -447,7 +458,7 @@ class App extends React.Component {
 }
 
 App.defaultProps = {
-  message: {},
+  message: [],
   appName: "",
   appSubname: "",
   appIcon: "images/default.png",
@@ -460,6 +471,9 @@ App.defaultProps = {
 
 App.propTypes = {
   store: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }).isRequired,
   isSignedIn: PropTypes.bool.isRequired,
   activeScreen: PropTypes.shape({
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
@@ -472,10 +486,7 @@ App.propTypes = {
   appIcon: PropTypes.string,
   instance: PropTypes.shape({}),
   project: PropTypes.shape({}),
-  message: PropTypes.shape({
-    message: PropTypes.string,
-    type: PropTypes.string,
-  }),
+  messages: PropTypes.array,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
   design: PropTypes.shape({
     drawer: PropTypes.shape({
@@ -489,13 +500,14 @@ App.propTypes = {
   appSetActiveTab: PropTypes.func.isRequired,
   apiGetPluginsRequest: PropTypes.func.isRequired,
   selectedBotId: PropTypes.string,
+  addMessage: PropTypes.func.isRequired,
   removeMessage: PropTypes.func.isRequired,
   activeTab: PropTypes.number,
 };
 
 const mapStateToProps = (state) => {
   const { screens, name, subname, icon, instance, design, project } = state.app;
-  const { message } = state;
+  const { messages } = state.message;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading =
     (state.app && state.app.loading) ||
@@ -556,7 +568,7 @@ const mapStateToProps = (state) => {
     appIcon: icon,
     instance,
     design,
-    message,
+    messages,
     project,
     selectedBotId,
   };
@@ -568,6 +580,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   appSetScreen: (screen) => {
     dispatch(appSetScreen(screen));
+  },
+  addMessage: (message, level) => {
+    dispatch(addMessage(message, level));
   },
   removeMessage: () => {
     dispatch(removeMessage());

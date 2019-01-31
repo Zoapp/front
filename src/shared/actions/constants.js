@@ -51,7 +51,7 @@ export const APP_SETSCREEN = "APP_SETSCREEN";
 export const APP_SETPROJECT = "APP_SETPROJECT";
 
 // Message logic constants
-export const MESSAGE_SETMESSAGE = "MESSAGE_SETMESSAGE";
+export const MESSAGE_ADDMESSAGE = "MESSAGE_ADDMESSAGE";
 export const MESSAGE_REMOVEMESSAGE = "MESSAGE_REMOVEMESSAGE";
 
 // Users
