@@ -69,7 +69,12 @@ const api = [
         const response = yield getWebService().get("me");
         yield put(apiUserProfileSuccess({ profile: response }));
       } catch (error) {
-        yield put(apiUserProfileError({ error }));
+        if (error.response) {
+          const response = yield error.response.json();
+          yield put(apiUserProfileError({ error: response.error || error }));
+        } else {
+          yield put(apiUserProfileError({ error }));
+        }
       }
     },
   ],
@@ -97,7 +102,12 @@ const api = [
         const response = yield getWebService().get("admin");
         yield put(apiAdminSuccess({ admin: response }));
       } catch (error) {
-        yield put(apiAdminError({ error }));
+        if (error.response) {
+          const response = yield error.response.json();
+          yield put(apiAdminError({ error: response.error }));
+        } else {
+          yield put(apiAdminError({ error }));
+        }
       }
     },
   ],
@@ -125,7 +135,12 @@ const api = [
         const response = yield getWebService().put("admin", params);
         yield put(apiSetAdminParametersSuccess({ params: response }));
       } catch (error) {
-        yield put(apiSetAdminParametersError({ error }));
+        if (error.response) {
+          const response = yield error.response.json();
+          yield put(apiSetAdminParametersError({ error: response.error }));
+        } else {
+          yield put(apiSetAdminParametersError({ error }));
+        }
       }
     },
   ],
@@ -145,7 +160,12 @@ const api = [
 
         yield put(apiGetAdminParametersSuccess(response));
       } catch (error) {
-        yield put(apiGetAdminParametersFailure(error));
+        if (error.response) {
+          const response = yield error.response.json();
+          yield put(apiGetAdminParametersFailure({ error: response.error }));
+        } else {
+          yield put(apiGetAdminParametersFailure({ error }));
+        }
       }
     },
   ],
