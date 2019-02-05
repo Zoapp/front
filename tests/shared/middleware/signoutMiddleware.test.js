@@ -10,7 +10,9 @@ import { FETCH_FAILURE } from "shared/actions/constants";
 describe("signoutMiddleware", () => {
   it("does nothing if action is not a failure", () => {
     const store = {
-      getState: jest.fn(),
+      getState: jest.fn(() => ({
+        user: {},
+      })),
       dispatch: jest.fn(),
     };
 
@@ -78,6 +80,7 @@ describe("signoutMiddleware", () => {
         auth: {
           provider: "foo",
         },
+        user: { isSignedIn: true },
       })),
       dispatch: jest.fn(),
     };
@@ -89,9 +92,7 @@ describe("signoutMiddleware", () => {
     const action = {
       type: `foo${FETCH_FAILURE}`,
       error: {
-        response: {
-          status: 401,
-        },
+        status: 401,
       },
     };
 

@@ -69,12 +69,7 @@ const api = [
         const response = yield getWebService().get("me");
         yield put(apiUserProfileSuccess({ profile: response }));
       } catch (error) {
-        if (error.response) {
-          const response = yield error.response.json();
-          yield put(apiUserProfileError({ error: response.error || error }));
-        } else {
-          yield put(apiUserProfileError({ error }));
-        }
+        yield put(apiUserProfileError({ error }));
       }
     },
   ],
@@ -85,12 +80,7 @@ const api = [
         const response = yield getWebService().put("me", params);
         yield put(apiUserProfileUpdateSuccess({ profile: response }));
       } catch (error) {
-        if (error.response) {
-          const response = yield error.response.json();
-          yield put(apiUserProfileUpdateError({ error: response.error }));
-        } else {
-          yield put(apiUserProfileUpdateError({ error }));
-        }
+        yield put(apiUserProfileUpdateError({ error }));
       }
     },
   ],
@@ -102,12 +92,7 @@ const api = [
         const response = yield getWebService().get("admin");
         yield put(apiAdminSuccess({ admin: response }));
       } catch (error) {
-        if (error.response) {
-          const response = yield error.response.json();
-          yield put(apiAdminError({ error: response.error }));
-        } else {
-          yield put(apiAdminError({ error }));
-        }
+        yield put(apiAdminError({ error }));
       }
     },
   ],
@@ -118,12 +103,7 @@ const api = [
         const response = yield getWebService().put("admin", params);
         yield put(apiAdminUpdateSuccess({ admin: response }));
       } catch (error) {
-        if (error.response) {
-          const response = yield error.response.json();
-          yield put(apiAdminUpdateError({ error: response.error }));
-        } else {
-          yield put(apiAdminUpdateError({ error }));
-        }
+        yield put(apiAdminUpdateError({ error }));
       }
     },
   ],
@@ -135,12 +115,7 @@ const api = [
         const response = yield getWebService().put("admin", params);
         yield put(apiSetAdminParametersSuccess({ params: response }));
       } catch (error) {
-        if (error.response) {
-          const response = yield error.response.json();
-          yield put(apiSetAdminParametersError({ error: response.error }));
-        } else {
-          yield put(apiSetAdminParametersError({ error }));
-        }
+        yield put(apiSetAdminParametersError({ error }));
       }
     },
   ],
@@ -160,12 +135,7 @@ const api = [
 
         yield put(apiGetAdminParametersSuccess(response));
       } catch (error) {
-        if (error.response) {
-          const response = yield error.response.json();
-          yield put(apiGetAdminParametersFailure({ error: response.error }));
-        } else {
-          yield put(apiGetAdminParametersFailure({ error }));
-        }
+        yield put(apiGetAdminParametersFailure({ error }));
       }
     },
   ],
@@ -176,7 +146,7 @@ const api = [
         const response = yield getWebService().get("users");
         yield put(apiGetUsersSuccess(response));
       } catch (error) {
-        yield put(apiGetUsersFailure(error));
+        yield put(apiGetUsersFailure({ error }));
       }
     },
   ],
@@ -187,12 +157,7 @@ const api = [
         yield getWebService().put(`users/${userId}`, profile);
         yield put(apiAdminUpdateProfileSuccess());
       } catch (error) {
-        if (error.response) {
-          const response = yield error.response.json();
-          yield put(apiAdminUpdateProfileError({ error: response.error }));
-        } else {
-          yield put(apiAdminUpdateProfileError({ error }));
-        }
+        yield put(apiAdminUpdateProfileError({ error }));
       }
     },
   ],

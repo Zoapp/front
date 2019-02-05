@@ -14,7 +14,12 @@ import Zrmc, {
   LinearProgress,
 } from "zrmc";
 import { connect } from "react-redux";
-import { signIn, signUp, lostPassword } from "../actions/auth";
+import {
+  signIn,
+  signUp,
+  lostPassword,
+  loadInitialState,
+} from "../actions/auth";
 import SignIn from "../components/auth/signIn";
 import SignUp from "../components/auth/signUp";
 import LostPassword from "../components/auth/lostPassword";
@@ -62,6 +67,10 @@ export class AuthenticateBase extends Component {
     if (this.state.isLoading && !this.props.isLoading && !this.props.error) {
       this.handleCloseDialog();
     }
+  }
+
+  componentWillUnmount() {
+    this.props.loadInitialState();
   }
 
   handleSignIn = (e) => {
@@ -286,6 +295,7 @@ export class AuthenticateBase extends Component {
 AuthenticateBase.propTypes = {
   id: PropTypes.string,
   provider: PropTypes.string,
+  loadInitialState: PropTypes.func.isRequired,
   signIn: PropTypes.func.isRequired,
   signUp: PropTypes.func.isRequired,
   lostPassword: PropTypes.func.isRequired,
@@ -314,22 +324,19 @@ const mapStateToProps = (state) => {
   const recoverPassword = !!configuration.backend.auth.recoverPassword;
   const { policyUrl } = configuration.backend.auth;
 
-  let errorMessage;
-  if (error instanceof Error) {
-    errorMessage = error.message;
-  } else if (typeof error === "string") {
-    errorMessage = error;
-  }
   return {
     signUpValidation,
     recoverPassword,
     policyUrl,
     isLoading: loading,
-    error: errorMessage,
+    error: error && error.message,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  loadInitialState: () => {
+    dispatch(loadInitialState());
+  },
   signIn: (provider, username, password) => {
     dispatch(signIn({ provider, username, password }));
   },

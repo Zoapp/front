@@ -9503,10 +9503,10 @@ yargs@^12.0.4:
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
 
-zoapp-common@0.6.4:
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/zoapp-common/-/zoapp-common-0.6.4.tgz#8b7cf0547871cb3a3de68a4505dbf9436d6ac36c"
-  integrity sha512-He1dmADK1oSPmvGSISvKVSdrag5f5FWCEtqlht5xfUV6QZAeTZfp4eKKuuOyhOvXk5Nromd1FYXz7gqR1Rrcqw==
+zoapp-common@0.6.6:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/zoapp-common/-/zoapp-common-0.6.6.tgz#ee55cc959db7423aaa484ea31acec466b71547f4"
+  integrity sha512-i/PW5H6HTpnsVtptKbz1nRpak9QFRUYwPMctxlw4dj4/Dudq+KpNBD/X8vu9ZzSRBgkHQLbsBXiaEm9OMwaGbw==
   dependencies:
     whatwg-fetch "^2.0.4"
     winston "2.4.0"

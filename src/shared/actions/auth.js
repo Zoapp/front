@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import {
+  AUTH_LOAD_INITIAL_STATE,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
@@ -17,6 +18,9 @@ import {
   FETCH_INFO,
 } from "./constants";
 
+export function loadInitialState() {
+  return { type: AUTH_LOAD_INITIAL_STATE };
+}
 export function signIn({ provider, username, email, password, accept }) {
   return {
     type: AUTH_SIGNIN + FETCH_REQUEST,
@@ -115,8 +119,8 @@ export function createUserSuccess() {
 export function createUserFailure({ error }) {
   return { type: AUTH_CREATEUSER + FETCH_FAILURE, error };
 }
-export function createUserInfo(message) {
-  return { type: AUTH_CREATEUSER + FETCH_INFO, message };
+export function createUserInfo({ info }) {
+  return { type: AUTH_CREATEUSER + FETCH_INFO, info };
 }
 
 export function lostPassword({ provider, email }) {

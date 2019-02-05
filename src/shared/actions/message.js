@@ -15,9 +15,6 @@ export function addMessage(message, level) {
   };
 }
 
-export function removeMessage(messageId) {
-  return {
-    type: MESSAGE_REMOVEMESSAGE,
-    messageId,
-  };
+export function removeMessage() {
+  return { type: MESSAGE_REMOVEMESSAGE };
 }

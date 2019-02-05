@@ -393,23 +393,15 @@ const mapStateToProps = (state) => {
   const { error: userError, loading: userLoading, profile } = user;
   const { error: authError, newUserLoading, loading: authLoading } = state.auth;
 
-  const getErrorMessage = (error) => {
-    let errorMessage;
-    if (error instanceof Error) {
-      errorMessage = error.message;
-    } else if (typeof error === "string") {
-      errorMessage = error;
-    }
-    return errorMessage;
-  };
+  const error = userError || appError;
 
   return {
     user,
     profile,
     users,
     isLoading: newUserLoading || userLoading || appLoading || authLoading,
-    authError: getErrorMessage(authError),
-    userError: getErrorMessage(userError || appError),
+    authError: authError && authError.message,
+    userError: error && error.message,
   };
 };
 

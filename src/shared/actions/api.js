@@ -84,7 +84,7 @@ export function apiGetAdminParametersSuccess(params) {
   return { type: API_GETADMINPARAMETERS + FETCH_SUCCESS, params };
 }
 
-export function apiGetAdminParametersFailure(error) {
+export function apiGetAdminParametersFailure({ error }) {
   return { type: API_GETADMINPARAMETERS + FETCH_FAILURE, error };
 }
 
@@ -96,7 +96,7 @@ export function apiGetUsersSuccess(users) {
   return { type: API_GETUSERS + FETCH_SUCCESS, users };
 }
 
-export function apiGetUsersFailure(error) {
+export function apiGetUsersFailure({ error }) {
   return { type: API_GETUSERS + FETCH_FAILURE, error };
 }
 
@@ -119,7 +119,7 @@ export function apiSetPluginSuccess(plugin) {
   };
 }
 
-export function apiSetPluginError(error) {
+export function apiSetPluginError({ error }) {
   return {
     type: API_SETPLUGIN + FETCH_FAILURE,
     error,
@@ -141,7 +141,7 @@ export function apiDeletePluginSuccess(plugin) {
   };
 }
 
-export function apiDeletePluginError(error) {
+export function apiDeletePluginError({ error }) {
   return {
     type: API_DELETEPLUGIN + FETCH_FAILURE,
     error,

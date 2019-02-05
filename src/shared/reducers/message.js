@@ -21,8 +21,12 @@ import {
   API_USERPROFILE_UPDATE,
 } from "../actions/constants";
 
-export const addMessageToState = (state, { message, level }) => {
+export const addMessageToState = (state, { message: m, level }) => {
   const { messages } = state;
+  let message = m;
+  if (m.message) {
+    ({ message } = m);
+  }
   messages.push({
     message,
     level,
@@ -36,8 +40,8 @@ export const addMessageToState = (state, { message, level }) => {
 export const addErrorToState = (state, { error }) =>
   addMessageToState(state, { message: error, level: "error" });
 
-export const addInfoToState = (state, { message }) =>
-  addMessageToState(state, { message, level: "info" });
+export const addInfoToState = (state, { info }) =>
+  addMessageToState(state, { message: info, level: "info" });
 
 export const initialState = {
   messages: [],

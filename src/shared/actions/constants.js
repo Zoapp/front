@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 export const AUTH_INIT_SETTINGS = "AUTH_INIT_SETTINGS";
+export const AUTH_LOAD_INITIAL_STATE = "AUTH_LOAD_INITIAL_STATE";
 
 // un/subscribing actions suffix
 export const SUBSCRIBE = "_SUBSCRIBE";

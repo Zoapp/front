@@ -39,15 +39,7 @@ function* authenticate({ username, password, provider }) {
 
     yield put(signInComplete({ attributes: response, provider }));
   } catch (error) {
-    if (error.response) {
-      const response = yield error.response.json();
-      if (response.error.type === "info") {
-        response.error = response.error.message;
-      }
-      yield put(signOutError({ provider, error: response.error || error }));
-    } else {
-      yield put(signOutError({ provider, error }));
-    }
+    yield put(signOutError({ provider, error }));
   }
 }
 
@@ -119,18 +111,13 @@ export function* createUser(action, needProfile = true) {
 
     yield put(createUserSuccess());
   } catch (error) {
-    if (error.response) {
-      response = yield error.response.json();
-      // Validation error not really error
-      if (response.error.type === "info") {
-        yield put(createUserSuccess());
-        yield put(createUserInfo(response.error.message));
-      } else {
-        yield put(createUserFailure(response));
-      }
+    // Validation error not really error
+    response = { error };
+    if (error.type === "info") {
+      yield put(createUserSuccess());
+      yield put(createUserInfo({ info: error }));
     } else {
-      response = error;
-      yield put(createUserFailure(error));
+      yield put(createUserFailure({ error }));
     }
   }
 
@@ -140,7 +127,7 @@ export function* createUser(action, needProfile = true) {
 export function* signUp(action) {
   const { provider, username, password } = action;
 
-  let response = yield createUser(action, false);
+  const response = yield createUser(action, false);
   if (!response.error) {
     try {
       if (response.scope) {
@@ -149,12 +136,7 @@ export function* signUp(action) {
       }
       yield put(signUpComplete({ ...response, provider }));
     } catch (error) {
-      if (error.response) {
-        response = yield error.response.json();
-        yield put(signOutError({ provider, error: response.error || error }));
-      } else {
-        yield put(signOutError({ provider, error }));
-      }
+      yield put(signOutError({ provider, error }));
     }
   } else if (response.error.type !== "info") {
     yield put(signOutError({ provider, ...response }));
@@ -169,12 +151,7 @@ export function* lostPassword(action) {
     const response = yield service.lostPassword({ email });
     yield put(lostPasswordComplete({ attributes: response, provider }));
   } catch (error) {
-    if (error.response) {
-      const response = yield error.response.json();
-      yield put(signOutError({ provider, error: response.error || error }));
-    } else {
-      yield put(signOutError({ provider, error }));
-    }
+    yield put(signOutError({ provider, error }));
   }
 }
 
@@ -183,14 +160,7 @@ export function* updateAccountState(action) {
     yield getAuthService().updateAccountState(action);
     yield put(adminUpdateAccountStateSuccess());
   } catch (error) {
-    if (error.response) {
-      const response = yield error.response.json();
-      yield put(
-        adminUpdateAccountStateFaillure({ error: response.error || error }),
-      );
-    } else {
-      yield put(adminUpdateAccountStateFaillure({ error }));
-    }
+    yield put(adminUpdateAccountStateFaillure({ error }));
   }
 }
 

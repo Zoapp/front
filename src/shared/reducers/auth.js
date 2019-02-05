@@ -6,6 +6,7 @@
  */
 import createReducer from "./createReducer";
 import {
+  AUTH_LOAD_INITIAL_STATE,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
@@ -31,6 +32,9 @@ export const initialState = {
 };
 
 export default createReducer(initialState, {
+  [AUTH_LOAD_INITIAL_STATE]: () => ({
+    ...initialState,
+  }),
   [AUTH_SIGNIN + FETCH_REQUEST]: (state, { provider, username, password }) => {
     let newState;
     if (provider) {
