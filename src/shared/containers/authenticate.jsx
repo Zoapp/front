@@ -25,22 +25,20 @@ import SignUp from "../components/auth/signUp";
 import LostPassword from "../components/auth/lostPassword";
 
 export class AuthenticateBase extends Component {
-  state = {
-    username: "",
-    email: "",
-    password: "",
-    accept: false,
-    display: null,
-    error: null,
-    displayedError: false,
-    isLoading: false,
-  };
-
   constructor(props) {
     super(props);
 
     // accept is set to true if policyUrl is unDefined
-    this.state.accept = !props.policyUrl;
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      display: props.display || "",
+      error: null,
+      displayedError: false,
+      isLoading: false,
+      accept: !props.policyUrl,
+    };
   }
 
   static getDerivedStateFromProps(props, state) {
