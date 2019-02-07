@@ -57,7 +57,7 @@ export function* signOut(action) {
   const { provider } = action;
   try {
     const service = getAuthService(provider);
-    yield service.resetAccess();
+    yield service.logoutUser();
     yield put(signOutComplete({ provider }));
   } catch (error) {
     yield put(signOutError({ provider, error: error.message }));

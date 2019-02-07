@@ -9503,18 +9503,18 @@ yargs@^12.0.4:
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
 
-zoapp-common@0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/zoapp-common/-/zoapp-common-0.6.6.tgz#ee55cc959db7423aaa484ea31acec466b71547f4"
-  integrity sha512-i/PW5H6HTpnsVtptKbz1nRpak9QFRUYwPMctxlw4dj4/Dudq+KpNBD/X8vu9ZzSRBgkHQLbsBXiaEm9OMwaGbw==
+zoapp-common@0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/zoapp-common/-/zoapp-common-0.6.7.tgz#de5f3643f5f12450fc2b73e4485666d1b1ebc2c0"
+  integrity sha512-UkMDpKbUO9xnElTFBCVVPURsPyaJZK+zwaKYaKWypLZB1EpQAoy+kxg63P+21CzA2W3j55qN3B55Ehs+339Aog==
   dependencies:
     whatwg-fetch "^2.0.4"
     winston "2.4.0"
 
-zoapp-ui@0.8.6:
-  version "0.8.6"
-  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.8.6.tgz#c09f6aa3e2b14643cabc6a21c10df1bc4141b64e"
-  integrity sha512-oUX4UVLMQGmlD+3sMg6zN5nHC19xKHmPRzB3LQs8lxIfx24x2mFkQ5Oyq3jNWKJzoX7wG8vZVgPTUSRV5p+Uhg==
+zoapp-ui@0.8.7:
+  version "0.8.7"
+  resolved "https://registry.yarnpkg.com/zoapp-ui/-/zoapp-ui-0.8.7.tgz#0d394bf9a78b60cb7c962072554bbb663104c54e"
+  integrity sha512-AXf7UdRFzi6Ul78gppkBUeU6thN9XS7ZaGEuiO/JziQkH/MdRF0yC9LcSy9WxXmxZ+l6YWrQ1jJt3baUuwpg9w==
   dependencies:
     prop-types "15.6.0"
     react "16.4.2"
@@ -9523,12 +9523,12 @@ zoapp-ui@0.8.6:
     react-dom "16.4.2"
     react-redux "5.0.7"
     redux "4.0.0"
-    zrmc "0.12.5"
+    zrmc "0.12.6"
 
-zrmc@0.12.5:
-  version "0.12.5"
-  resolved "https://registry.yarnpkg.com/zrmc/-/zrmc-0.12.5.tgz#9e754405ed0971d552593cb6ba7460941afbe5fc"
-  integrity sha512-QR3ECSQV8hFz41IrBIcFGe2d+04NeirBxAIUJ+HT4Jn/usC/CyTlebwsdwDHB3WSX8WI81YCLa3OJgeYicr3Xw==
+zrmc@0.12.6:
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/zrmc/-/zrmc-0.12.6.tgz#80d2005817a307aa125e2714d7db40714c40c51a"
+  integrity sha512-7a215qCQCz6Jb1eWT6Kdd4OjV3HB+HR7rFokqzrHYv7uifHMm2yyskvMqGwkhZo+JXHgRvbWLuDa/hZHUvrR0Q==
   dependencies:
     dialog-polyfill "^0.4.9"
     prop-types "15.6.0"
