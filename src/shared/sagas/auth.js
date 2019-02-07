@@ -12,6 +12,7 @@ import {
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
   AUTH_CREATEUSER,
+  AUTH_UPDATE_STATE,
   FETCH_REQUEST,
 } from "../actions/constants";
 import {
@@ -23,6 +24,9 @@ import {
   lostPasswordComplete,
   createUserSuccess,
   createUserFailure,
+  createUserInfo,
+  adminUpdateAccountStateSuccess,
+  adminUpdateAccountStateFaillure,
 } from "../actions/auth";
 import { createProfile } from "./api";
 import { getAuthService } from "../services";
@@ -35,12 +39,7 @@ function* authenticate({ username, password, provider }) {
 
     yield put(signInComplete({ attributes: response, provider }));
   } catch (error) {
-    if (error.response) {
-      const response = yield error.response.json();
-      yield put(signOutError({ provider, error: response.error || error }));
-    } else {
-      yield put(signOutError({ provider, error }));
-    }
+    yield put(signOutError({ provider, error }));
   }
 }
 
@@ -58,7 +57,7 @@ export function* signOut(action) {
   const { provider } = action;
   try {
     const service = getAuthService(provider);
-    yield service.resetAccess();
+    yield service.logoutUser();
     yield put(signOutComplete({ provider }));
   } catch (error) {
     yield put(signOutError({ provider, error: error.message }));
@@ -95,13 +94,11 @@ export function* createUser(action, needProfile = true) {
       accept,
     });
 
-    if (response.validation === "none") {
-      response.scope = yield service.authorizeUser({
-        username,
-        password,
-        scope: "owner",
-      });
-    }
+    response.scope = yield service.authorizeUser({
+      username,
+      password,
+      scope: "owner",
+    });
 
     // don't create profile if is signup action
     // user not authentified
@@ -114,12 +111,13 @@ export function* createUser(action, needProfile = true) {
 
     yield put(createUserSuccess());
   } catch (error) {
-    if (error.response) {
-      response = { error: yield error.response.json() };
-      yield put(createUserFailure(response.error));
+    // Validation error not really error
+    response = { error };
+    if (error.type === "info") {
+      yield put(createUserSuccess());
+      yield put(createUserInfo({ info: error }));
     } else {
-      response = error;
-      yield put(createUserFailure(error));
+      yield put(createUserFailure({ error }));
     }
   }
 
@@ -129,7 +127,7 @@ export function* createUser(action, needProfile = true) {
 export function* signUp(action) {
   const { provider, username, password } = action;
 
-  let response = yield createUser(action, false);
+  const response = yield createUser(action, false);
   if (!response.error) {
     try {
       if (response.scope) {
@@ -138,15 +136,10 @@ export function* signUp(action) {
       }
       yield put(signUpComplete({ ...response, provider }));
     } catch (error) {
-      if (error.response) {
-        response = yield error.response.json();
-        yield put(signOutError({ provider, error: response.error || error }));
-      } else {
-        yield put(signOutError({ provider, error }));
-      }
+      yield put(signOutError({ provider, error }));
     }
-  } else {
-    yield put(signOutError({ provider, ...response.error }));
+  } else if (response.error.type !== "info") {
+    yield put(signOutError({ provider, ...response }));
   }
 }
 
@@ -158,12 +151,16 @@ export function* lostPassword(action) {
     const response = yield service.lostPassword({ email });
     yield put(lostPasswordComplete({ attributes: response, provider }));
   } catch (error) {
-    if (error.response) {
-      const response = yield error.response.json();
-      yield put(signOutError({ provider, error: response.error || error }));
-    } else {
-      yield put(signOutError({ provider, error }));
-    }
+    yield put(signOutError({ provider, error }));
+  }
+}
+
+export function* updateAccountState(action) {
+  try {
+    yield getAuthService().updateAccountState(action);
+    yield put(adminUpdateAccountStateSuccess());
+  } catch (error) {
+    yield put(adminUpdateAccountStateFaillure({ error }));
   }
 }
 
@@ -174,6 +171,7 @@ const auth = [
   [AUTH_SIGNUP + FETCH_REQUEST, signUp],
   [AUTH_LOSTPASSWORD + FETCH_REQUEST, lostPassword],
   [AUTH_CREATEUSER + FETCH_REQUEST, createUser],
+  [AUTH_UPDATE_STATE + FETCH_REQUEST, updateAccountState],
 ];
 
 export default auth;

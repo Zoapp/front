@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 export const AUTH_INIT_SETTINGS = "AUTH_INIT_SETTINGS";
+export const AUTH_LOAD_INITIAL_STATE = "AUTH_LOAD_INITIAL_STATE";
 
 // un/subscribing actions suffix
 export const SUBSCRIBE = "_SUBSCRIBE";
@@ -14,6 +15,7 @@ export const UNSUBSCRIBE = "_UNSUBSCRIBE";
 export const FETCH_REQUEST = "_REQUEST";
 export const FETCH_SUCCESS = "_SUCCESS";
 export const FETCH_FAILURE = "_FAILURE";
+export const FETCH_INFO = "_INFO";
 
 // Sign In constants
 export const AUTH_SIGNIN = "AUTH_SIGNIN";
@@ -28,6 +30,7 @@ export const AUTH_SIGNUP = "AUTH_SIGNUP";
 export const AUTH_LOSTPASSWORD = "AUTH_LOSTPASSWORD";
 
 export const AUTH_CREATEUSER = "AUTH_CREATEUSER";
+export const AUTH_UPDATE_STATE = "AUTH_UPDATE_STATE";
 
 // API User constants
 export const API_USERPROFILE = "API_USERPROFILE";
@@ -49,7 +52,7 @@ export const APP_SETSCREEN = "APP_SETSCREEN";
 export const APP_SETPROJECT = "APP_SETPROJECT";
 
 // Message logic constants
-export const MESSAGE_SETMESSAGE = "MESSAGE_SETMESSAGE";
+export const MESSAGE_ADDMESSAGE = "MESSAGE_ADDMESSAGE";
 export const MESSAGE_REMOVEMESSAGE = "MESSAGE_REMOVEMESSAGE";
 
 // Users

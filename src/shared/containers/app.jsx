@@ -30,11 +30,13 @@ import { hot } from "react-hot-loader";
 
 import Screen from "./screen";
 import UserBox from "./userBox";
-import Authenticate from "./authenticate";
+import NeedAuth from "./needAuth";
 import { appSetScreen, appSetActiveTab } from "../actions/app";
-import { removeMessage } from "../actions/message";
+import { addMessage, removeMessage } from "../actions/message";
 import { initAuthSettings } from "../actions/initialize";
-import { apiAdminRequest, apiGetPluginsRequest } from "../actions/api";
+import { apiGetPluginsRequest } from "../actions/api";
+
+import QueryParser from "../utils/queryParser";
 
 class App extends React.Component {
   constructor(props) {
@@ -57,12 +59,18 @@ class App extends React.Component {
 
   componentDidMount() {
     this.props.initAuthSettings();
-    this.updateAdmin();
     Zrmc.init(this, { typography: true });
+    const queryParams = QueryParser.parse(this.props.location.search);
+    if (queryParams.error) {
+      this.props.addMessage(queryParams.error, "error");
+    }
+
+    if (queryParams.info) {
+      this.props.addMessage(queryParams.info, "info");
+    }
   }
 
   componentDidUpdate(prevProps) {
-    this.updateAdmin();
     if (prevProps.selectedBotId !== this.props.selectedBotId) {
       this.props.apiGetPluginsRequest(this.props.selectedBotId);
     }
@@ -72,19 +80,6 @@ class App extends React.Component {
     event.preventDefault();
     this.toggleDrawer();
   };
-
-  updateAdmin() {
-    if (!this.props.isSignedIn) {
-      if (!this.state.needUpdate) {
-        this.setState({ needUpdate: true });
-      }
-      return;
-    }
-    if (this.state.needUpdate) {
-      this.setState({ needUpdate: false });
-      this.props.apiAdminRequest();
-    }
-  }
 
   handleTimeoutError() {
     this.todo = {};
@@ -110,18 +105,29 @@ class App extends React.Component {
   };
 
   renderSnackbar = () => {
-    const { message } = this.props;
-    if (message) {
-      return (
-        <Snackbar
-          message={message}
-          onTimeout={() => {
-            this.props.removeMessage();
-          }}
-        />
-      );
+    const { messages } = this.props;
+    if (!messages.length) {
+      return null;
     }
-    return null;
+    const [{ message, level }] = messages;
+    let snackProp = {};
+    if (level) {
+      snackProp = {
+        onAction: () => {},
+        actionText: "Close",
+        timeout: 60000,
+      };
+    }
+    return (
+      <Snackbar
+        key={message}
+        message={message}
+        onTimeout={() => {
+          this.props.removeMessage();
+        }}
+        {...snackProp}
+      />
+    );
   };
 
   render() {
@@ -140,7 +146,7 @@ class App extends React.Component {
       isSignedIn,
       store,
     } = this.props;
-    if (!isLoading && !this.props.admin && isSignedIn) {
+    if (!isLoading && isSignedIn) {
       isLoading = true;
     }
     const { title, name } = activeScreen;
@@ -274,7 +280,7 @@ class App extends React.Component {
               path={screen.path}
               render={(p) => {
                 if (!isSignedIn && screen.access === "auth") {
-                  return <Authenticate screen={screen} />;
+                  return <NeedAuth screen={screen} />;
                 } else if (screen.render) {
                   const props = { ...p, store };
                   return screen.render({
@@ -452,8 +458,7 @@ class App extends React.Component {
 }
 
 App.defaultProps = {
-  message: null,
-  admin: null,
+  message: [],
   appName: "",
   appSubname: "",
   appIcon: "images/default.png",
@@ -466,6 +471,9 @@ App.defaultProps = {
 
 App.propTypes = {
   store: PropTypes.shape({}).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }).isRequired,
   isSignedIn: PropTypes.bool.isRequired,
   activeScreen: PropTypes.shape({
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
@@ -473,13 +481,12 @@ App.propTypes = {
     name: PropTypes.string.isRequired,
   }),
   isLoading: PropTypes.bool.isRequired,
-  admin: PropTypes.shape({}),
   appName: PropTypes.string,
   appSubname: PropTypes.string,
   appIcon: PropTypes.string,
   instance: PropTypes.shape({}),
   project: PropTypes.shape({}),
-  message: PropTypes.string,
+  messages: PropTypes.array,
   screens: PropTypes.arrayOf(PropTypes.shape({})),
   design: PropTypes.shape({
     drawer: PropTypes.shape({
@@ -491,25 +498,16 @@ App.propTypes = {
   }),
   initAuthSettings: PropTypes.func.isRequired,
   appSetActiveTab: PropTypes.func.isRequired,
-  apiAdminRequest: PropTypes.func.isRequired,
   apiGetPluginsRequest: PropTypes.func.isRequired,
   selectedBotId: PropTypes.string,
+  addMessage: PropTypes.func.isRequired,
   removeMessage: PropTypes.func.isRequired,
   activeTab: PropTypes.number,
 };
 
 const mapStateToProps = (state) => {
-  const {
-    admin,
-    screens,
-    name,
-    subname,
-    icon,
-    instance,
-    design,
-    project,
-  } = state.app;
-  const { message } = state.message;
+  const { screens, name, subname, icon, instance, design, project } = state.app;
+  const { messages } = state.message;
   const isSignedIn = state.user ? state.user.isSignedIn : false;
   const isLoading =
     (state.app && state.app.loading) ||
@@ -560,7 +558,6 @@ const mapStateToProps = (state) => {
   });
 
   return {
-    admin,
     isLoading,
     isSignedIn,
     activeScreen,
@@ -571,7 +568,7 @@ const mapStateToProps = (state) => {
     appIcon: icon,
     instance,
     design,
-    message,
+    messages,
     project,
     selectedBotId,
   };
@@ -584,14 +581,14 @@ const mapDispatchToProps = (dispatch) => ({
   appSetScreen: (screen) => {
     dispatch(appSetScreen(screen));
   },
+  addMessage: (message, level) => {
+    dispatch(addMessage(message, level));
+  },
   removeMessage: () => {
     dispatch(removeMessage());
   },
   initAuthSettings: () => {
     dispatch(initAuthSettings());
-  },
-  apiAdminRequest: () => {
-    dispatch(apiAdminRequest());
   },
   apiGetPluginsRequest: (botId) => {
     dispatch(apiGetPluginsRequest(botId));

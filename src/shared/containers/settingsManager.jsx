@@ -201,7 +201,7 @@ const mapStateToProps = (state) => {
     isSignedIn,
     downloadData,
     removeAccount,
-    error,
+    error: error && error.message,
   };
 };
 

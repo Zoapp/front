@@ -6,14 +6,17 @@
  */
 import createReducer from "./createReducer";
 import {
+  AUTH_LOAD_INITIAL_STATE,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
   AUTH_CREATEUSER,
+  AUTH_UPDATE_STATE,
   FETCH_FAILURE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
+  FETCH_INFO,
 } from "../actions/constants";
 
 export const initialState = {
@@ -29,6 +32,9 @@ export const initialState = {
 };
 
 export default createReducer(initialState, {
+  [AUTH_LOAD_INITIAL_STATE]: () => ({
+    ...initialState,
+  }),
   [AUTH_SIGNIN + FETCH_REQUEST]: (state, { provider, username, password }) => {
     let newState;
     if (provider) {
@@ -167,6 +173,12 @@ export default createReducer(initialState, {
     newUserLoading: false,
     error,
   }),
+  [AUTH_CREATEUSER + FETCH_INFO]: (state) => ({
+    ...state,
+    newUserLoading: false,
+    loading: false,
+    error: null,
+  }),
 
   [AUTH_LOSTPASSWORD + FETCH_REQUEST]: (state) => ({
     ...state,
@@ -183,5 +195,21 @@ export default createReducer(initialState, {
     loading: false,
     error,
     resetPassord: false,
+  }),
+
+  [AUTH_UPDATE_STATE + FETCH_REQUEST]: (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [AUTH_UPDATE_STATE + FETCH_SUCCESS]: (state) => ({
+    ...state,
+    loading: false,
+    error: null,
+  }),
+  [AUTH_UPDATE_STATE + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }),
 });

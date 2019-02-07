@@ -7,60 +7,72 @@
 import createReducer from "./createReducer";
 import {
   API_ADMIN,
+  API_ADMIN_UPDATE,
   API_SETADMINPARAMETERS,
   API_USERPROFILE,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
-  MESSAGE_SETMESSAGE,
+  AUTH_CREATEUSER,
+  MESSAGE_ADDMESSAGE,
   MESSAGE_REMOVEMESSAGE,
   FETCH_FAILURE,
+  FETCH_INFO,
   API_GETADMINPARAMETERS,
   API_USERPROFILE_UPDATE,
 } from "../actions/constants";
 
-export const addErrorToState = (state, { error }) => {
-  let message;
-  if (error instanceof Error) {
-    ({ message } = error);
-  } else if (typeof error === "string") {
-    message = error;
-  } else {
-    throw new Error("addErrorToState requires either an Error or a string");
+export const addMessageToState = (state, { message: m, level }) => {
+  const { messages } = state;
+  let message = m;
+  if (m.message) {
+    ({ message } = m);
   }
-
+  messages.push({
+    message,
+    level,
+  });
   return {
     ...state,
-    message,
+    messages,
   };
 };
 
+export const addErrorToState = (state, { error }) =>
+  addMessageToState(state, { message: error, level: "error" });
+
+export const addInfoToState = (state, { info }) =>
+  addMessageToState(state, { message: info, level: "info" });
+
 export const initialState = {
-  message: null,
+  messages: [],
 };
 
 export const handlers = {
   /* App section */
   [API_ADMIN + FETCH_FAILURE]: addErrorToState,
+  [API_ADMIN_UPDATE + FETCH_FAILURE]: addErrorToState,
   [API_SETADMINPARAMETERS + FETCH_FAILURE]: addErrorToState,
   [API_GETADMINPARAMETERS + FETCH_FAILURE]: addErrorToState,
 
   /* Auth section */
   [AUTH_SIGNIN + FETCH_FAILURE]: addErrorToState,
   [AUTH_SIGNOUT + FETCH_FAILURE]: addErrorToState,
+  [AUTH_CREATEUSER + FETCH_INFO]: addInfoToState,
 
   /* User section */
   [API_USERPROFILE + FETCH_FAILURE]: addErrorToState,
   [API_USERPROFILE_UPDATE + FETCH_FAILURE]: addErrorToState,
 
-  [MESSAGE_SETMESSAGE]: (state, { message }) => ({
-    ...state,
-    message,
-  }),
+  [MESSAGE_ADDMESSAGE]: addMessageToState,
 
-  [MESSAGE_REMOVEMESSAGE]: (state) => ({
-    ...state,
-    message: null,
-  }),
+  [MESSAGE_REMOVEMESSAGE]: (state) => {
+    const { messages } = state;
+    messages.shift();
+    return {
+      ...state,
+      messages,
+    };
+  },
 };
 
 export default createReducer(initialState, handlers);

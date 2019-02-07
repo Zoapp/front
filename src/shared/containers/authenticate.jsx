@@ -8,43 +8,37 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Zrmc, {
   Button,
-  Card,
-  CardText,
-  CardActions,
   Dialog,
   DialogBody,
   DialogFooter,
   LinearProgress,
 } from "zrmc";
 import { connect } from "react-redux";
-import { signIn, signUp, lostPassword } from "../actions/auth";
-import { appSetTitleName } from "../actions/app";
+import {
+  signIn,
+  signUp,
+  lostPassword,
+  loadInitialState,
+} from "../actions/auth";
 import SignIn from "../components/auth/signIn";
 import SignUp from "../components/auth/signUp";
 import LostPassword from "../components/auth/lostPassword";
 
 export class AuthenticateBase extends Component {
-  state = {
-    username: "",
-    email: "",
-    password: "",
-    accept: false,
-    display: null,
-    error: null,
-    displayedError: false,
-    isLoading: false,
-  };
-
   constructor(props) {
     super(props);
 
-    const { screen } = props;
-    if (screen) {
-      props.appSetTitleName(screen.name);
-    }
-
     // accept is set to true if policyUrl is unDefined
-    this.state.accept = !props.policyUrl;
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      display: props.display || "",
+      error: null,
+      displayedError: false,
+      isLoading: false,
+      accept: !props.policyUrl,
+    };
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -73,15 +67,17 @@ export class AuthenticateBase extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.loadInitialState();
+  }
+
   handleSignIn = (e) => {
     e.preventDefault();
     const { provider } = this.props;
     const { username, password } = this.state;
     if (username !== "" && password !== "") {
+      this.setState({ isLoading: true });
       this.props.signIn(provider, username, password);
-      if (this.props.isDialog) {
-        this.setState({ isLoading: true });
-      }
     }
   };
 
@@ -90,10 +86,8 @@ export class AuthenticateBase extends Component {
     const { provider } = this.props;
     const { username, email, password, accept } = this.state;
     if (username !== "" && password !== "" && email !== "") {
+      this.setState({ isLoading: true });
       this.props.signUp(provider, username, email, password, accept);
-      if (this.props.isDialog) {
-        this.setState({ isLoading: true });
-      }
     }
   };
 
@@ -102,10 +96,8 @@ export class AuthenticateBase extends Component {
     const { provider } = this.props;
     const { email } = this.state;
     if (email !== "") {
+      this.setState({ isLoading: true });
       this.props.lostPassword(provider, email);
-      if (this.props.isDialog) {
-        this.setState({ isLoading: true });
-      }
     }
   };
 
@@ -141,20 +133,14 @@ export class AuthenticateBase extends Component {
     this.setState({ [field]: e.target.value });
   };
 
-  getLostPasswordForm = (
-    container,
-    email,
-    password,
-    isLoading,
-    errorMessage,
-  ) => ({
+  getLostPasswordForm = (email, password, isLoading, errorMessage) => ({
     handler: this.handleLostPassword,
     form: (
       <LostPassword
         email={email}
         password={password}
         createChangeHandler={this.createChangeHandler}
-        container={container}
+        container={DialogBody}
         disabled={isLoading}
       >
         {errorMessage}
@@ -174,14 +160,7 @@ export class AuthenticateBase extends Component {
     ],
   });
 
-  getSignUpForm = (
-    container,
-    username,
-    email,
-    password,
-    isLoading,
-    errorMessage,
-  ) => ({
+  getSignUpForm = (username, email, password, isLoading, errorMessage) => ({
     handler: this.handleSignUp,
     form: (
       <SignUp
@@ -189,7 +168,7 @@ export class AuthenticateBase extends Component {
         email={email}
         password={password}
         createChangeHandler={this.createChangeHandler}
-        container={container}
+        container={DialogBody}
         signIn={this.displaySignIn}
         disabled={isLoading}
         policyUrl={this.props.policyUrl}
@@ -203,7 +182,6 @@ export class AuthenticateBase extends Component {
   });
 
   getSingInForm = (
-    container,
     username,
     password,
     isLoading,
@@ -232,7 +210,7 @@ export class AuthenticateBase extends Component {
           username={username}
           password={password}
           createChangeHandler={this.createChangeHandler}
-          container={container}
+          container={DialogBody}
           signUp={signUpValidation ? this.displaySignUp : undefined}
           disabled={isLoading}
         >
@@ -245,47 +223,9 @@ export class AuthenticateBase extends Component {
     };
   };
 
-  formatForm = (isDialog, buildedForm, id) => {
-    if (isDialog) {
-      return (
-        <form id="signin-dialog-form" onSubmit={buildedForm.handler}>
-          <Dialog
-            id={id}
-            onClose={this.handleCloseDialog}
-            header={buildedForm.title}
-            width="320px"
-          >
-            {buildedForm.form}
-            <DialogFooter>{buildedForm.actions}</DialogFooter>
-          </Dialog>
-        </form>
-      );
-    }
-
-    return (
-      <Card
-        shadow={0}
-        style={{ width: "320px", margin: "auto" }}
-        title={buildedForm.title}
-      >
-        <form id="signin-form-form" onSubmit={buildedForm.handler}>
-          {buildedForm.form}
-          <CardActions>{buildedForm.actions}</CardActions>
-        </form>
-      </Card>
-    );
-  };
-
   render() {
-    const { username, email, password, error } = this.state;
-    let { display } = this.state;
-    const {
-      isLoading,
-      recoverPassword,
-      screen,
-      signUpValidation,
-      isDialog,
-    } = this.props;
+    const { username, email, password, error, display } = this.state;
+    const { isLoading, recoverPassword, signUpValidation, id } = this.props;
 
     let errorMessage = "";
     if (error && !this.state.displayedError && !isLoading) {
@@ -294,15 +234,9 @@ export class AuthenticateBase extends Component {
       errorMessage = <LinearProgress buffer={0} indeterminate />;
     }
 
-    if (!display && screen && screen.signUp && signUpValidation) {
-      display = "signup";
-    }
-
-    const container = isDialog ? DialogBody : CardText;
     let buildedForm;
     if (display === "lostpassword") {
       buildedForm = this.getLostPasswordForm(
-        container,
         email,
         password,
         isLoading,
@@ -310,7 +244,6 @@ export class AuthenticateBase extends Component {
       );
     } else if (display === "signup") {
       buildedForm = this.getSignUpForm(
-        container,
         username,
         email,
         password,
@@ -319,7 +252,6 @@ export class AuthenticateBase extends Component {
       );
     } else {
       buildedForm = this.getSingInForm(
-        container,
         username,
         password,
         isLoading,
@@ -342,19 +274,29 @@ export class AuthenticateBase extends Component {
       </Button>,
     );
 
-    return this.formatForm(isDialog, buildedForm, this.props.id);
+    return (
+      <form id="signin-dialog-form" onSubmit={buildedForm.handler}>
+        <Dialog
+          id={id}
+          onClose={this.handleCloseDialog}
+          header={buildedForm.title}
+          width="320px"
+        >
+          {buildedForm.form}
+          <DialogFooter>{buildedForm.actions}</DialogFooter>
+        </Dialog>
+      </form>
+    );
   }
 }
 
 AuthenticateBase.propTypes = {
   id: PropTypes.string,
   provider: PropTypes.string,
-  isDialog: PropTypes.bool,
+  loadInitialState: PropTypes.func.isRequired,
   signIn: PropTypes.func.isRequired,
   signUp: PropTypes.func.isRequired,
   lostPassword: PropTypes.func.isRequired,
-  screen: PropTypes.shape({}),
-  appSetTitleName: PropTypes.func,
   onClosed: PropTypes.func,
   signUpValidation: PropTypes.string,
   policyUrl: PropTypes.string,
@@ -380,22 +322,19 @@ const mapStateToProps = (state) => {
   const recoverPassword = !!configuration.backend.auth.recoverPassword;
   const { policyUrl } = configuration.backend.auth;
 
-  let errorMessage;
-  if (error instanceof Error) {
-    errorMessage = error.message;
-  } else if (typeof error === "string") {
-    errorMessage = error;
-  }
   return {
     signUpValidation,
     recoverPassword,
     policyUrl,
     isLoading: loading,
-    error: errorMessage,
+    error: error && error.message,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  loadInitialState: () => {
+    dispatch(loadInitialState());
+  },
   signIn: (provider, username, password) => {
     dispatch(signIn({ provider, username, password }));
   },
@@ -404,9 +343,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   lostPassword: (provider, email) => {
     dispatch(lostPassword({ provider, email }));
-  },
-  appSetTitleName: (title) => {
-    dispatch(appSetTitleName(title));
   },
 });
 

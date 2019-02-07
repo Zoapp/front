@@ -5,16 +5,22 @@
  * LICENSE file in the root directory of this source tree.
  */
 import {
+  AUTH_LOAD_INITIAL_STATE,
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
   AUTH_LOSTPASSWORD,
   AUTH_CREATEUSER,
+  AUTH_UPDATE_STATE,
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_FAILURE,
+  FETCH_INFO,
 } from "./constants";
 
+export function loadInitialState() {
+  return { type: AUTH_LOAD_INITIAL_STATE };
+}
 export function signIn({ provider, username, email, password, accept }) {
   return {
     type: AUTH_SIGNIN + FETCH_REQUEST,
@@ -113,6 +119,9 @@ export function createUserSuccess() {
 export function createUserFailure({ error }) {
   return { type: AUTH_CREATEUSER + FETCH_FAILURE, error };
 }
+export function createUserInfo({ info }) {
+  return { type: AUTH_CREATEUSER + FETCH_INFO, info };
+}
 
 export function lostPassword({ provider, email }) {
   return {
@@ -136,4 +145,18 @@ export function lostPasswordError({ provider, error }) {
     provider,
     error,
   };
+}
+
+export function adminUpdateAccountStateRequest(newState, userId) {
+  return {
+    type: AUTH_UPDATE_STATE + FETCH_REQUEST,
+    newState,
+    userId,
+  };
+}
+export function adminUpdateAccountStateSuccess() {
+  return { type: AUTH_UPDATE_STATE + FETCH_SUCCESS };
+}
+export function adminUpdateAccountStateFaillure({ error }) {
+  return { type: AUTH_UPDATE_STATE + FETCH_FAILURE, error };
 }

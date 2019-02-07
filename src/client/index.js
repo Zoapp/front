@@ -14,7 +14,7 @@ import Team from "ZoappContainers/admin/team";
 import DrawerFooter from "ZoappContainers/drawerFooter";
 import Zrmc from "zrmc";
 import config from "../../config/default.json";
-import { setMessage } from "../shared/actions/message";
+import { addMessage } from "../shared/actions/message";
 import { appSetProject } from "../shared/actions/app";
 
 const handleAction = () => {
@@ -134,7 +134,7 @@ front.start(true);
 front.store.dispatch(
   appSetProject({ name: "Project", index: 0, icon: "./images/default.png" }),
 );
-front.store.dispatch(setMessage("Welcome Human !"));
+front.store.dispatch(addMessage("Welcome Human !"));
 
 /* global module */
 if (module.hot) {

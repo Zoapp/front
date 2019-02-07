@@ -24,7 +24,9 @@ import {
 } from "../actions/constants";
 
 export const initialState = {
-  admin: null,
+  admin: {
+    params: null,
+  },
   adminParameters: null,
   error: null,
   loading: false,
@@ -124,7 +126,7 @@ export const handlers = {
     error: null,
     adminParameters: params,
   }),
-  [API_GETADMINPARAMETERS + FETCH_FAILURE]: (state, error) => ({
+  [API_GETADMINPARAMETERS + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
     adminParameters: null,
     loading: false,
@@ -163,7 +165,7 @@ export const handlers = {
     error: null,
     users,
   }),
-  [API_GETUSERS + FETCH_FAILURE]: (state, error) => ({
+  [API_GETUSERS + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
     loading: false,
     error,
