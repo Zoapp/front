@@ -16,6 +16,7 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE,
   FETCH_INFO,
+  AUTH_RESETPASSWORD,
 } from "./constants";
 
 export function loadInitialState() {
@@ -130,19 +131,37 @@ export function lostPassword({ provider, email }) {
     email,
   };
 }
-
-export function lostPasswordComplete({ attributes, provider }) {
+export function lostPasswordComplete({ info }) {
   return {
     type: AUTH_LOSTPASSWORD + FETCH_SUCCESS,
-    attributes,
-    provider,
+    info,
   };
 }
-
 export function lostPasswordError({ provider, error }) {
   return {
     type: AUTH_LOSTPASSWORD + FETCH_FAILURE,
     provider,
+    error,
+  };
+}
+
+export function resetPasswordRequest(resetToken, newPassword, email) {
+  return {
+    type: AUTH_RESETPASSWORD + FETCH_REQUEST,
+    resetToken,
+    newPassword,
+    email,
+  };
+}
+export function resetPasswordSuccess({ info }) {
+  return {
+    type: AUTH_RESETPASSWORD + FETCH_SUCCESS,
+    info,
+  };
+}
+export function resetPasswordFailure({ error }) {
+  return {
+    type: AUTH_RESETPASSWORD + FETCH_FAILURE,
     error,
   };
 }

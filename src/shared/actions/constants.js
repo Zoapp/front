@@ -28,6 +28,7 @@ export const AUTH_SIGNUP = "AUTH_SIGNUP";
 
 // Sign Up constants
 export const AUTH_LOSTPASSWORD = "AUTH_LOSTPASSWORD";
+export const AUTH_RESETPASSWORD = "AUTH_RESETPASSWORD";
 
 export const AUTH_CREATEUSER = "AUTH_CREATEUSER";
 export const AUTH_UPDATE_STATE = "AUTH_UPDATE_STATE";

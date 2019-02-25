@@ -17,12 +17,15 @@ import {
   FETCH_REQUEST,
   FETCH_SUCCESS,
   FETCH_INFO,
+  AUTH_RESETPASSWORD,
 } from "../actions/constants";
 
 export const initialState = {
   loading: false,
   newUserLoading: false,
+  resetPasswordLoading: false,
   error: null,
+  resetPasswordError: null,
   username: null,
   password: null,
   provider: null,
@@ -184,17 +187,30 @@ export default createReducer(initialState, {
     ...state,
     loading: true,
     error: null,
-    resetPassord: false,
   }),
   [AUTH_LOSTPASSWORD + FETCH_SUCCESS]: (state) => ({
     ...state,
-    resetPassord: true,
+    loading: false,
   }),
   [AUTH_LOSTPASSWORD + FETCH_FAILURE]: (state, { error }) => ({
     ...state,
     loading: false,
     error,
-    resetPassord: false,
+  }),
+
+  [AUTH_RESETPASSWORD + FETCH_REQUEST]: (state) => ({
+    ...state,
+    resetPasswordLoading: true,
+    resetPasswordError: null,
+  }),
+  [AUTH_RESETPASSWORD + FETCH_SUCCESS]: (state) => ({
+    ...state,
+    resetPasswordLoading: false,
+  }),
+  [AUTH_RESETPASSWORD + FETCH_FAILURE]: (state, { error }) => ({
+    ...state,
+    resetPasswordLoading: false,
+    resetPasswordError: error,
   }),
 
   [AUTH_UPDATE_STATE + FETCH_REQUEST]: (state) => ({

@@ -12,6 +12,7 @@ import Advanced from "ZoappContainers/admin/advanced";
 import Settings from "ZoappContainers/settingsManager";
 import Team from "ZoappContainers/admin/team";
 import DrawerFooter from "ZoappContainers/drawerFooter";
+import LostPassword from "ZoappContainers/lostPassword";
 import Zrmc from "zrmc";
 import config from "../../config/default.json";
 import { addMessage } from "../shared/actions/message";
@@ -38,6 +39,7 @@ const AdminManagerComponent = (props) => (
 const HomeComponent = (props) => React.createElement(Screen, props, "Home");
 const HelpComponent = (props) => React.createElement(Screen, props, "Help");
 const SettingsComponent = (props) => <Settings {...props} />;
+const LostPasswordComponent = (props) => <LostPassword {...props} />;
 
 const app = {
   name: "Zoapp",
@@ -123,6 +125,14 @@ const app = {
       access: "auth",
       path: "/settings",
       render: SettingsComponent,
+    },
+    {
+      id: "7",
+      icon: "lost-password",
+      name: "Lost password",
+      access: "public",
+      path: "/lost-password",
+      render: LostPasswordComponent,
     },
   ],
 };
