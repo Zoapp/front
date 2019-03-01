@@ -14,6 +14,7 @@ import {
   AUTH_CREATEUSER,
   AUTH_UPDATE_STATE,
   FETCH_REQUEST,
+  AUTH_RESETPASSWORD,
 } from "../actions/constants";
 import {
   signIn,
@@ -27,6 +28,8 @@ import {
   createUserInfo,
   adminUpdateAccountStateSuccess,
   adminUpdateAccountStateFaillure,
+  resetPasswordFailure,
+  resetPasswordSuccess,
 } from "../actions/auth";
 import { createProfile } from "./api";
 import { getAuthService } from "../services";
@@ -149,9 +152,24 @@ export function* lostPassword(action) {
   try {
     const service = getAuthService(provider);
     const response = yield service.lostPassword({ email });
-    yield put(lostPasswordComplete({ attributes: response, provider }));
+    yield put(lostPasswordComplete(response));
   } catch (error) {
     yield put(signOutError({ provider, error }));
+  }
+}
+
+export function* resetPassword(action) {
+  const { resetToken, newPassword, email } = action;
+  try {
+    const service = getAuthService();
+    const response = yield service.resetPassword({
+      newPassword,
+      email,
+      resetToken,
+    });
+    yield put(resetPasswordSuccess(response));
+  } catch (error) {
+    yield put(resetPasswordFailure({ error }));
   }
 }
 
@@ -170,6 +188,7 @@ const auth = [
   [AUTH_SIGNOUT + FETCH_REQUEST, signOut],
   [AUTH_SIGNUP + FETCH_REQUEST, signUp],
   [AUTH_LOSTPASSWORD + FETCH_REQUEST, lostPassword],
+  [AUTH_RESETPASSWORD + FETCH_REQUEST, resetPassword],
   [AUTH_CREATEUSER + FETCH_REQUEST, createUser],
   [AUTH_UPDATE_STATE + FETCH_REQUEST, updateAccountState],
 ];

@@ -101,11 +101,6 @@ export class AuthenticateBase extends Component {
     }
   };
 
-  handleRecoverPassword = (e) => {
-    e.preventDefault();
-    // TODO
-  };
-
   switchDisplay = (
     display = this.state.display === "signin" ? "signup" : "signin",
   ) => {

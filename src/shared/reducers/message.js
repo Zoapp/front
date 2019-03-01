@@ -13,12 +13,15 @@ import {
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_CREATEUSER,
+  AUTH_LOSTPASSWORD,
   MESSAGE_ADDMESSAGE,
   MESSAGE_REMOVEMESSAGE,
   FETCH_FAILURE,
   FETCH_INFO,
+  FETCH_SUCCESS,
   API_GETADMINPARAMETERS,
   API_USERPROFILE_UPDATE,
+  AUTH_RESETPASSWORD,
 } from "../actions/constants";
 
 export const addMessageToState = (state, { message: m, level }) => {
@@ -58,6 +61,8 @@ export const handlers = {
   [AUTH_SIGNIN + FETCH_FAILURE]: addErrorToState,
   [AUTH_SIGNOUT + FETCH_FAILURE]: addErrorToState,
   [AUTH_CREATEUSER + FETCH_INFO]: addInfoToState,
+  [AUTH_LOSTPASSWORD + FETCH_SUCCESS]: addInfoToState,
+  [AUTH_RESETPASSWORD + FETCH_SUCCESS]: addInfoToState,
 
   /* User section */
   [API_USERPROFILE + FETCH_FAILURE]: addErrorToState,
