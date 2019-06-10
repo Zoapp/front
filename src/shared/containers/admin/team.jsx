@@ -427,4 +427,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export { Users as UsersBase };
-export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Users);

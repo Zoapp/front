@@ -281,7 +281,8 @@ class App extends React.Component {
               render={(p) => {
                 if (!isSignedIn && screen.access === "auth") {
                   return <NeedAuth screen={screen} />;
-                } else if (screen.render) {
+                }
+                if (screen.render) {
                   const props = { ...p, store };
                   return screen.render({
                     ...props,
@@ -597,5 +598,10 @@ const mapDispatchToProps = (dispatch) => ({
 
 /* global module */
 export default hot(module)(
-  withRouter(connect(mapStateToProps, mapDispatchToProps)(App)),
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps,
+    )(App),
+  ),
 );

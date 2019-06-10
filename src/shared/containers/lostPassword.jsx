@@ -147,4 +147,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LostPassword);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LostPassword);

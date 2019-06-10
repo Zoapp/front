@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Cell, FormField, Inner, TextField } from "zrmc";
 
-import Avatar from "../components/avatar";
+import Avatar from "./avatar";
 
 class Settings extends Component {
   render() {
