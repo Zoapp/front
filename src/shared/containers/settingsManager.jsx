@@ -217,4 +217,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsManager);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SettingsManager);

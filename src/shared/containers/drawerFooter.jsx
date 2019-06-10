@@ -25,8 +25,7 @@ const DrawerFooter = (props) => (
           ""
         )}
       </span>
-      <br />
-      v{props.version} {props.build ? ` - b${props.build}` : ""}
+      <br />v{props.version} {props.build ? ` - b${props.build}` : ""}
       <br />
     </p>
   </React.Fragment>
@@ -53,4 +52,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(DrawerFooter);
+export default connect(
+  mapStateToProps,
+  null,
+)(DrawerFooter);

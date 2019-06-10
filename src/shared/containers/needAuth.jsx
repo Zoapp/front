@@ -38,4 +38,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(null, mapDispatchToProps)(NeedAuth);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(NeedAuth);

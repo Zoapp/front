@@ -1,20 +1,17 @@
 {
     "plugins": [
-        "transform-class-properties",
-        "transform-object-rest-spread",
-        "transform-decorators-legacy",
         "react-hot-loader/babel",
+        "@babel/plugin-proposal-class-properties",
         [
-            "transform-runtime",
+            "@babel/transform-runtime",
             {
-                "polyfill": false,
                 "regenerator": true
             }
         ]
     ],
     "presets": [
         [
-            "env",
+            "@babel/env",
             {
                 "targets": {
                     "browsers": [
@@ -24,20 +21,20 @@
                 }
             }
         ],
-        "react"
+        "@babel/react"
     ],
     "env": {
         "test": {
             "presets": [
                 [
-                    "env",
+                    "@babel/env",
                     {
                         "targets": {
                             "node": "current"
                         }
                     }
                 ],
-                "react"
+                "@babel/react"
             ]
         }
     }
